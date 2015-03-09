@@ -1,0 +1,39 @@
+{
+  "name": "musaAPI",
+  "version": "1.0.0",
+  "description": "Musa mobile application REST service",
+  "main": "server.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon --harmony server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/KleioDev/musaAPI.git"
+  },
+  "author": "Kleio",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/KleioDev/musaAPI/issues"
+  },
+  "homepage": "https://github.com/KleioDev/musaAPI",
+  "dependencies": {
+    "chai": "^2.1.1",
+    "json": "^9.0.3",
+    "koa": "^0.18.1",
+    "koa-better-body": "^1.0.17",
+    "koa-body": "^1.1.0",
+    "koa-logger": "^1.2.2",
+    "koa-pg": "^0.24.0",
+    "koa-route": "^2.4.0",
+    "koa-router": "^4.2.0",
+    "koa-validate": "^0.2.10",
+    "pg": "^4.3.0",
+    "pg-hstore": "^2.3.1",
+    "sequelize": "^2.0.4",
+    "thunkify": "^2.1.2"
+  }
+}
