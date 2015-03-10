@@ -22,10 +22,10 @@
   "homepage": "https://github.com/KleioDev/musaAPI",
   "dependencies": {
     "chai": "^2.1.1",
+    "dotenv": "^0.5.1",
     "json": "^9.0.3",
     "koa": "^0.18.1",
     "koa-better-body": "^1.0.17",
-    "koa-body": "^1.1.0",
     "koa-logger": "^1.2.2",
     "koa-pg": "^0.24.0",
     "koa-route": "^2.4.0",
