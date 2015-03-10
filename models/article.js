@@ -3,7 +3,6 @@
  * Articles model
  */
 
-
 exports.module = function(sequelize, DataTypes) {
     var article = sequelize.define('Article', {
         title : {
