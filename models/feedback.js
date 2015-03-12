@@ -4,26 +4,29 @@
  */
 
 //TODO:Fix this dataTypes thorHammer
-exports.module = function(sequelize, dataTypes) {
-    var Feedback = sequelize.define('Feedback', {
+module.exports = function(sequelize, DataTypes) {
+
+    var Museum = sequelize.import(__dirname + '/museum');
+
+    var Feedback =  sequelize.define('Feedback', {
         title : {
-            type: dataTypes.STRING,
+            type: DataTypes.STRING,
             field: 'title'
         },
         content : {
-            type : dataTypes.STRING,
+            type : DataTypes.STRING,
             field: 'content'
         },
         date : {
-            type: dataTypes.DATE,
+            type: DataTypes.DATE,
             field: 'date'
         },
         seen : {
-            type : dataTypes.BOOLEAN,
+            type : DataTypes.BOOLEAN,
             field : 'seen'
         },
         type : {
-            type : dataTypes.STRING,
+            type : DataTypes.STRING,
             field : 'type'
         }
     }, {
@@ -38,6 +41,8 @@ exports.module = function(sequelize, dataTypes) {
         freezeTableName : true,
         timestamps : false
     });
+
+    Feedback.belongsTo(Museum);
 
     return Feedback;
 }

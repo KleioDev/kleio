@@ -5,8 +5,7 @@
 
 
 var Sequelize = require('sequelize'),
-    dotenv = require('dotenv'),
-    Feedback = require('./feedback');
+    dotenv = require('dotenv');
 
 //Load environment variables
 dotenv.load();
@@ -23,7 +22,9 @@ var sequelize = new Sequelize(process.env.DEVELOPMENT_DATABASE_NAME, process.env
     dialect : 'postgres'
 });
 
+var Feedback = sequelize.import(__dirname + '/feedback');
+
 //Initialize the feedback model
 module.exports = {
-    feedback : Feedback.module(sequelize, Sequelize)
+    feedback : Feedback
 };

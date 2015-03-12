@@ -3,7 +3,7 @@
  * Museum model
  */
 
-exports.module = function(sequelize, DataTypes) {
+module.exports = function(sequelize, DataTypes) {
     var museum = sequelize.define('Museum', {
         title : {
             type : DataTypes.STRING,
