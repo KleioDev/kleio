@@ -4,7 +4,13 @@
  */
 
 exports.module = function(sequelize, DataTypes) {
-    return sequelize.define('Object', {
+
+    var Artist = sequelize.import(_dirname + '/artist');
+    var Content = sequelize.import(__dirname + '/content');
+    var Category = sequilze.import(__dirname + '/caetgories');
+
+
+    var Object =  sequelize.define('Object', {
         title : {
             type : DataTypes.STRING,
             field : 'title'
@@ -68,4 +74,14 @@ exports.module = function(sequelize, DataTypes) {
     }, {
         freezeTableName : true
     });
+
+    Object.hasOne(Artist);
+
+    Object.belongsToMany(Content, {through: 'ObjectContent'});
+    Content.belongsToMany(Object, {through: 'ObjectContent'});
+
+    Object.hasMany(Category);
+
+
+    return Object;
 }

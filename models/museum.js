@@ -7,6 +7,8 @@ module.exports = function(sequelize, DataTypes) {
 
     var Feedback = sequelize.import(__dirname + '/feedback');
 
+    var Administrator =  sequelize.import(__dirname + '/administrator');
+
     var museum = sequelize.define('Museum', {
         title : {
             type : DataTypes.STRING,
@@ -29,6 +31,8 @@ module.exports = function(sequelize, DataTypes) {
     });
 
     museum.hasMany(Feedback, {as: 'Feedback'});
+
+    museum.hasMany(Administrator, {as: 'Managers'});
 
     return museum;
 }

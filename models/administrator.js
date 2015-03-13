@@ -5,7 +5,12 @@
 
 
 exports.module = function(sequelize, DataTypes) {
-    var administrator = sequelize.define('administrator', {
+
+    var Articles = sequelize.import(__dirname + '/article');
+
+    var Content = sequelize.import(__dirname + '/content');
+
+    var Administrator = sequelize.define('Administrator', {
         email : {
             type : DataTypes.STRING,
             field : 'email'
@@ -26,5 +31,11 @@ exports.module = function(sequelize, DataTypes) {
         freezeTableName : true
     });
 
-    return administrator;
+    Administrator.hasMany(Articles);
+
+    Administrator.belongsToMany(Content, {through: 'ManagesContent'});
+
+
+
+    return Administrator;
 }
