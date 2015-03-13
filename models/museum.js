@@ -4,6 +4,9 @@
  */
 
 module.exports = function(sequelize, DataTypes) {
+
+    var Feedback = sequelize.import(__dirname + '/feedback');
+
     var museum = sequelize.define('Museum', {
         title : {
             type : DataTypes.STRING,
@@ -24,6 +27,8 @@ module.exports = function(sequelize, DataTypes) {
     }, {
         freezeTableName: true
     });
+
+    museum.hasMany(Feedback, {as: 'Feedback'});
 
     return museum;
 }

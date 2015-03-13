@@ -6,8 +6,6 @@
 //TODO:Fix this dataTypes thorHammer
 module.exports = function(sequelize, DataTypes) {
 
-    var Museum = sequelize.import(__dirname + '/museum');
-
     var Feedback =  sequelize.define('Feedback', {
         title : {
             type: DataTypes.STRING,
@@ -41,8 +39,6 @@ module.exports = function(sequelize, DataTypes) {
         freezeTableName : true,
         timestamps : false
     });
-
-    Feedback.belongsTo(Museum);
 
     return Feedback;
 }
