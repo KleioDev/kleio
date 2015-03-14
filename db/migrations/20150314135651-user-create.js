@@ -12,7 +12,8 @@ module.exports = {
         email : {
             type : DataTypes.STRING,
             isEmail : true,
-            notEmpty : true
+            notEmpty : true,
+            allowNull : false
         },
         firstName : {
             type : DataTypes.STRING

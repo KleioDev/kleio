@@ -47,8 +47,10 @@ module.exports = {
         objectNumber : {
             type : DataTypes.STRING
         },
-        artist : {
-            type : DataTypes.INTEGER
+        artistId : {
+            type : DataTypes.INTEGER,
+            references : 'Artist',
+            referencesKey : 'id'
         }
     }, {
         freezeTableName : true,

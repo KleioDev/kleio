@@ -16,6 +16,11 @@ module.exports = {
         description : {
             type : DataTypes.TEXT,
             allowNull : true
+        },
+        museumId : {
+            type : DataTypes.INTEGER,
+            references : 'Museum',
+            referencesKey : 'id'
         }
     }, {
         freezeTableName : true,

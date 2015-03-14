@@ -22,8 +22,9 @@ module.exports = {
             field : "category"
         },
         author : {
-            type : DataTypes.STRING,
-            allowNull : false
+            type : DataTypes.INTEGER,
+            references : 'Administrator',
+            referencesKey : 'id'
         }
     }, {
         freezeTableName : true,
