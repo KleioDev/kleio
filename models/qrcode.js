@@ -15,7 +15,8 @@ exports.module = function(sequelize, DataTypes) {
         },
         url : {
             type : DataTypes.STRING,
-            field : 'url'
+            field : 'url',
+            isUrl : true
         },
         image : {
             type : DataTypes.STRING,

@@ -3,7 +3,8 @@
  * Feedback Model
  */
 
-//TODO:Fix this dataTypes thorHammer
+//TODO:What are the types of feedback?
+
 module.exports = function(sequelize, DataTypes) {
 
     var Feedback =  sequelize.define('Feedback', {
@@ -12,7 +13,7 @@ module.exports = function(sequelize, DataTypes) {
             field: 'title'
         },
         content : {
-            type : DataTypes.STRING,
+            type : DataTypes.TEXT,
             field: 'content'
         },
         date : {
@@ -26,18 +27,9 @@ module.exports = function(sequelize, DataTypes) {
         type : {
             type : DataTypes.STRING,
             field : 'type'
-        }
-    }, {
-        getterMethods : {
-            getTitle : function() {
-                return this.title;
-            },
-            getContent : function() {
-                return this.content;
-            }
         },
         freezeTableName : true,
-        timestamps : false
+        timestamps : true
     });
 
     return Feedback;

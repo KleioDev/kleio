@@ -13,7 +13,8 @@ exports.module = function(sequelize, DataTypes) {
     var Administrator = sequelize.define('Administrator', {
         email : {
             type : DataTypes.STRING,
-            field : 'email'
+            field : 'email',
+            isEmail : true
         },
         firstName : {
             type : DataTypes.STRING,
@@ -28,14 +29,13 @@ exports.module = function(sequelize, DataTypes) {
             field : 'password'
         }
     },  {
-        freezeTableName : true
+        freezeTableName : true,
+        timestamps: true
     });
 
     Administrator.hasMany(Articles);
 
     Administrator.belongsToMany(Content, {through: 'ManagesContent'});
-
-
 
     return Administrator;
 }

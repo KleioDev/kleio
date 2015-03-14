@@ -4,16 +4,19 @@
  */
 
 exports.module = function(sequelize, dataTypes) {
-    return sequelize.define('Category', {
+
+
+    var Category =  sequelize.define('Category', {
         category : {
             type: dataTypes.STRING,
             field: 'category'
-        },
-        parent : {
-            type : dataTypes.INTEGER,
-            field: 'parent'
         }
     }, {
-        freezeTableName : true
+        freezeTableName : true,
+        timestamps: true
     });
+
+    Category.belongsTo(Category, {as : 'parentCategory'});
+
+    return Category;
 }

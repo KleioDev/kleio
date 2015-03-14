@@ -5,9 +5,10 @@
 
 exports.module = function(sequelize, DataTypes) {
 
-    var Artist = sequelize.import(_dirname + '/artist');
-    var Content = sequelize.import(__dirname + '/content');
-    var Category = sequilze.import(__dirname + '/caetgories');
+    var Artist = sequelize.import(_dirname + '/artist'),
+        Content = sequelize.import(__dirname + '/content'),
+        Category = sequilze.import(__dirname + '/caetgories'),
+        QRCode = sequelize.import(__dirname + '/qrcode');
 
 
     var Object =  sequelize.define('Object', {
@@ -16,7 +17,7 @@ exports.module = function(sequelize, DataTypes) {
             field : 'title'
         },
         description : {
-            type : DataTypes.STRING,
+            type : DataTypes.TEXT,
             field : 'description'
         },
         medium : {
@@ -34,14 +35,6 @@ exports.module = function(sequelize, DataTypes) {
         type : {
             type : DataTypes.STRING,
             field : 'type'
-        },
-        artist : {
-            type : DataTypes.STRING,
-            field : 'artist'
-        },
-        qr_code : {
-            type : DataTypes.INTEGER,
-            field : 'qr_code'
         },
         dimensions : {
             type : DataTypes.STRING,
@@ -72,13 +65,19 @@ exports.module = function(sequelize, DataTypes) {
             field : 'artist'
         }
     }, {
-        freezeTableName : true
+        freezeTableName : true,
+        timestamps: true
     });
 
     Object.hasOne(Artist);
 
     Object.belongsToMany(Content, {through: 'ObjectContent'});
     Content.belongsToMany(Object, {through: 'ObjectContent'});
+
+    //Object stores reference to one QRCode
+    Object.belongsTo(QRCode);
+
+    Object.belongsTo(Artist);
 
     Object.hasMany(Category);
 

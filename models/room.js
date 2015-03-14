@@ -10,11 +10,11 @@ exports.module = function(sequelize, DataTypes) {
             field : 'identifier'
         },
         description : {
-            type : DataTypes.STRING,
+            type : DataTypes.TEXT,
             field : 'description'
         },
         ibeacons : {
-            type : DataTypes.ARRAY(Sequelize.TEXT),
+            type : DataTypes.ARRAY(Sequelize.STRING),
             field : 'ibeacons'
         }
     }, {

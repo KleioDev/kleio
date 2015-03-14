@@ -27,7 +27,8 @@ module.exports = function(sequelize, DataTypes) {
             field : 'about'
         }
     }, {
-        freezeTableName: true
+        freezeTableName: true,
+        timestamps: true
     });
 
     museum.hasMany(Feedback, {as: 'Feedback'});

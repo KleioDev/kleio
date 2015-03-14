@@ -4,7 +4,7 @@
  */
 
 exports.module = function(sequelize, dataTypes) {
-    return sequelize.define('Artist', {
+    var Artist =  sequelize.define('Artist', {
         name : {
             type: dataTypes.STRING,
             field: 'name'
@@ -18,6 +18,9 @@ exports.module = function(sequelize, dataTypes) {
             field: 'birth_day'
         }
     }, {
-        freezeTableName : true
+        freezeTableName : true,
+        timestamps: true
     });
+
+    return Artist;
 }

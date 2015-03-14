@@ -4,13 +4,15 @@
  */
 
 exports.module = function(sequelize, DataTypes) {
-    var article = sequelize.define('Article', {
+
+
+    var Article = sequelize.define('Article', {
         title : {
             type : DataTypes.STRING,
             field : "title"
         },
         content : {
-            type : DataTypes.String,
+            type : DataTypes.TEXT,
             field : "content"
         },
         category : {
@@ -26,6 +28,9 @@ exports.module = function(sequelize, DataTypes) {
             field : "date"
         }
     }, {
-        freezeTableName: true
+        freezeTableName: true,
+        timestamps: true
     });
+
+    return Article;
 }

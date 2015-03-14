@@ -3,17 +3,22 @@
  * Exhibition Model
  */
 
+//TODO: Should a museum HAVE exhibitions? (make the relationship)
 exports.module = function(sequelize, DataTypes) {
-    return sequilize.define('Exhibition', {
+
+    var Exhibition = sequilize.define('Exhibition', {
         name : {
             type : DataTypes.STRING,
             field : 'name'
         },
         description : {
-            type : DataTypes.STRING,
+            type : DataTypes.TEXT,
             field : 'description'
         }
     }, {
-        freezeTableName : true
-    })
+        freezeTableName : true,
+        timestamps: true
+    });
+
+    return Exhibition;
 }

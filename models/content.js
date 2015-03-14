@@ -4,6 +4,7 @@
  */
 
 //TODO: type should reference something else or be of type enum
+//TODO: Case where content references another article
 exports.module = function(sequelize, dataTypes) {
     return sequelize.define('Content', {
         title : {
@@ -15,14 +16,15 @@ exports.module = function(sequelize, dataTypes) {
             field: 'media_link'
         },
         description : {
-            type : DataTypes.STRING,
+            type : DataTypes.TEXT,
             field : 'description'
         },
         type : {
-            type : DataTypes.STRING,
+            type : DataTypes.ENUM('image', 'video', 'audio', 'text'),
             field : 'type'
         }
     }, {
-        freezeTableName : true
+        freezeTableName : true,
+        timestamps: true
     });
 }

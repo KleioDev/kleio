@@ -5,10 +5,15 @@
 
 //TODO: Add testing
 exports.module = function(sequelize, DataTypes) {
-    return sequelize.define('User', {
+
+    var Object = sequelize.import(__dirtname + '/object');
+
+    var User = sequelize.define('User', {
         email : {
             type : DataTypes.STRING,
-            field : "email"
+            field : "email",
+            isEmail : true,
+            notEmpty : true
         },
         firstName : {
             type : DataTypes.STRING,
@@ -28,7 +33,8 @@ exports.module = function(sequelize, DataTypes) {
         },
         points : {
             type : DataTypes.BIGINT,
-            field : 'points'
+            field : 'points',
+            defaultValue : 0
         },
         banished : {
             type : DataTypes.BOOLEAN,
@@ -37,6 +43,29 @@ exports.module = function(sequelize, DataTypes) {
         }
 
     }, {
-        freezeTableName: true
+        freezeTableName: true,
+        timestamps : true
     });
+
+    //Match table will be used to keep track of users and their history in ImageHunt.
+    var Match = sequelize.define('Match', {
+       matched : {
+           type : DataTypes.BOOLEAN,
+           field : 'matched',
+           defaultValue : false
+       },
+
+        attempts : {
+            type : DataTypes.INTEGER,
+            field : 'attempts',
+            defaultValue : 0
+        }
+    }, {
+        freezeTableName : true,
+        timestamps : true
+    });
+
+    User.belongsToMany(Object, {through : Match});
+
+    return User;
 }
