@@ -5,24 +5,28 @@
 
 exports.module = function(sequelize, DataTypes) {
     return sequilize.define('QRCOde', {
+        id : {
+            type : DataTypes.INTEGER,
+            allowNull : false,
+            primaryKey : true,
+            autoIncrement : true
+
+        },
         size : {
-            type : DataTypes.STRING,
-            field : 'size'
+            type : DataTypes.STRING
         },
         text : {
-            type : DataTypes.STRING,
-            field : 'text'
+            type : DataTypes.STRING
         },
         url : {
             type : DataTypes.STRING,
-            field : 'url',
             isUrl : true
         },
         image : {
-            type : DataTypes.STRING,
-            field : 'image'
+            type : DataTypes.STRING
         }
     }, {
-        freezeTableName : true
-    })
+        freezeTableName : true,
+        timestamps : true
+    });
 }

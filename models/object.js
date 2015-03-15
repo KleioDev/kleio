@@ -7,62 +7,59 @@ exports.module = function(sequelize, DataTypes) {
 
     var Artist = sequelize.import(_dirname + '/artist'),
         Content = sequelize.import(__dirname + '/content'),
-        Category = sequilze.import(__dirname + '/caetgories'),
-        QRCode = sequelize.import(__dirname + '/qrcode');
+        Category = sequelize.import(__dirname + '/caetgories'),
+        QRCode = sequelize.import(__dirname + '/qrcode'),
+        ObjectContent = sequelize.import(__dirname + '/objectContent');
 
 
     var Object =  sequelize.define('Object', {
+        id : {
+            type : DataTypes.INTEGER,
+            allowNull : false,
+            primaryKey : true,
+            autoIncrement : true
+        },
         title : {
             type : DataTypes.STRING,
-            field : 'title'
+            allowNull : false
         },
         description : {
-            type : DataTypes.TEXT,
-            field : 'description'
+            type : DataTypes.TEXT
         },
         medium : {
-            type : DataTypes.STRING,
-            field : 'medium'
+            type : DataTypes.STRING
         },
         classification : {
-            type : DataTypes.STRING,
-            field : 'classification'
+            type : DataTypes.STRING
         },
         attribution : {
-            type : DataTypes.STRING,
-            field : 'attribution'
+            type : DataTypes.STRING
         },
         type : {
-            type : DataTypes.STRING,
-            field : 'type'
+            type : DataTypes.STRING
         },
         dimensions : {
-            type : DataTypes.STRING,
-            field : 'dimensions'
+            type : DataTypes.STRING
         },
         dated : {
-            type : DataTypes.STRING,
-            field : 'dated'
+            type : DataTypes.STRING
         },
         period : {
-            type : DataTypes.STRING,
-            field : 'period'
+            type : DataTypes.STRING
         },
         culture : {
-            type : DataTypes.STRING,
-            field : 'culture'
+            type : DataTypes.STRING
         },
         department : {
-            type : DataTypes.STRING,
-            field : 'department'
+            type : DataTypes.STRING
         },
         objectNumber : {
-            type : DataTypes.STRING,
-            field : 'object_number'
+            type : DataTypes.STRING
         },
-        artist : {
+        ArtistId : {
             type : DataTypes.INTEGER,
-            field : 'artist'
+            references : 'Artist',
+            referencesKey : 'id'
         }
     }, {
         freezeTableName : true,
@@ -71,8 +68,8 @@ exports.module = function(sequelize, DataTypes) {
 
     Object.hasOne(Artist);
 
-    Object.belongsToMany(Content, {through: 'ObjectContent'});
-    Content.belongsToMany(Object, {through: 'ObjectContent'});
+    Object.belongsToMany(Content, {through: ObjectContent});
+    Content.belongsToMany(Object, {through: ObjectContent});
 
     //Object stores reference to one QRCode
     Object.belongsTo(QRCode);

@@ -17,11 +17,11 @@ module.exports = {
             type : DataTypes.STRING
         },
         birthDay : {
-            type: DataTypes.STRING,
+            type: DataTypes.STRING
         }
     }, {
         freezeTableName : true,
-        timestamps: true,
+        timestamps: true
     }).complete(done);
   },
 

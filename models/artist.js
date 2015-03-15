@@ -5,17 +5,21 @@
 
 exports.module = function(sequelize, dataTypes) {
     var Artist =  sequelize.define('Artist', {
+        id : {
+            type : DataTypes.INTEGER,
+            allowNull : false,
+            primaryKey : true,
+            autoIncrement : true
+        },
         name : {
-            type: dataTypes.STRING,
-            field: 'name'
+            type: DataTypes.STRING,
+            allowNull : false
         },
         biography : {
-            type : dataTypes.STRING,
-            field: 'biography'
+            type : DataTypes.STRING
         },
         birthDay : {
-            type: dataTypes.STRING,
-            field: 'birth_day'
+            type: DataTypes.STRING
         }
     }, {
         freezeTableName : true,

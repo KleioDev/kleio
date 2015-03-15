@@ -10,21 +10,24 @@ module.exports = function(sequelize, DataTypes) {
     var Administrator =  sequelize.import(__dirname + '/administrator');
 
     var museum = sequelize.define('Museum', {
+        id : {
+            type : DataTypes.INTEGER,
+            allowNull : false,
+            primaryKey : true,
+            autoIncrement : true
+        },
         title : {
             type : DataTypes.STRING,
-            field : "title"
+            allowNull : false
         },
         description : {
-            type : DataTypes.STRING,
-            field : "description"
+            type : DataTypes.TEXT
         },
         terms : {
-            type : DataTypes.STRING,
-            field : 'types'
+            type : DataTypes.TEXT
         },
         about : {
-            type : DataTypes.STRING,
-            field : 'about'
+            type : DataTypes.TEXT
         }
     }, {
         freezeTableName: true,

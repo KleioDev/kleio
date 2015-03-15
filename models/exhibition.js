@@ -7,17 +7,29 @@
 exports.module = function(sequelize, DataTypes) {
 
     var Exhibition = sequilize.define('Exhibition', {
+        id : {
+            type : DataTypes.INTEGER,
+            allowNull : false,
+            primaryKey : true,
+            autoIncrement : true
+        },
         name : {
             type : DataTypes.STRING,
-            field : 'name'
+            allowNull : false
         },
         description : {
             type : DataTypes.TEXT,
-            field : 'description'
+            allowNull : true
+        },
+        MuseumId : {
+            type : DataTypes.INTEGER,
+            references : 'Museum',
+            referencesKey : 'id'
         }
     }, {
         freezeTableName : true,
-        timestamps: true
+        timestamps: true,
+        underscored : true
     });
 
     return Exhibition;

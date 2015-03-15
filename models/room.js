@@ -4,20 +4,26 @@
  */
 
 exports.module = function(sequelize, DataTypes) {
-    return sequilize.define('Room', {
+    var Room = sequelize.define('Room', {
+        id : {
+            type : DataTypes.INTEGER,
+            allowNull : false,
+            primaryKey : true,
+            autoIncrement : true
+        },
         identifier : {
-            type : DataTypes.STRING,
-            field : 'identifier'
+            type : DataTypes.STRING
         },
         description : {
-            type : DataTypes.TEXT,
-            field : 'description'
+            type : DataTypes.TEXT
         },
         ibeacons : {
-            type : DataTypes.ARRAY(Sequelize.STRING),
-            field : 'ibeacons'
+            type : DataTypes.ARRAY(DataTypes.STRING)
         }
     }, {
-        freezeTableName : true
-    })
+        freezeTableName : true,
+        timestamps : true
+    });
+
+    return Room;
 }

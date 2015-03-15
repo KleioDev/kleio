@@ -8,26 +8,35 @@
 module.exports = function(sequelize, DataTypes) {
 
     var Feedback =  sequelize.define('Feedback', {
-        title : {
+        id: {
+            type: DataTypes.INTEGER,
+            allowNull: false,
+            primaryKey: true,
+            autoIncrement: true
+        },
+        title: {
             type: DataTypes.STRING,
-            field: 'title'
+            allowNull: false
         },
-        content : {
-            type : DataTypes.TEXT,
-            field: 'content'
+        content: {
+            type: DataTypes.TEXT,
+            allowNull: false
         },
-        date : {
-            type: DataTypes.DATE,
-            field: 'date'
+        seen: {
+            type: DataTypes.BOOLEAN,
+            allowNull: false,
+            defaultValue: false
         },
-        seen : {
-            type : DataTypes.BOOLEAN,
-            field : 'seen'
+        type: {
+            type: DataTypes.ENUM('complain', 'suggestion'),
+            allowNull: false
         },
-        type : {
-            type : DataTypes.STRING,
-            field : 'type'
-        },
+        MuseumId : {
+            type : DataTypes.INTEGER,
+            references : 'Museum',
+            referencesKey : 'id'
+        }
+    }, {
         freezeTableName : true,
         timestamps : true
     });

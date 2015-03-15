@@ -7,29 +7,31 @@ exports.module = function(sequelize, DataTypes) {
 
 
     var Article = sequelize.define('Article', {
+        id : {
+            type : DataTypes.INTEGER,
+            primaryKey : true,
+            autoIncrement : true,
+            allowNull : false
+        },
         title : {
             type : DataTypes.STRING,
-            field : "title"
+            allowNull : false
         },
         content : {
             type : DataTypes.TEXT,
-            field : "content"
+            allowNull : false
         },
         category : {
-            type : DataTypes.STRING,
-            field : "category"
+            type : DataTypes.STRING
         },
         author : {
-            type : DataTypes.STRING,
-            field : "author"
-        },
-        date : {
-            type : DataTypes.DATE,
-            field : "date"
+            type : DataTypes.INTEGER,
+            references : 'Administrator',
+            referencesKey : 'id'
         }
     }, {
-        freezeTableName: true,
-        timestamps: true
+        freezeTableName : true,
+        timestamps : true
     });
 
     return Article;
