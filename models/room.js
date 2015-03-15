@@ -3,7 +3,7 @@
  * Room Model
  */
 
-exports.module = function(sequelize, DataTypes) {
+module.exports = function(sequelize, DataTypes) {
     var Room = sequelize.define('Room', {
         id : {
             type : DataTypes.INTEGER,

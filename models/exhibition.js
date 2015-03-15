@@ -4,9 +4,9 @@
  */
 
 //TODO: Should a museum HAVE exhibitions? (make the relationship)
-exports.module = function(sequelize, DataTypes) {
+module.exports = function(sequelize, DataTypes) {
 
-    var Exhibition = sequilize.define('Exhibition', {
+    var Exhibition = sequelize.define('Exhibition', {
         id : {
             type : DataTypes.INTEGER,
             allowNull : false,

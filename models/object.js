@@ -3,11 +3,11 @@
  * Object Model
  */
 
-exports.module = function(sequelize, DataTypes) {
+module.exports = function(sequelize, DataTypes) {
 
-    var Artist = sequelize.import(_dirname + '/artist'),
+    var Artist = sequelize.import(__dirname + '/artist'),
         Content = sequelize.import(__dirname + '/content'),
-        Category = sequelize.import(__dirname + '/caetgories'),
+        Category = sequelize.import(__dirname + '/categories'),
         QRCode = sequelize.import(__dirname + '/qrcode'),
         ObjectContent = sequelize.import(__dirname + '/objectContent');
 

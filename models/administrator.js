@@ -4,7 +4,7 @@
  */
 
 
-exports.module = function(sequelize, DataTypes) {
+module.exports = function(sequelize, DataTypes) {
 
     var Articles = sequelize.import(__dirname + '/article');
 

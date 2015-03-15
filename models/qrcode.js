@@ -3,8 +3,8 @@
  * QRCODE Model
  */
 
-exports.module = function(sequelize, DataTypes) {
-    return sequilize.define('QRCOde', {
+module.exports = function(sequelize, DataTypes) {
+    return sequelize.define('QRCOde', {
         id : {
             type : DataTypes.INTEGER,
             allowNull : false,

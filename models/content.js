@@ -5,7 +5,7 @@
 
 //TODO: type should reference something else or be of type enum
 //TODO: Case where content references another article
-exports.module = function(sequelize, DataTypes) {
+module.exports = function(sequelize, DataTypes) {
     return sequelize.define('Content', {
         id : {
             type : DataTypes.INTEGER,

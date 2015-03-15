@@ -4,9 +4,10 @@
  */
 
 //TODO: Add testing
-exports.module = function(sequelize, DataTypes) {
+module.exports = function(sequelize, DataTypes) {
 
-    var Object = sequelize.import(__dirtname + '/object');
+    var Object = sequelize.import(__dirname + '/object');
+    var Match = sequelize.import(__dirname + '/match');
 
     var User = sequelize.define('User', {
         id : {

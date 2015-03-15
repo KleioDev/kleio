@@ -6,5 +6,9 @@ var koa = require('koa'),
 
 var app = koa();
 
-database.feedback.sync();
-
+console.log(database.sequelize.model('Museum').create({
+    title : 'Musa',
+    description : 'Museo del colegio de Mayagüez',
+    terms : 'No bregues tierra',
+    about : 'Establecido en Junio del 2015'
+}));
