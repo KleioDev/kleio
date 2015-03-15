@@ -3,32 +3,37 @@
 module.exports = {
   up: function(migration, DataTypes, done) {
     migration.createTable('Feedback', {
-        id : {
-            type : DataTypes.INTEGER,
-            allowNull : false,
-            primaryKey : true,
-            autoIncrement : true
+        id: {
+            type: DataTypes.INTEGER,
+            allowNull: false,
+            primaryKey: true,
+            autoIncrement: true
         },
-        title : {
+        title: {
             type: DataTypes.STRING,
-            allowNull : false
+            allowNull: false
         },
-        content : {
-            type : DataTypes.TEXT,
-            allowNull : false
+        content: {
+            type: DataTypes.TEXT,
+            allowNull: false
         },
-        seen : {
-            type : DataTypes.BOOLEAN,
-            allowNull : false,
-            defaultValue : false
+        seen: {
+            type: DataTypes.BOOLEAN,
+            allowNull: false,
+            defaultValue: false
         },
-        type : {
-            type : DataTypes.ENUM('complain', 'suggestion'),
-            allowNull : false
+        type: {
+            type: DataTypes.ENUM('complain', 'suggestion'),
+            allowNull: false
         },
+        MuseumId : {
+            type : DataTypes.INTEGER,
+            references : 'Museum',
+            referencesKey : 'id'
+        }
+    }, {
         freezeTableName : true,
-        timestamps : true,
-        underscored : true
+        timestamps : true
     }).complete(done);
   },
 

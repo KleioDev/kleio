@@ -14,7 +14,7 @@ module.exports = {
             allowNull : false
         },
         mediaLink : {
-            type : dataTypes.STRING,
+            type : DataTypes.STRING,
             allowNull : true
         },
         description : {
@@ -27,9 +27,8 @@ module.exports = {
         }
     }, {
         freezeTableName : true,
-        timestamps: true,
-        underscored : true
-    })
+        timestamps: true
+    }).complete(done);
   },
 
   down: function(migration, DataTypes, done) {

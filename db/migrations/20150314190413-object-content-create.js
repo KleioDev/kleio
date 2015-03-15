@@ -3,20 +3,19 @@
 module.exports = {
   up: function(migration, DataTypes, done) {
     migration.createTable('ObjectContent', {
-        objectId : {
+        ObjectId : {
             type : DataTypes.INTEGER,
             references : 'Object',
             referencesKey : 'id'
         },
-        contentId : {
+        ContentId : {
             type : DataTypes.INTEGER,
             references : 'Content',
             referencesKey : 'id'
         }
     }, {
         freezeTableName : true,
-        timestamps : true,
-        underscored : true
+        timestamps : true
     }).complete(done);
   },
 

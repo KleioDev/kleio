@@ -35,8 +35,7 @@ module.exports = {
             type : DataTypes.STRING
         },
         period : {
-            type : DataTypes.STRING,
-            field : 'period'
+            type : DataTypes.STRING
         },
         culture : {
             type : DataTypes.STRING
@@ -47,15 +46,14 @@ module.exports = {
         objectNumber : {
             type : DataTypes.STRING
         },
-        artistId : {
+        ArtistId : {
             type : DataTypes.INTEGER,
             references : 'Artist',
             referencesKey : 'id'
         }
     }, {
         freezeTableName : true,
-        timestamps: true,
-        underscored : true
+        timestamps: true
     }).complete(done);
   },
 

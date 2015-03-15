@@ -16,12 +16,11 @@ module.exports = {
             type : DataTypes.TEXT
         },
         ibeacons : {
-            type : DataTypes.ARRAY(Sequelize.STRING)
+            type : DataTypes.ARRAY(DataTypes.STRING)
         }
     }, {
         freezeTableName : true,
-        timestamps : true,
-        underscored : true
+        timestamps : true
     }).complete(done);
   },
 

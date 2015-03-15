@@ -16,22 +16,18 @@ module.exports = {
                 isEmail : true
             },
             firstName : {
-                type : DataTypes.STRING,
-                field : "first_name"
+                type : DataTypes.STRING
             },
             lastName : {
-                type : DataTypes.STRING,
-                field : 'last_name'
+                type : DataTypes.STRING
             },
             password : {
-                type : DataTypes.STRING,
-                field : 'password'
+                type : DataTypes.STRING
             }
         },
         {
             freezeTableName : true,
-            timestamps : true,
-            underscored : true
+            timestamps : true
         }).complete(done);
   },
 

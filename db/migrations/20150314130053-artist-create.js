@@ -11,21 +11,17 @@ module.exports = {
         },
         name : {
             type: DataTypes.STRING,
-            field: 'name',
             allowNull : false
         },
         biography : {
-            type : DataTypes.STRING,
-            field: 'biography'
+            type : DataTypes.STRING
         },
         birthDay : {
             type: DataTypes.STRING,
-            field: 'birth_day'
         }
     }, {
         freezeTableName : true,
         timestamps: true,
-        underscored : true
     }).complete(done);
   },
 

@@ -24,8 +24,7 @@ module.exports = {
         }
     }, {
         freezeTableName: true,
-        timestamps: true,
-        underscored : true
+        timestamps: true
     }).complete(done);
   },
 

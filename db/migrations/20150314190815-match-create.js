@@ -3,12 +3,12 @@
 module.exports = {
   up: function(migration, DataTypes, done) {
     migration.createTable('Match', {
-        userId : {
+        UserId : {
             type : DataTypes.INTEGER,
             references : 'User',
             referencesKey : 'id'
         },
-        objectId : {
+        ObjectId : {
             type : DataTypes.INTEGER,
             references : 'Object',
             referencesKey : 'id'
@@ -25,8 +25,7 @@ module.exports = {
         }
     }, {
         freezeTableName : true,
-        timestamps : true,
-        underscored : true
+        timestamps : true
     }).complete(done);
   },
 

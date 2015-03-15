@@ -17,7 +17,7 @@ module.exports = {
             type : DataTypes.TEXT,
             allowNull : true
         },
-        museumId : {
+        MuseumId : {
             type : DataTypes.INTEGER,
             references : 'Museum',
             referencesKey : 'id'

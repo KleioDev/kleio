@@ -18,8 +18,7 @@ module.exports = {
             allowNull : false
         },
         category : {
-            type : DataTypes.STRING,
-            field : "category"
+            type : DataTypes.STRING
         },
         author : {
             type : DataTypes.INTEGER,
@@ -28,8 +27,7 @@ module.exports = {
         }
     }, {
         freezeTableName : true,
-        timestamps : true,
-        underscored : true
+        timestamps : true
     }).complete(done);
   },
 
