@@ -33,4 +33,4 @@ exports.module = function(sequelize, DataTypes) {
     });
 
     return Exhibition;
-}
+};

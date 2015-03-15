@@ -39,4 +39,4 @@ module.exports = function(sequelize, DataTypes) {
     museum.hasMany(Administrator, {as: 'Managers'});
 
     return museum;
-}
+};

@@ -3,7 +3,7 @@
  * Category Model
  */
 
-exports.module = function(sequelize, dataTypes) {
+exports.module = function(sequelize, DataTypes) {
 
 
     var Category =  sequelize.define('Category', {
@@ -29,4 +29,4 @@ exports.module = function(sequelize, dataTypes) {
     Category.belongsTo(Category, {as : 'parentCategory'});
 
     return Category;
-}
+};

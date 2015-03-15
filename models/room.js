@@ -26,4 +26,4 @@ exports.module = function(sequelize, DataTypes) {
     });
 
     return Room;
-}
+};

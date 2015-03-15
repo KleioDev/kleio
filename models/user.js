@@ -52,4 +52,4 @@ exports.module = function(sequelize, DataTypes) {
     User.belongsToMany(Object, {through : Match});
 
     return User;
-}
+};

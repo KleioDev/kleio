@@ -42,4 +42,4 @@ exports.module = function(sequelize, DataTypes) {
     Administrator.belongsToMany(Content, {through: 'ManagesContent'});
 
     return Administrator;
-}
+};

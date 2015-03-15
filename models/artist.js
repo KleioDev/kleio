@@ -3,7 +3,7 @@
  * Artist Model
  */
 
-exports.module = function(sequelize, dataTypes) {
+exports.module = function(sequelize, DataTypes) {
     var Artist =  sequelize.define('Artist', {
         id : {
             type : DataTypes.INTEGER,
@@ -27,4 +27,4 @@ exports.module = function(sequelize, dataTypes) {
     });
 
     return Artist;
-}
+};
