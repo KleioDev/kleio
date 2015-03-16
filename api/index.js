@@ -27,12 +27,6 @@ module.exports = function(database) {
         this.body = 'Hello World';
     }
 
-//Add Models to context
-    function *addToContext(models) {
-        Object.assign(this, models);
-        yield next;
-    }
-
     return app;
 }
 
