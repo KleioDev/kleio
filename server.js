@@ -2,13 +2,13 @@
  * Created by cesarcruz on 3/10/15.
  */
 var koa = require('koa'),
-    database = require('./models/index');
+    api = require('./api'),
+    mount = require('koa-mount');
 
 var app = koa();
 
-console.log(database.sequelize.model('Museum').create({
-    title : 'Musa',
-    description : 'Museo del colegio de Mayagüez',
-    terms : 'No bregues tierra',
-    about : 'Establecido en Junio del 2015'
-}));
+app.use(mount(api.app));
+
+
+app.listen(4567);
+console.log('listening on port 4567');
