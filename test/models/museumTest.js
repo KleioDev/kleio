@@ -4,8 +4,9 @@
 
 "use strict"
 
+var mocha = require('co-mocha')
 var expect = require('chai').expect;
-var Museum = require('../../models/index').sequelize;
+var Museum = require('../../models').sequelize;
 var data,
     museumModel,
     musa;
@@ -20,11 +21,10 @@ describe('Museum', function(){
             terms : 'No bregues tierra, no te robes nada',
             about : 'Aqui va más información sobre el museo'
         }
-        musa = museumModel.build(data);
     });
 
     describe('model', function(){
-       it('Should be defined', function(){
+       it('Should be defined', function (){
            expect(museumModel).to.not.be.undefined;
        });
     });
@@ -39,11 +39,23 @@ describe('Museum', function(){
         describe('Success', function(){
 
             it('Should build an instance', function(){
-               expect(musa).to.not.be.undefined;
+               expect(musa).not.be.undefined;
             });
 
             it('Should have the same title as data', function(){
-               expect(musa.title).to.equal(data.title);
+               expect(musa.title).be.a('string').and.to.equal(data.title);
+            });
+
+            it('Should have the same description as data', function(){
+                expect(musa.description).to.be.a('string').and.to.equal(data.description);
+            });
+
+            it('Should have the same terms as data', function() {
+                expect(musa.terms).to.be.a('string').and.to.equal(data.terms);
+            });
+
+            it('Should have the same about as data', function() {
+               expect(musa.about).to.be.a('string').and.to.equal(data.about);
             });
         });
 

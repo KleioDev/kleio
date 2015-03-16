@@ -9,7 +9,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "nodemon --harmony server.js",
-    "test:models" : "mocha -- test/models/*.js"
+    "test:models": "mocha -- test/models/*.js"
   },
   "repository": {
     "type": "git",
@@ -23,6 +23,7 @@
   "homepage": "https://github.com/KleioDev/musaAPI",
   "dependencies": {
     "chai": "^2.1.1",
+    "co-mocha": "^1.1.0",
     "dotenv": "^0.5.1",
     "json": "^9.0.3",
     "koa": "^0.18.1",
@@ -32,6 +33,7 @@
     "koa-route": "^2.4.0",
     "koa-router": "^4.2.0",
     "koa-validate": "^0.2.10",
+    "mocha": "^2.2.1",
     "pg": "^4.3.0",
     "pg-hstore": "^2.3.1",
     "sequelize": "^2.0.4",
