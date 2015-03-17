@@ -13,7 +13,7 @@ module.exports = function(tableName) {
 
 
     return function *(next) {
-        this[tableName] = modelName;
+        this.model = modelName;
         yield next;
     }
 

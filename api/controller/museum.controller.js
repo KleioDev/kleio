@@ -3,7 +3,7 @@
  */
 
 
-var router = require('koa-router')();
+var Router = require('koa-router');
 var utils = require('../utils');
 
 //TODO: Define routes
@@ -19,7 +19,7 @@ module.exports = function() {
 
     var middleman = utils('Museum');
 
-    router
+    var museumController = new Router()
 
         .get('/museum', middleman, index)
         .get('/museum/events')
@@ -27,13 +27,14 @@ module.exports = function() {
         .get('/museum/about')
         .get('/museum/terms');
 
-    function *index() {
-        //var current = yield museum.findOne({where : {title : 'Musa'}});
-        console.log('Something');
-        console.log(this.models);
-    }
+
+    return museumController.routes();
+
+}
 
 
-    return router.routes();
+function *index() {
+    var data = yield this.model.findOne({ where : {title : 'Musa'}});
+    this.body = data;
 
 }
