@@ -1,27 +1,31 @@
 /**
  * Created by cesarcruz on 3/15/15.
  */
-var koa = require('koa');
-var router = require('koa-router')(),
+var koa = require('koa'),
     app,
-    museumController = require('./controller/museum.controller.js');
+    controllerBundle = require('./controller')(),
+    utils = require('./utils');
+    _ = require('lodash');
+
+/**
+ * Initialize API
+ * @param database
+ * @returns {*|exports}
+ */
+
+//TODO: Somehow add models here
+
 
 module.exports = function(database) {
 
     app = koa();
 
     //Add models to context
-    this.models = database;
+    var middleman = utils(database);
 
-    museumController();
-
-    router
-
-        .get('/', hello);
-
-    app
-        .use(router.routes())
-        .use(router.allowedMethods());
+    controllerBundle.controllerNames.forEach(function(name){
+        app.use(controllerBundle.controllers[name]);
+    });
 
     function *hello(){
         this.body = 'Hello World';
