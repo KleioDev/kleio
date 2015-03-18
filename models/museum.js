@@ -28,7 +28,36 @@ module.exports = function(sequelize, DataTypes) {
         },
         about : {
             type : DataTypes.TEXT
+        },
+        hours_of_operation : {
+            type : DataTypes.STRING,
+            allowNull : false
+        },
+        social_media_links : {
+            type : DataTypes.ARRAY(DataTypes.STRING),
+            allowNull : true
+        },
+        phone : {
+            type : DataTypes.STRING,
+            allowNull : false
+
+        },
+        email : {
+            type : DataTypes.STRING,
+            allowNull : false,
+            isEmail : true
+        },
+        image : {
+            type : DataTypes.STRING,
+            allowNull : false,
+            isUrl : true
+        },
+        location : {
+            type : DataTypes.STRING,
+            allowNull : false,
+            isUrl : true
         }
+
     }, {
         freezeTableName: true,
         timestamps: true

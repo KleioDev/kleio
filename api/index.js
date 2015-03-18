@@ -5,7 +5,8 @@ var koa = require('koa'),
     app,
     controllerBundle = require('./controller')(),
     utils = require('./utils');
-    _ = require('lodash');
+    _ = require('lodash'),
+    json = require('koa-json');
 
 /**
  * Initialize API
@@ -13,23 +14,20 @@ var koa = require('koa'),
  * @returns {*|exports}
  */
 
-//TODO: Somehow add models here
-
 
 module.exports = function(database) {
 
     app = koa();
 
-    //Add models to context
-    var middleman = utils(database);
+    app.use(json());
 
     controllerBundle.controllerNames.forEach(function(name){
         app.use(controllerBundle.controllers[name]);
     });
 
-    function *hello(){
-        this.body = 'Hello World';
-    }
+    app.on('error', function(err){
+        log.error('Server Error', err);
+    })
 
     return app;
 }
