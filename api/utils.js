@@ -6,14 +6,15 @@ var database = require('../models');
 
 //TODO: Take models and return a middleware function that adds models to ctx
 
-module.exports = function(tableName) {
+module.exports = function() {
 
 
-    var modelName = database.sequelize.models[tableName]
+    var modelNames = database.sequelize.models
 
 
     return function *(next) {
-        this.model = modelName;
+        this.models = modelNames;
+        this.sequelize = database.sequelize;
         yield next;
     }
 

@@ -32,7 +32,7 @@ describe('Museum', function(){
 
     describe('Build', function() {
 
-        beforeEach(function(){
+        before(function(){
           musa = museumModel.build(data);
         });
 

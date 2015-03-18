@@ -21,8 +21,10 @@ module.exports = function(sequelize, DataTypes) {
             type : DataTypes.TEXT,
             allowNull : false
         },
-        category : {
-            type : DataTypes.STRING
+        type : {
+            type : DataTypes.ENUM('news', 'event'),
+            defaultValue : 'news',
+            allowNull : false
         },
         author : {
             type : DataTypes.INTEGER,

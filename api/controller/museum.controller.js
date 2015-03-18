@@ -17,15 +17,15 @@ var utils = require('../utils');
  */
 module.exports = function() {
 
-    var middleman = utils('Museum');
+    var middleman = utils();
 
     var museumController = new Router()
 
         .get('/museum', middleman, index)
-        .get('/museum/events')
-        .get('/museum/news')
-        .get('/museum/about')
-        .get('/museum/terms');
+        .get('/museum/events', middleman, events)
+        .get('/museum/news', middleman, news)
+        .get('/museum/about', middleman, about)
+        .get('/museum/terms', middleman, terms);
 
 
     return museumController.routes();
@@ -34,7 +34,23 @@ module.exports = function() {
 
 
 function *index() {
-    var data = yield this.model.findOne({ where : {title : 'Musa'}});
-    this.body = data;
-
+    //Had to go OG on this foo son
+    this.body = yield this.sequelize.query('SELECT * FROM "Museum" WHERE "updatedAt" = (SELECT max("updatedAt") FROM "Museum");', { type: this.sequelize.QueryTypes.SELECT});
 }
+
+function *events() {
+    var events = {};
+    events['events'] = yield this.models['Article'].findAll({where : {type : 'event'}});
+    this.body = events;
+}
+
+function *news() {
+    var news = {};
+    events['news'] = yield this.models['Article'].findAll({where : {type : 'news'}});
+    this.body = news;
+}
+
+function *about() {}
+
+function *terms() {}
+
