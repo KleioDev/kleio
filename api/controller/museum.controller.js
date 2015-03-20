@@ -6,8 +6,6 @@
 var Router = require('koa-router');
 var utils = require('../utils');
 
-//TODO: Define routes
-
 //TODO: Define route methods
 
 //TODO: Define try/catch statements to queries for proper error handling
@@ -18,8 +16,7 @@ var utils = require('../utils');
  * @param museum
  * @returns {*}
  */
-module.exports = function()
-{
+module.exports = function() {
 
     var middleman = utils();
 
@@ -33,14 +30,11 @@ module.exports = function()
         .get('/museum/about', middleman, about)
         .get('/museum/terms', middleman, terms);
 
-
     return museumController.routes();
-
 }
 
 
-function *index()
-{
+function *index() {
     var data;
 
     try {
@@ -77,26 +71,18 @@ function *index()
 
 }
 
-function *events()
-{
-    try
-    {
+function *events() {
+    try {
         var events = {};
         events['events'] = yield this.models['Article'].findAll({where : {type : 'sauce'}});
     }
-    catch (err)
-    {
+    catch (err) {
         this.body = 'Error has been caught';
     }
-
-
-
 }
 
-function *news()
-{
-    try
-    {
+function *news() {
+    try {
         var news = {};
         news['news'] = yield this.models['Article'].findAll({where : {type : 'news'}});
         this.body = news;

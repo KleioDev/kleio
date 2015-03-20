@@ -22,7 +22,6 @@ describe('Feedback', function(){
        }
        feedbackModel = Models.model('Feedback');
 
-        feedbackModel.destroy({where : {title : data.title}});
     });
 
     describe('Define', function() {
@@ -52,27 +51,4 @@ describe('Feedback', function(){
            expect(feedback.MuseumId).to.equal(data.MuseumId);
        });
     });
-
-
-    describe('Save', function(){
-
-        before(function(){
-            feedback.save().then(function(result){
-                feedbackPromise = result;
-            });
-        });
-
-        it('Should save an instance of Feedback', function(){
-            expect(feedbackPromise).not.to.be.undefined;
-        });
-
-        it('Should have the same attributes as data', function(){
-            expect(feedbackPromise.title).to.equal(data.title);
-            expect(feedbackPromise.content).to.equal(data.content);
-            expect(feedbackPromise.seen).to.be.false;
-            expect(feedbackPromise.type).to.equal(data.type);
-        });
-    });
-
-
 });
