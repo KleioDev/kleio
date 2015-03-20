@@ -57,6 +57,10 @@ describe('Museum', function(){
             it('Should have the same about as data', function() {
                expect(musa.about).to.be.a('string').and.to.equal(data.about);
             });
+
+            it('Should not allow for a null image', function() {
+               expect(musa.image).to.not.be.a('null');
+            });
         });
 
         /**
