@@ -26,6 +26,10 @@ module.exports = function(sequelize, DataTypes) {
             defaultValue : 'news',
             allowNull : false
         },
+        event_date : {
+            type : DataTypes.DATE,
+            allowNull : true
+        },
         author : {
             type : DataTypes.INTEGER,
             references : 'Administrator',
