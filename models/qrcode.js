@@ -4,7 +4,7 @@
  */
 
 module.exports = function(sequelize, DataTypes) {
-    return sequelize.define('QRCOde', {
+    return sequelize.define('QRCode', {
         id : {
             type : DataTypes.INTEGER,
             allowNull : false,
