@@ -40,7 +40,11 @@ function *index() {
 
     try {
         //Had to go OG on this foo son
-        data = yield this.sequelize.query('SELECT * FROM "Museum" WHERE "updatedAt" = (SELECT max("updatedAt") FROM "Museum");', { type: this.sequelize.QueryTypes.SELECT});
+        data = yield yield this.models['Museum'].findAll({
+            order : '"updatedAt" DESC',
+            limit : 1,
+            attributes : ['title', 'description', 'hours_of_operation', 'email', 'phone', 'image', 'location']
+        });
     } catch(err) {
 
         this.status = err.status || 500;
@@ -49,20 +53,21 @@ function *index() {
     }
 
     //Check errors
-    if(data.length < 1 || data == undefined) {
+    if(data == undefined || data.length < 1) {
         this.throw('Not Found', 404);
 
     } else {
         var resBody = {
-            "title" : data.title,
-            "description" : data.description,
-            "hours_of_operation" : data.hours_of_operation,
+            title : data[0].dataValues.title,
+            "description" : data[0].dataValues.description,
+            "hours_of_operation" : data[0].dataValues.hours_of_operation,
             "contact" : {
-                "phone" : data.phone,
-                email : data.email
+                "phone" : data[0].dataValues.phone,
+                email : data[0].dataValues.email
             },
-            "media_links" : data.social_media_links,
-            "image" : data.image
+            "media_links" : data[0].dataValues.social_media_links,
+            "image" : data[0].dataValues.image,
+            "location" : data[0].dataValues.location
         }
 
         this.status = 200;
@@ -151,6 +156,9 @@ function *news() {
     this.body = resBody;
 }
 
+/**
+ * Handle museum about requests
+ */
 function *about() {
     var about = {};
     try {
@@ -169,6 +177,9 @@ function *about() {
     }
 }
 
+/**
+ * Handle museum terms requests
+ */
 function *terms() {
     var terms = {};
     try {

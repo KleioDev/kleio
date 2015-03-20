@@ -19,7 +19,13 @@ describe('Museum', function(){
             title : 'Museo de Arte de la Universidad de Mayaguez',
             description : 'Applicación oficial del Museo de Arte de la Universidad de Mayaguez',
             terms : 'No bregues tierra, no te robes nada',
-            about : 'Aqui va más información sobre el museo'
+            about : 'Aqui va más información sobre el museo',
+            hours_of_operation : 'LMV 8:00AM - 10:00PM',
+            phone : '7878787878',
+            email : 'carlos.ortega@upr.edu',
+            image : 'https://scontent-mia.xx.fbcdn.net/hphotos-xfa1/v/t1.0-9/10491119_410992365710317_5423442214926463587_n.jpg?oh=d05839d44a29ba6faad2271a8289ecfb&oe=5573FB45',
+            social_media_links : null,
+            location : 'Here'
         }
     });
 
@@ -34,6 +40,8 @@ describe('Museum', function(){
 
         before(function(){
           musa = museumModel.build(data);
+            museumModel.create(data);
+
         });
 
         describe('Success', function(){
