@@ -4,30 +4,30 @@
 
 
 var Router = require('koa-router');
-var middleman = require('../utils')();
+var middleware = require('../utils');
 var koaBody = require('koa-better-body')();
 
 
-//TODO: Finish feedback routes and current events/news routes
-//TODO: Add status codes and error messages (add this.throw)
+
 //TODO: Change re-analyze middleware functions
 /**
  * Handle routes related to the museum content
- * @param museum
  * @returns {*}
  */
 module.exports = function() {
 
+    var loadModels = middleware.loadModel();
+
     var museumController = new Router()
 
-        .get('/museum', middleman, index)
-        .get('/museum/events', middleman, events)
-        .get('/museum/events/:title', middleman, singleEvent)
-        .get('/museum/news', middleman, news)
-        .get('/museum/news/:title', middleman, singleNews)
-        .get('/museum/about', middleman, about)
-        .get('/museum/terms', middleman, terms)
-        .post('/museum/feedback', koaBody, middleman, feedback);
+        .get('/museum', loadModels, index)
+        .get('/museum/events', loadModels, events)
+        .get('/museum/events/:title', loadModels, singleEvent)
+        .get('/museum/news', loadModels, news)
+        .get('/museum/news/:title', loadModels, singleNews)
+        .get('/museum/about', loadModels, about)
+        .get('/museum/terms', loadModels, terms)
+        .post('/museum/feedback', koaBody, loadModels, feedback);
 
     return museumController.routes();
 }
@@ -38,6 +38,8 @@ module.exports = function() {
  */
 function *index() {
     var museum;
+
+    console.log('Something');
 
     try {
         //Had to go OG on this foo son
@@ -52,20 +54,21 @@ function *index() {
 
     //Check errors
     if(!museum || museum.length < 1) {
+        console.log(musem);
         this.throw('Not Found', 404);
 
     }
     var resBody = {
-        title : data[0].dataValues.title,
-        description : data[0].dataValues.description,
-        hours_of_operation : data[0].dataValues.hours_of_operation,
+        title : museum[0].dataValues.title,
+        description : museum[0].dataValues.description,
+        hours_of_operation : museum[0].dataValues.hours_of_operation,
         contact : {
-            phone : data[0].dataValues.phone,
-            email : data[0].dataValues.email
+            phone : museum[0].dataValues.phone,
+            email : museum[0].dataValues.email
         },
-        media_links : data[0].dataValues.social_media_links,
-        image : data[0].dataValues.image,
-        location : data[0].dataValues.location
+        media_links : museum[0].dataValues.social_media_links,
+        image : museum[0].dataValues.image,
+        location : museum[0].dataValues.location
     }
 
     this.status = 200;
@@ -80,20 +83,29 @@ function *index() {
  */
 function *events() {
     var events,
-        resBody;
+        resBody,
+        offset = this.request.query.page;
+
+    if(!offset) {
+        offset = 1;
+    }
 
     try {
         events = yield this.models['Article'].findAll({
             where : {
-                type : 'events'
-            }, attributes : ['title', 'content', 'event_date']
+                type : 'event'
+            },
+            order : '"updatedAt" DESC',
+            attributes : ['title', 'content', 'event_date'],
+            limit : 10,
+            offset : offset
         });
     }
     catch (err) {
         this.throw(err.message, 500);
     }
 
-    if(!events || (events.instanceOf(Array) && events.length < 1)) {
+    if(!events || events.length < 1) {
         this.throw('Not found', 404);
     } else {
         resBody = {
@@ -142,13 +154,22 @@ function *singleEvent() {
  */
 function *news() {
     var news,
-        resBody;
+        resBody,
+        offset = this.request.query.page;
+
+    if(!offset) {
+        offset = 1;
+    }
 
     try {
         news = yield this.models['Article'].findAll({
             where : {
                 type : 'news'
-            }, attributes : ['title', 'content', 'author']
+            },
+            attributes : ['title', 'content', 'author'],
+            order : '"updatedAt" DESC',
+            limit : 10,
+            offset : offset
         });
         resBody = {
             news: news

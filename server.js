@@ -15,3 +15,5 @@ app.use(mount(api));
 
 app.listen(4567);
 console.log('listening on port 4567');
+
+exports.app = app;
