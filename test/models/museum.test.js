@@ -40,7 +40,6 @@ describe('Museum', function(){
 
         before(function(){
           musa = museumModel.build(data);
-            museumModel.create(data);
 
         });
 

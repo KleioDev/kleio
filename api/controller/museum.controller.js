@@ -5,12 +5,12 @@
 
 var Router = require('koa-router');
 var middleman = require('../utils')();
+var koaBody = require('koa-better-body')();
 
-//TODO: Define route methods
 
-//TODO: Define try/catch statements to queries for proper error handling
-
-//TODO: Add status codes and error messages
+//TODO: Finish feedback routes and current events/news routes
+//TODO: Add status codes and error messages (add this.throw)
+//TODO: Change re-analyze middleware functions
 /**
  * Handle routes related to the museum content
  * @param museum
@@ -22,11 +22,11 @@ module.exports = function() {
 
         .get('/museum', middleman, index)
         .get('/museum/events', middleman, events)
-        .get('/museum/events/:title', middleman, events)
         .get('/museum/news', middleman, news)
         .get('/museum/news/:title', middleman, news)
         .get('/museum/about', middleman, about)
-        .get('/museum/terms', middleman, terms);
+        .get('/museum/terms', middleman, terms)
+        .post('/museum/feedback', koaBody, middleman, feedback);
 
     return museumController.routes();
 }
@@ -40,7 +40,7 @@ function *index() {
 
     try {
         //Had to go OG on this foo son
-        data = yield yield this.models['Museum'].findAll({
+        data =  yield this.models['Museum'].findAll({
             order : '"updatedAt" DESC',
             limit : 1,
             attributes : ['title', 'description', 'hours_of_operation', 'email', 'phone', 'image', 'location']
@@ -56,7 +56,7 @@ function *index() {
     if(data == undefined || data.length < 1) {
         this.throw('Not Found', 404);
 
-    } else {
+    }
         var resBody = {
             title : data[0].dataValues.title,
             "description" : data[0].dataValues.description,
@@ -73,7 +73,7 @@ function *index() {
         this.status = 200;
 
         this.body = resBody;
-    }
+
 
 }
 
@@ -91,7 +91,7 @@ function *events() {
             events = yield this.models['Article'].findOne( {where : {type : 'events', title : this.params.title}});
 
         } else {
-            events = yield this.models['Article'].findAll({where : {type : 'events'}, include : ['title', 'content', 'event_date']});
+            events = yield this.models['Article'].findAll({where : {type : 'events'}, attributes : ['title', 'content', 'event_date']});
         }
     }
     catch (err) {
@@ -127,7 +127,7 @@ function *news() {
                     type : 'news',
                     title : this.params.title
                 },
-                include : ['title', 'content', 'author']
+                attributes : ['title', 'content', 'author']
             });
 
             resBody = {
@@ -139,7 +139,7 @@ function *news() {
             news = yield this.models['Article'].findAll({
                 where : {
                     type : 'news'
-                }, include : ['title', 'content', 'author']
+                }, attributes : ['title', 'content', 'author']
             });
 
             resBody = {
@@ -162,7 +162,7 @@ function *news() {
 function *about() {
     var about = {};
     try {
-        about['about'] = yield this.models['Museum'].findAll({order : 'updatedAt DESC', limit : 1, include : ['about']});
+        about['about'] = yield this.models['Museum'].findAll({order : 'updatedAt DESC', limit : 1, attributes : ['about']});
     } catch(err) {
         this.status = err.status || 500;
         this.body = err.message;
@@ -183,11 +183,9 @@ function *about() {
 function *terms() {
     var terms = {};
     try {
-        terms['terms'] = yield this.models['Museum'].findAll({order : 'updatedAt DESC', limit : 1, include : ['terms']});
+        terms['terms'] = yield this.models['Museum'].findAll({order : 'updatedAt DESC', limit : 1, attributes : ['terms']});
     } catch(err) {
-        this.status = err.status || 500;
-        this.body = err.message;
-        this.app.emit('error', err, this);
+        this.throw(err.message, 500);
     }
 
     if(terms['terms'] == undefined) {
@@ -195,6 +193,20 @@ function *terms() {
     } else {
         this.status = 200;
         this.body = terms;
+    }
+}
+
+/**
+ * Handle feedback requests
+ * Insert feedback by users into the database
+ */
+function *feedback() {
+    if(this.request.body) {
+        try {
+            yield this.models['Feedback'].create(this.request.fields);
+        } catch (err) {
+            this.throw(err.message, 500);
+        }
     }
 }
 
