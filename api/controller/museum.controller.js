@@ -22,8 +22,9 @@ module.exports = function() {
 
         .get('/museum', middleman, index)
         .get('/museum/events', middleman, events)
+        .get('/museum/events/:title', middleman, singleEvent)
         .get('/museum/news', middleman, news)
-        .get('/museum/news/:title', middleman, news)
+        .get('/museum/news/:title', middleman, singleNews)
         .get('/museum/about', middleman, about)
         .get('/museum/terms', middleman, terms)
         .post('/museum/feedback', koaBody, middleman, feedback);
@@ -36,43 +37,39 @@ module.exports = function() {
  * Return: Museum information
  */
 function *index() {
-    var data;
+    var museum;
 
     try {
         //Had to go OG on this foo son
-        data =  yield this.models['Museum'].findAll({
+        museum =  yield this.models['Museum'].findAll({
             order : '"updatedAt" DESC',
             limit : 1,
             attributes : ['title', 'description', 'hours_of_operation', 'email', 'phone', 'image', 'location']
         });
     } catch(err) {
-
-        this.status = err.status || 500;
-        this.body = err.message;
-        this.app.emit('error', err, this);
+        this.throw(err.message, err.status || 500);
     }
 
     //Check errors
-    if(data == undefined || data.length < 1) {
+    if(!museum || museum.length < 1) {
         this.throw('Not Found', 404);
 
     }
-        var resBody = {
-            title : data[0].dataValues.title,
-            "description" : data[0].dataValues.description,
-            "hours_of_operation" : data[0].dataValues.hours_of_operation,
-            "contact" : {
-                "phone" : data[0].dataValues.phone,
-                email : data[0].dataValues.email
-            },
-            "media_links" : data[0].dataValues.social_media_links,
-            "image" : data[0].dataValues.image,
-            "location" : data[0].dataValues.location
-        }
+    var resBody = {
+        title : data[0].dataValues.title,
+        description : data[0].dataValues.description,
+        hours_of_operation : data[0].dataValues.hours_of_operation,
+        contact : {
+            phone : data[0].dataValues.phone,
+            email : data[0].dataValues.email
+        },
+        media_links : data[0].dataValues.social_media_links,
+        image : data[0].dataValues.image,
+        location : data[0].dataValues.location
+    }
 
-        this.status = 200;
-
-        this.body = resBody;
+    this.status = 200;
+    this.body = resBody;
 
 
 }
@@ -82,25 +79,21 @@ function *index() {
  * Get all events or filter by ID
  */
 function *events() {
-    //TODO: Sanitize parameters
     var events,
         resBody;
 
     try {
-        if (this.params.title) {
-            events = yield this.models['Article'].findOne( {where : {type : 'events', title : this.params.title}});
-
-        } else {
-            events = yield this.models['Article'].findAll({where : {type : 'events'}, attributes : ['title', 'content', 'event_date']});
-        }
+        events = yield this.models['Article'].findAll({
+            where : {
+                type : 'events'
+            }, attributes : ['title', 'content', 'event_date']
+        });
     }
     catch (err) {
-        this.status = err.status || 500;
-        this.body = err.message;
-        this.app.emit('error', err, this);
+        this.throw(err.message, 500);
     }
 
-    if(events == undefined || (events.instanceOf(Array) && events.length < 1)) {
+    if(!events || (events.instanceOf(Array) && events.length < 1)) {
         this.throw('Not found', 404);
     } else {
         resBody = {
@@ -112,16 +105,74 @@ function *events() {
 }
 
 /**
+ * Handle single event requests
+ */
+function *singleEvent() {
+    var event;
+
+    if(this.params.title) {
+        try {
+            event = yield this.models['Article'].findOne({
+                where : {
+                    type : 'events',
+                    title : this.params.title,
+                    attributes : ['title', 'content', 'event_day']
+                }
+            });
+
+            if(!event['title']) {
+                this.throw('Not Found', 404);
+            }
+
+            this.status = 200;
+            this.body = event;
+
+        } catch(err) {
+            this.throw(err.message, err.status || 500);
+        }
+    } else {
+        //Redirect to events feed
+        this.redirect('/museum/events');
+    }
+}
+
+/**
  * Handle museum news requests
  * Return a single news article or the feed of news articles
  */
 function *news() {
-    //TODO: sanitize Parameters
     var news,
         resBody;
 
     try {
-        if(this.params.title) {
+        news = yield this.models['Article'].findAll({
+            where : {
+                type : 'news'
+            }, attributes : ['title', 'content', 'author']
+        });
+        resBody = {
+            news: news
+        }
+    } catch(err) {
+        this.throw(err.message, err.status || 500);
+    }
+
+    if(!news || news.length < 1) {
+        this.throw('Not Found', 404);
+    }
+
+    this.status = 200;
+    this.body = resBody;
+}
+
+/**
+ * Handle single news requests
+ */
+function *singleNews() {
+    var news;
+
+    if(this.params.title) {
+        try {
             news = yield this.model['Article'].findOne({
                 where : {
                     type : 'news',
@@ -129,31 +180,20 @@ function *news() {
                 },
                 attributes : ['title', 'content', 'author']
             });
-
-            resBody = {
-                title : news.title,
-                content : news.content,
-                author : news.author
-            }
-        } else {
-            news = yield this.models['Article'].findAll({
-                where : {
-                    type : 'news'
-                }, attributes : ['title', 'content', 'author']
-            });
-
-            resBody = {
-                news : news
-            }
+        } catch (err) {
+            this.throw(err.message, err.status || 500);
         }
-    } catch(err) {
-        this.status = err.status || 500;
-        this.body = err.message;
-        this.app.emit('error', err, this);
-    }
 
-    this.status = 200;
-    this.body = resBody;
+        if(!news['title']) {
+            this.throw('Not Found', 404);
+        }
+
+        this.status = 200;
+        this.body = news;
+
+    } else {
+        this.redirect('/museum/news');
+    }
 }
 
 /**
@@ -162,19 +202,21 @@ function *news() {
 function *about() {
     var about = {};
     try {
-        about['about'] = yield this.models['Museum'].findAll({order : 'updatedAt DESC', limit : 1, attributes : ['about']});
+        about['about'] = yield this.models['Museum'].findAll({
+            order : 'updatedAt DESC',
+            limit : 1,
+            attributes : ['about']
+        });
     } catch(err) {
-        this.status = err.status || 500;
-        this.body = err.message;
-        this.app.emit('error', err, this);
+        this.throw(err.message, err.status || 500);
     }
 
-    if(about['about'] == undefined) {
+    if(!about['about']) {
         this.throw('Not Found', 404);
-    } else {
-        this.status = 200;
-        this.body = about;
     }
+
+    this.status = 200;
+    this.body = about;
 }
 
 /**
@@ -183,17 +225,21 @@ function *about() {
 function *terms() {
     var terms = {};
     try {
-        terms['terms'] = yield this.models['Museum'].findAll({order : 'updatedAt DESC', limit : 1, attributes : ['terms']});
+        terms['terms'] = yield this.models['Museum'].findAll({
+            order : 'updatedAt DESC',
+            limit : 1,
+            attributes : ['terms']
+        });
     } catch(err) {
-        this.throw(err.message, 500);
+        this.throw(err.message, err.status || 500);
     }
 
-    if(terms['terms'] == undefined) {
+    if(!terms['terms']) {
         this.throw('Not Found', 404);
-    } else {
-        this.status = 200;
-        this.body = terms;
     }
+
+    this.status = 200;
+    this.body = terms;
 }
 
 /**
@@ -201,12 +247,16 @@ function *terms() {
  * Insert feedback by users into the database
  */
 function *feedback() {
-    if(this.request.body) {
-        try {
-            yield this.models['Feedback'].create(this.request.fields);
-        } catch (err) {
-            this.throw(err.message, 500);
+    var data = this.request.body.fields;
+
+    try {
+        yield this.models['Feedback'].create(data);
+    } catch (err) {
+        if(err.name == 'SequelizeValidationError') {
+            //Invalid parameters
+            this.throw('Invalid Parameters', 400);
         }
     }
+    this.status = 201;
 }
 
