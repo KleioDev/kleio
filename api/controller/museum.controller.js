@@ -4,7 +4,7 @@
 
 
 var Router = require('koa-router');
-var middleware = require('../utils');
+var middleware = require('../middleware');
 var koaBody = require('koa-better-body')();
 
 

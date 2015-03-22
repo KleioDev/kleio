@@ -4,7 +4,7 @@
 var koa = require('koa'),
     app,
     controllerBundle = require('./controller')(),
-    utils = require('./utils');
+    utils = require('./middleware');
     _ = require('lodash'),
     json = require('koa-json');
 

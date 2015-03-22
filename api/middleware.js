@@ -3,15 +3,12 @@
  */
 
 var database = require('../models');
-var server = require('../server');
 
 //TODO: Take models and return a middleware function that adds models to ctx
 
 /**
- * Generate a middleware function for adding the
- * @param modelName
+ * Generate a middleware functions
  */
-
 module.exports = {
     loadModel : loadModel,
     authentication : authenticate
