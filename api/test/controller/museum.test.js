@@ -14,8 +14,8 @@ var supertest = require('supertest-as-promised'),
 describe('Museum', function() {
 
     //TODO: Create a Museum object, insert into the database
-    before(function *() {
-       yield Museum.create(museum);
+    before(function() {
+       Museum.create(museum);
     });
 
     describe('GET /museum', function(){

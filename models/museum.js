@@ -48,7 +48,7 @@ module.exports = function(sequelize, DataTypes) {
             isEmail : true
         },
         image : {
-            type : DataTypes.STRING,
+            type : DataTypes.STRING(1000),
             allowNull : false,
             isUrl : true
         },
