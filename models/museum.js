@@ -34,7 +34,7 @@ module.exports = function(sequelize, DataTypes) {
             allowNull : false
         },
         social_media_links : {
-            type : DataTypes.ARRAY(DataTypes.STRING),
+            type : DataTypes.ARRAY(DataTypes.STRING(1000)),
             allowNull : true
         },
         phone : {
@@ -53,7 +53,7 @@ module.exports = function(sequelize, DataTypes) {
             isUrl : true
         },
         location : {
-            type : DataTypes.STRING,
+            type : DataTypes.STRING(1000),
             allowNull : false,
             isUrl : true
         }

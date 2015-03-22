@@ -7,7 +7,7 @@ var database = require('../models');
 //TODO: Take models and return a middleware function that adds models to ctx
 
 /**
- * Generate a middleware functions
+ * Generate middleware functions
  */
 module.exports = {
     loadModel : loadModel,

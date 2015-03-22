@@ -34,5 +34,6 @@ describe('Museum', function() {
                 expect(res.body.title).to.be.a('string');
             });
         });
+
     });
 });
