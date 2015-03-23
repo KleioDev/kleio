@@ -1,0 +1,15 @@
+Routes Cheat Sheet
+
+--> Object
+
+/object/:objectID --> Get an object with the given id
+
+/object/qr/:objectQRC --> Get an object given a QR code
+
+/object/:objectID/video --> Get all the video content for a given object
+
+/object/:objectID/audio --> Get all the audio content for a given object
+
+/object/:objectID/image --> Get all the image content for a given object
+
+/object/:objectID/text --> Get all text content for a given object
