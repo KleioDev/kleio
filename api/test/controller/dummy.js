@@ -18,3 +18,36 @@ exports.museum = {
     image: 'https://scontent-dfw.xx.fbcdn.net/hphotos-xfa1/v/t1.0-9/p180x540/10491119_410992365710317_5423442214926463587_n.jpg?oh=a1f2c94874a643177000009228849ebf&oe=55BB215C',
     location: 'https://scontent-dfw.xx.fbcdn.net/hphotos-xfa1/v/t1.0-9/p180x540/10491119_410992365710317_5423442214926463587_n.jpg?oh=a1f2c94874a643177000009228849ebf&oe=55BB215C'
 }
+
+exports.artist = {
+    name : 'César',
+    biography : 'Nacido en el pueblo de Humacao, se especializa en oleos',
+    birthDay : '1991'
+}
+
+exports.object = {
+    title : 'Hope Vader',
+    description : 'Darth Vader posing as the famous 2008 Obama hope poster',
+    medium : 'Oil base',
+    classification : 'Modern',
+    type : 'Painting',
+    dimensions : '8x11.5',
+    dated : '2013',
+    period : 'Modern',
+    culture : 'Puertorican',
+    objectNumber : '0927450934875097345-984530980954303980245'
+}
+
+exports.contentOne = {
+    title : 'Volkswagon Vader Commercial',
+    mediaLink : 'https://www.youtube.com/watch?v=R55e-uHQna0',
+    description : 'Vader Commercial',
+    type : 'video'
+}
+
+exports.contentTwo = {
+    title : 'Thug Life',
+    mediaLink : 'https://www.youtube.com/watch?v=RXrZkdknfAQ',
+    description : 'Don Ramon is a straight up thug',
+    type : 'video'
+}

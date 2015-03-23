@@ -26,8 +26,7 @@ module.exports = function() {
         .get('/museum/news', loadModels, news)
         .get('/museum/news/:title', loadModels, singleNews)
         .get('/museum/about', loadModels, about)
-        .get('/museum/terms', loadModels, terms)
-        .post('/museum/feedback', koaBody, loadModels, feedback);
+        .get('/museum/terms', loadModels, terms);
 
     return museumController.routes();
 }
@@ -261,23 +260,5 @@ function *terms() {
 
     this.status = 200;
     this.body = terms;
-}
-
-/**
- * Handle feedback requests
- * Insert feedback by users into the database
- */
-function *feedback() {
-    var data = this.request.body.fields;
-
-    try {
-        yield this.models['Feedback'].create(data);
-    } catch (err) {
-        if(err.name == 'SequelizeValidationError') {
-            //Invalid parameters
-            this.throw('Invalid Parameters', 400);
-        }
-    }
-    this.status = 201;
 }
 
