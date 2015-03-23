@@ -1,9 +1,8 @@
-/**
- * Created by cesarcruz on 3/14/15.
- */
-module.exports = function(sequelize, DataTypes){
-    //Match table will be used to keep track of users and their history in ImageHunt.
-    var ObjectContent = sequelize.define('ObjectContent', {
+"use strict";
+
+module.exports = {
+  up: function(migration, DataTypes, done) {
+    migration.createTable('ObjectContent', {
         id : {
             type : DataTypes.INTEGER,
             allowNull : false,
@@ -31,7 +30,10 @@ module.exports = function(sequelize, DataTypes){
     }, {
         freezeTableName : true,
         timestamps : true
-    });
+    }).complete(done);
+  },
 
-    return ObjectContent;
+  down: function(migration, DataTypes, done) {
+      migration.dropTable('ObjectContent').complete(done);
+  }
 };

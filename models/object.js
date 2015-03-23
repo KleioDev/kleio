@@ -56,6 +56,10 @@ module.exports = function(sequelize, DataTypes) {
         objectNumber : {
             type : DataTypes.STRING
         },
+        image : {
+            type : DataTypes.STRING(1000),
+            allowNull : false
+        },
         ArtistId : {
             type : DataTypes.INTEGER,
             references : 'Artist',

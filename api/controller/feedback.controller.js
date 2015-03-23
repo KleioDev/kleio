@@ -8,6 +8,7 @@ var koaBody = require('koa-better-body')();
 
 module.exports = function() {
 
+    var loadModels = middleware.loadModel();
     var feedbackController = new Router()
 
     .post('/feedback', loadModels, koaBody, create);
