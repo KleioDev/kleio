@@ -4,7 +4,7 @@
  */
 
 module.exports = function(sequelize, DataTypes) {
-    return sequelize.define('QRCode', {
+    return sequelize.define('Qrcode', {
         id : {
             type : DataTypes.INTEGER,
             allowNull : false,
@@ -24,6 +24,14 @@ module.exports = function(sequelize, DataTypes) {
         },
         image : {
             type : DataTypes.STRING
+        },
+        createdAt : {
+            type : DataTypes.DATE,
+            allowNull : false
+        },
+        updatedAt : {
+            type : DataTypes.DATE,
+            allowNull : false
         }
     }, {
         freezeTableName : true,

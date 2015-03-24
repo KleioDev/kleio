@@ -30,10 +30,17 @@ module.exports = function(sequelize, DataTypes) {
             type : DataTypes.DATE,
             allowNull : true
         },
-        author : {
+        AdministratorId : {
             type : DataTypes.INTEGER,
-            references : 'Administrator',
-            referencesKey : 'id'
+            allowNull : false
+        },
+        createdAt : {
+            type : DataTypes.DATE,
+            allowNull : false
+        },
+        updatedAt : {
+            type : DataTypes.DATE,
+            allowNull : false
         }
     }, {
         freezeTableName : true,

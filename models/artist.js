@@ -20,6 +20,14 @@ module.exports = function(sequelize, DataTypes) {
         },
         birthDay : {
             type: DataTypes.STRING
+        },
+        createdAt : {
+            type : DataTypes.DATE,
+            allowNull : false
+        },
+        updatedAt : {
+            type : DataTypes.DATE,
+            allowNull : false
         }
     }, {
         freezeTableName : true,

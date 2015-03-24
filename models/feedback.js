@@ -33,8 +33,15 @@ module.exports = function(sequelize, DataTypes) {
         },
         MuseumId : {
             type : DataTypes.INTEGER,
-            references : 'Museum',
-            referencesKey : 'id'
+            allowNull : false
+        },
+        createdAt : {
+            type : DataTypes.DATE,
+            allowNull : false
+        },
+        updatedAt : {
+            type : DataTypes.DATE,
+            allowNull : false
         }
     }, {
         freezeTableName : true,

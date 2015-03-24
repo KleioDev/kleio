@@ -6,13 +6,11 @@ module.exports = function(sequelize, DataTypes){
     var Match = sequelize.define('Match', {
         UserId : {
             type : DataTypes.INTEGER,
-            references : 'User',
-            referencesKey : 'id'
+            allowNull : false
         },
         ObjectId : {
             type : DataTypes.INTEGER,
-            references : 'Object',
-            referencesKey : 'id'
+            allowNull : false
         },
         attempts : {
             type : DataTypes.INTEGER,
@@ -22,6 +20,14 @@ module.exports = function(sequelize, DataTypes){
         matched : {
             type : DataTypes.BOOLEAN,
             defaultValue : false,
+            allowNull : false
+        },
+        createdAt : {
+            type : DataTypes.DATE,
+            allowNull : false
+        },
+        updatedAt : {
+            type : DataTypes.DATE,
             allowNull : false
         }
     }, {

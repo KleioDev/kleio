@@ -17,16 +17,24 @@ module.exports = function(sequelize, DataTypes) {
             type: DataTypes.STRING,
             allowNull : false
         },
-        parentCategory : {
+        ParentCategory : {
             type : DataTypes.INTEGER,
             allowNull : true
+        },
+        createdAt : {
+            type : DataTypes.DATE,
+            allowNull : false
+        },
+        updatedAt : {
+            type : DataTypes.DATE,
+            allowNull : false
         }
     }, {
         freezeTableName : true,
         timestamps: true
     });
 
-    Category.belongsTo(Category, {as : 'parentCategory_fk'});
+    Category.belongsTo(Category);
 
     return Category;
 };

@@ -27,7 +27,7 @@ module.exports = function () {
  */
 function *single () {
     var object,
-        objectId = this.request.params.id,
+        objectId = this.params.id,
         Content = this.models['Content'],
         ObjectContent = this.models['ObjectContent'];
 
@@ -36,12 +36,13 @@ function *single () {
     }
 
     try {
-        object = yield this.models['Object'].findOne({
-            where : {
-                id : objectId
-            },
-            include : [Content, ObjectContent]
-        });
+        object = yield this.models['Object']
+        //    .findOne({
+        //    where : {
+        //        id : objectId
+        //    },
+        //    include : [ObjectContent]
+        //});
     } catch(err) {
         this.throw(err.message, err.status || 500);
     }

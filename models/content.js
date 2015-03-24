@@ -6,7 +6,8 @@
 //TODO: type should reference something else or be of type enum
 //TODO: Case where content references another article
 module.exports = function(sequelize, DataTypes) {
-    return sequelize.define('Content', {
+
+    var Content =  sequelize.define('Content', {
         id : {
             type : DataTypes.INTEGER,
             allowNull : false,
@@ -28,9 +29,19 @@ module.exports = function(sequelize, DataTypes) {
         type : {
             type : DataTypes.ENUM('image', 'video', 'audio', 'text'),
             allowNull : false
+        },
+        createdAt : {
+            type : DataTypes.DATE,
+            allowNull : false
+        },
+        updatedAt : {
+            type : DataTypes.DATE,
+            allowNull : false
         }
     }, {
         freezeTableName : true,
         timestamps: true
     });
+
+    return Content;
 };

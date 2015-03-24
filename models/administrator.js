@@ -8,8 +8,6 @@ module.exports = function(sequelize, DataTypes) {
 
     var Articles = sequelize.import(__dirname + '/article');
 
-    var Content = sequelize.import(__dirname + '/content');
-
     var Administrator = sequelize.define('Administrator', {
         id : {
             type : DataTypes.INTEGER,
@@ -19,8 +17,8 @@ module.exports = function(sequelize, DataTypes) {
         },
         email : {
             type : DataTypes.STRING,
-                field : 'email',
-                isEmail : true
+            field : 'email',
+            isEmail : true
         },
         firstName : {
             type : DataTypes.STRING
@@ -30,6 +28,18 @@ module.exports = function(sequelize, DataTypes) {
         },
         password : {
             type : DataTypes.STRING
+        },
+        MuseumId : {
+            type : DataTypes.INTEGER,
+            allowNull : false
+        },
+        createdAt : {
+            type : DataTypes.DATE,
+            allowNull : false
+        },
+        updatedAt : {
+            type : DataTypes.DATE,
+            allowNull : false
         }
     },
     {
@@ -38,8 +48,6 @@ module.exports = function(sequelize, DataTypes) {
     });
 
     Administrator.hasMany(Articles);
-
-    Administrator.belongsToMany(Content, {through: 'ManagesContent'});
 
     return Administrator;
 };

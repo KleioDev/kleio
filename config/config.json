@@ -2,7 +2,7 @@
   "development": {
     "username": "musa_dev",
     "password": null,
-    "database": "musa_development",
+    "database": "kleio_development",
     "host": "127.0.0.1",
     "dialect": "postgres"
   },

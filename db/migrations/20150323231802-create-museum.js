@@ -1,16 +1,8 @@
-/**
- * Created by cesarcruz on 3/10/15.
- * Museum model
- */
+"use strict";
 
-module.exports = function(sequelize, DataTypes) {
-
-    var Feedback = sequelize.import(__dirname + '/feedback'),
-        Exhibition = sequelize.import(__dirname + '/exhibition'),
-        Administrator = sequelize.import(__dirname + '/administrator');
-
-
-    var museum = sequelize.define('Museum', {
+module.exports = {
+  up: function(migration, DataTypes, done) {
+    migration.createTable('Museum', {
         id : {
             type : DataTypes.INTEGER,
             allowNull : false,
@@ -66,17 +58,10 @@ module.exports = function(sequelize, DataTypes) {
             type : DataTypes.DATE,
             allowNull : false
         }
+    }).complete(done);
+  },
 
-    }, {
-        freezeTableName: true,
-        timestamps: true
-    });
-
-    museum.hasMany(Exhibition);
-
-    museum.hasMany(Feedback);
-
-    museum.hasMany(Administrator);
-
-    return museum;
+  down: function(migration, DataTypes, done) {
+    migration.dropTable('Museum').complete(done);
+  }
 };

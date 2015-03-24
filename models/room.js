@@ -19,6 +19,14 @@ module.exports = function(sequelize, DataTypes) {
         },
         ibeacons : {
             type : DataTypes.ARRAY(DataTypes.STRING)
+        },
+        createdAt : {
+            type : DataTypes.DATE,
+            allowNull : false
+        },
+        updatedAt : {
+            type : DataTypes.DATE,
+            allowNull : false
         }
     }, {
         freezeTableName : true,

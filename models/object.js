@@ -62,26 +62,36 @@ module.exports = function(sequelize, DataTypes) {
         },
         ArtistId : {
             type : DataTypes.INTEGER,
-            references : 'Artist',
-            referencesKey : 'id'
+            allowNull : false
+        },
+        QrcodeId : {
+            type : DataTypes.INTEGER,
+            allowNull : false
+        },
+        CategoryId : {
+            type : DataTypes.INTEGER,
+            allowNull : false
+        },
+        createdAt : {
+            type : DataTypes.DATE,
+            allowNull : false
+        },
+        updatedAt : {
+            type : DataTypes.DATE,
+            allowNull : false
         }
     }, {
         freezeTableName : true,
         timestamps: true
     });
 
-    Object.hasOne(Artist);
+    Object.belongsTo(Artist);
 
     Object.belongsToMany(Content, {through: ObjectContent});
-    Content.belongsToMany(Object, {through: ObjectContent});
 
-    //Object stores reference to one QRCode
     Object.belongsTo(QRCode);
 
     Object.belongsTo(Artist);
-
-    Object.hasMany(Category);
-
 
     return Object;
 };
