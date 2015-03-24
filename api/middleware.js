@@ -22,6 +22,7 @@ function loadModel() {
 
     return function* (next) {
         this.models = database.sequelize.models;
+        this.sequelize = database.sequelize;
         yield next;
     }
 }

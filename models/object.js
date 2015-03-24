@@ -61,16 +61,13 @@ module.exports = function(sequelize, DataTypes) {
             allowNull : false
         },
         ArtistId : {
-            type : DataTypes.INTEGER,
-            allowNull : false
+            type : DataTypes.INTEGER
         },
         QrcodeId : {
-            type : DataTypes.INTEGER,
-            allowNull : false
+            type : DataTypes.INTEGER
         },
         CategoryId : {
-            type : DataTypes.INTEGER,
-            allowNull : false
+            type : DataTypes.INTEGER
         },
         createdAt : {
             type : DataTypes.DATE
@@ -85,7 +82,6 @@ module.exports = function(sequelize, DataTypes) {
     Object.belongsTo(Artist);
 
     Object.belongsToMany(Content, {through: ObjectContent});
-    Content.belongsToMany(Object, {through: ObjectContent});
 
     Object.belongsTo(QRCode);
 
