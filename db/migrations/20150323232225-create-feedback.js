@@ -23,16 +23,16 @@ module.exports = {
             defaultValue: false
         },
         type: {
-            type: DataTypes.ENUM('complain', 'suggestion'),
+            type: DataTypes.ENUM('complain', 'suggestion')
         },
         MuseumId : {
-            type : DataTypes.INTEGER,
+            type : DataTypes.INTEGER
         },
         createdAt : {
-            type : DataTypes.DATE,
+            type : DataTypes.DATE
         },
         updatedAt : {
-            type : DataTypes.DATE,
+            type : DataTypes.DATE
         }
     }).complete(done);
   },
