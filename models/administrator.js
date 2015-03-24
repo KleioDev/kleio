@@ -34,17 +34,13 @@ module.exports = function(sequelize, DataTypes) {
             allowNull : false
         },
         createdAt : {
-            type : DataTypes.DATE,
-            allowNull : false
+            type : DataTypes.DATE
         },
         updatedAt : {
-            type : DataTypes.DATE,
-            allowNull : false
+            type : DataTypes.DATE
         }
-    },
-    {
-        freezeTableName : true,
-            timestamps : true
+    }, {
+        timestamps : true
     });
 
     Administrator.hasMany(Articles);

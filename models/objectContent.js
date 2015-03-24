@@ -11,25 +11,18 @@ module.exports = function(sequelize, DataTypes){
             autoIncrement : true
         },
         ObjectId : {
-            type : DataTypes.INTEGER,
-            references : 'Object',
-            referencesKey : 'id'
+            type : DataTypes.INTEGER
         },
         ContentId : {
-            type : DataTypes.INTEGER,
-            references : 'Content',
-            referencesKey : 'id'
+            type : DataTypes.INTEGER
         },
         updatedAt : {
-            type : DataTypes.DATE,
-            allowNull : false
+            type : DataTypes.DATE
         },
         createdAt : {
-            type : DataTypes.DATE,
-            allowNull : false
+            type : DataTypes.DATE
         }
     }, {
-        freezeTableName : true,
         timestamps : true
     });
 

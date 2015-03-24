@@ -37,12 +37,12 @@ function *single () {
 
     try {
         object = yield this.models['Object']
-        //    .findOne({
-        //    where : {
-        //        id : objectId
-        //    },
-        //    include : [ObjectContent]
-        //});
+            .findOne({
+            where : {
+                id : objectId
+            },
+            include : [Content]
+        });
     } catch(err) {
         this.throw(err.message, err.status || 500);
     }

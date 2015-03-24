@@ -22,15 +22,12 @@ module.exports = function(sequelize, DataTypes) {
             allowNull : true
         },
         createdAt : {
-            type : DataTypes.DATE,
-            allowNull : false
+            type : DataTypes.DATE
         },
         updatedAt : {
-            type : DataTypes.DATE,
-            allowNull : false
+            type : DataTypes.DATE
         }
     }, {
-        freezeTableName : true,
         timestamps: true
     });
 
