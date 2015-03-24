@@ -17,15 +17,33 @@ module.exports = function() {
 }
 
 function *create() {
-    var data = this.request.body.fields;
+    var data = this.request.body.fields,
+        museumId,
+        result;
+
+    if(!data) {
+        this.throw('Bad Request', 404);
+    }
 
     try {
-        yield this.models['Feedback'].create(data);
+        //Get the most recent Museum
+        museumId = yield this.models['Museum'].findAll({
+            order : '"updatedAt" DESC',
+            limit : 1,
+            attributes : ['id']
+        });
+
+        data['MuseumId'] = museumId[0].dataValues.id;
+
+        result = yield this.models['Feedback'].create(data);
+
     } catch (err) {
         if(err.name == 'SequelizeValidationError') {
             //Invalid parameters
             this.throw('Invalid Parameters', 400);
         }
     }
+
+    this.body = result;
     this.status = 201;
 }
