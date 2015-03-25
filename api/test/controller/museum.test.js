@@ -13,7 +13,9 @@ var supertest = require('supertest-as-promised'),
 
 describe('Museum', function() {
 
-    //TODO: Create a Museum object, insert into the database
+    /**
+     * Create database instance for testing
+     */
     before(function() {
        Museum.create(museum);
     });
@@ -35,5 +37,12 @@ describe('Museum', function() {
             });
         });
 
+    });
+
+    /**
+     * Destroy the instance once the tests are complete
+     */
+    after(function() {
+        Museum.destroy({where : { title : museum.title}});
     });
 });

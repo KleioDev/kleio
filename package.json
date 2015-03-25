@@ -9,8 +9,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "nodemon --harmony server.js",
-    "test:models": "mocha -- test/models/*.js",
-    "test:controllers": "mocha --harmony -- api/test/controller/*.js"
+    "test:models": "NODE_ENV=test mocha -- test/models/*.js",
+    "test:controllers": "NODE_ENV=test mocha --harmony -- api/test/controller/*.js"
   },
   "repository": {
     "type": "git",
