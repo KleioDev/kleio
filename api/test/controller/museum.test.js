@@ -17,7 +17,7 @@ describe('Museum', function() {
      * Create database instance for testing
      */
     before(function() {
-       Museum.create(museum);
+       return Museum.create(museum);
     });
 
     describe('GET /museum', function(){
@@ -43,6 +43,6 @@ describe('Museum', function() {
      * Destroy the instance once the tests are complete
      */
     after(function() {
-        Museum.destroy({where : { title : museum.title}});
+        return Museum.destroy({where : { title : museum.title}});
     });
 });

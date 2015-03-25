@@ -15,7 +15,7 @@ var koa = require('koa'),
  */
 
 
-module.exports = function(database) {
+module.exports = function() {
 
     app = koa();
 
