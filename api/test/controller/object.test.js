@@ -18,25 +18,25 @@ describe('Object', function() {
 
     //TODO: Create a Museum object, insert into the database
     before(function() {
-        return createdObject = Artifact.create(data.object).then(function (result) {
-                id = result.dataValues.id;
-            Content.create(data.contentOne).then(function(result) {
-                contentOneId = result.dataValues.id;
-            });
-            Content.create(data.contentTwo).then(function(result) {
-                contentTwoId = result.dataValues.id;
+        Artifact.create(data.object).then(function(result){
+            id = result.dataValues.id;
+            return Content.create(data.contentOne);
+        })
+        .then(function(result){
+            contentOneId = result.dataValues.id;
+            return Content.create(data.contentTwo)
+            })
+        .then(function(result){
+            contentTwoId = result.dataValues.id;
+            return ObjectContent.create({ ObjectId : id, ContentId : contentOneId});
+            })
+        .then(function(result){
+             return ObjectContent.create({ ObjectId : id, ContentId : contentTwoId});
+            })
+        .catch(function(err){
+            throw err;
             });
 
-            ObjectContent.create({
-                ObjectId : id,
-                ContentId : contentOneId
-            }).then(function(result) {
-                ObjectContent.create({
-                    ObjectId : id,
-                    ContentId : contentTwoId
-                });
-            });
-        });
     });
 
     describe('GET /object/' + id, function(){

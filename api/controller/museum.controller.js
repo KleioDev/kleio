@@ -38,8 +38,6 @@ module.exports = function() {
 function *index() {
     var museum;
 
-    console.log('Something');
-
     try {
         //Had to go OG on this foo son
         museum =  yield this.models['Museum'].findAll({
@@ -259,6 +257,7 @@ function *terms() {
     }
 
     this.status = 200;
+
     this.body = terms;
 }
 
