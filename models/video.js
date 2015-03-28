@@ -1,26 +1,27 @@
 /**
- * Created by cesarcruz on 3/10/15.
- * Room Model
+ * Created by cesarcruz on 3/28/15.
  */
 
-module.exports = function(sequelize, DataTypes) {
-    var Room = sequelize.define('Room', {
+
+module.exports = function(sequelize, DataTypes){
+
+    var Video = sequelize.define('Video', {
         id : {
             type : DataTypes.INTEGER,
             allowNull : false,
             primaryKey : true,
             autoIncrement : true
         },
-        name : {
+        title : {
             type : DataTypes.STRING,
-            allowNull : true
+            allowNull : false
         },
         description : {
-            type : DataTypes.TEXT,
-            allowNull : true
+            type : DataTypes.TEXT
         },
-        ibeacons : {
-            type : DataTypes.ARRAY(DataTypes.STRING)
+        link : {
+            type : DataTypes.STRING(1000),
+            allowNull : false
         },
         createdAt : {
             type : DataTypes.DATE
@@ -28,9 +29,7 @@ module.exports = function(sequelize, DataTypes) {
         updatedAt : {
             type : DataTypes.DATE
         }
-    }, {
-        timestamps : true
     });
 
-    return Room;
-};
+    return Video;
+}

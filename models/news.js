@@ -1,26 +1,30 @@
 /**
- * Created by cesarcruz on 3/10/15.
- * Room Model
+ * Created by cesarcruz on 3/28/15.
  */
 
-module.exports = function(sequelize, DataTypes) {
-    var Room = sequelize.define('Room', {
+module.exports = function(sequelize, DataTypes){
+
+    var News = sequelize.define('News', {
         id : {
             type : DataTypes.INTEGER,
             allowNull : false,
             primaryKey : true,
             autoIncrement : true
         },
-        name : {
+        title : {
             type : DataTypes.STRING,
-            allowNull : true
+            allowNull : false
         },
         description : {
             type : DataTypes.TEXT,
+            allowNull : false
+        },
+        image : {
+            type : DataTypes.STRING(1000),
             allowNull : true
         },
-        ibeacons : {
-            type : DataTypes.ARRAY(DataTypes.STRING)
+        AdministratorId : { //The Author of the Event
+            type : DataTypes.INTEGER
         },
         createdAt : {
             type : DataTypes.DATE
@@ -28,9 +32,7 @@ module.exports = function(sequelize, DataTypes) {
         updatedAt : {
             type : DataTypes.DATE
         }
-    }, {
-        timestamps : true
     });
 
-    return Room;
-};
+    return News;
+}

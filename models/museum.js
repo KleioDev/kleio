@@ -17,7 +17,7 @@ module.exports = function(sequelize, DataTypes) {
             primaryKey : true,
             autoIncrement : true
         },
-        title : {
+        name : {
             type : DataTypes.STRING,
             allowNull : false
         },
@@ -58,6 +58,10 @@ module.exports = function(sequelize, DataTypes) {
             allowNull : false,
             isUrl : true
         },
+        phoneExtension : {
+          type : DataTypes.STRING,
+          allowNull : true
+        },
         createdAt : {
             type : DataTypes.DATE
         },
@@ -68,12 +72,6 @@ module.exports = function(sequelize, DataTypes) {
     }, {
         timestamps: true
     });
-
-    museum.hasMany(Exhibition);
-
-    museum.hasMany(Feedback);
-
-    museum.hasMany(Administrator);
 
     return museum;
 };

@@ -6,8 +6,6 @@
 //TODO: Add testing
 module.exports = function(sequelize, DataTypes) {
 
-    var Object = sequelize.import(__dirname + '/object');
-    var Match = sequelize.import(__dirname + '/match');
 
     var User = sequelize.define('User', {
         id : {
@@ -31,16 +29,22 @@ module.exports = function(sequelize, DataTypes) {
         gender : {
             type : DataTypes.ENUM('male', 'female')
         },
-        age : {
-            type : DataTypes.INTEGER
+        age_range : {
+            type : DataTypes.STRING
         },
         points : {
             type : DataTypes.BIGINT,
             defaultValue : 0
         },
-        banished : {
+        active : {
             type : DataTypes.BOOLEAN,
-            defaultValue : false
+            defaultValue : true
+        },
+        facebook_id : {
+            type : DataType.STRING
+        },
+        facebook_link : {
+            type : DataTypes.STRING(1000)
         },
         createdAt : {
             type : DataTypes.DATE
@@ -52,10 +56,6 @@ module.exports = function(sequelize, DataTypes) {
     }, {
         timestamps : true
     });
-
-
-
-    User.belongsToMany(Object, {through : Match});
 
     return User;
 };

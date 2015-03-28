@@ -5,12 +5,6 @@
 
 module.exports = function(sequelize, DataTypes) {
 
-    var Artist = sequelize.import(__dirname + '/artist'),
-        Content = sequelize.import(__dirname + '/content'),
-        Category = sequelize.import(__dirname + '/categories'),
-        QRCode = sequelize.import(__dirname + '/qrcode'),
-        ObjectContent = sequelize.import(__dirname + '/objectContent');
-
 
     var Object =  sequelize.define('Object', {
         id : {
@@ -63,11 +57,16 @@ module.exports = function(sequelize, DataTypes) {
         ArtistId : {
             type : DataTypes.INTEGER
         },
-        QrcodeId : {
-            type : DataTypes.INTEGER
+        qrcode : {
+            type : DataTypes.STRING,
+            isUrl : true
         },
         CategoryId : {
-            type : DataTypes.INTEGER
+            type : DataTypes.INTEGER,
+            allowNull : true
+        },
+        ClueId : {
+            type : DataType.INTEGER
         },
         createdAt : {
             type : DataTypes.DATE
@@ -78,14 +77,6 @@ module.exports = function(sequelize, DataTypes) {
     }, {
         timestamps: true
     });
-
-    Object.belongsTo(Artist);
-
-    Object.belongsToMany(Content, {through: ObjectContent});
-
-    Object.belongsTo(QRCode);
-
-    Object.belongsTo(Artist);
 
     return Object;
 };

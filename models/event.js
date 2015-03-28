@@ -1,11 +1,10 @@
 /**
- * Created by cesarcruz on 3/10/15.
- * Exhibition Model
+ * Created by cesarcruz on 3/28/15.
  */
 
-module.exports = function(sequelize, DataTypes) {
+module.exports = function(sequelize, DataTypes){
 
-    var Exhibition = sequelize.define('Exhibition', {
+    var Events = sequelize.define('Event', {
         id : {
             type : DataTypes.INTEGER,
             allowNull : false,
@@ -18,18 +17,20 @@ module.exports = function(sequelize, DataTypes) {
         },
         description : {
             type : DataTypes.TEXT,
-            allowNull : true
+            allowNull : false
+        },
+        eventDate : {
+            type : DataTypes.DATE,
+            allowNull : false
         },
         image : {
-          type : DataTypes.STRING(1000)
+            type : DataTypes.STRING(1000)
         },
-        active : {
-            type : DataTypes.BOOLEAN,
-            defaultValue : true
+        location : {
+            type : DataTypes.STRING(1000)
         },
-        MuseumId : {
-            type : DataTypes.INTEGER,
-            allowNull : false
+        AdministratorId : { //The Author of the Event
+            type : DataTypes.INTEGER
         },
         createdAt : {
             type : DataTypes.DATE
@@ -37,9 +38,7 @@ module.exports = function(sequelize, DataTypes) {
         updatedAt : {
             type : DataTypes.DATE
         }
-    }, {
-        timestamps: true
     });
 
-    return Exhibition;
-};
+    return Events;
+}

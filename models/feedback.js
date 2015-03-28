@@ -18,18 +18,21 @@ module.exports = function(sequelize, DataTypes) {
             type: DataTypes.STRING,
             allowNull: false
         },
-        content: {
+        message: {
             type: DataTypes.TEXT,
             allowNull: false
         },
         seen: {
             type: DataTypes.BOOLEAN,
-            allowNull: false,
             defaultValue: false
         },
         type: {
-            type: DataTypes.ENUM('complain', 'suggestion'),
+            type: DataTypes.ENUM('general', 'bug', 'content_problem'),
             allowNull: false
+        },
+        resolved : {
+            type : DataTypes.BOOLEAN,
+            defaultValue : false
         },
         MuseumId : {
             type : DataTypes.INTEGER,
