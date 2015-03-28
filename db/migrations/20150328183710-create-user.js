@@ -54,6 +54,6 @@ module.exports = {
   },
 
   down: function(migration, DataTypes, done) {
-    migration.droptTable('Users').complete(done);
+    migration.dropTable('Users').complete(done);
   }
 };
