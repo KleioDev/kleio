@@ -2,27 +2,25 @@
 
 module.exports = {
   up: function(migration, DataTypes, done) {
-    migration.createTable('Content', {
+    migration.createTable('Administrators', {
         id : {
             type : DataTypes.INTEGER,
-            allowNull : false,
             primaryKey : true,
-            autoIncrement : true
-        },
-        title : {
-            type: DataTypes.STRING,
+            autoIncrement : true,
             allowNull : false
         },
-        mediaLink : {
-            type : DataTypes.STRING(1000),
-            allowNull : true
+        email : {
+            type : DataTypes.STRING,
+            allowNull : false
         },
-        description : {
-            type : DataTypes.TEXT,
-            allowNull : true
+        firstName : {
+            type : DataTypes.STRING
         },
-        type : {
-            type : DataTypes.ENUM('image', 'video', 'audio', 'text')
+        lastName : {
+            type : DataTypes.STRING
+        },
+        password : {
+            type : DataTypes.STRING
         },
         createdAt : {
             type : DataTypes.DATE
@@ -36,6 +34,6 @@ module.exports = {
   },
 
   down: function(migration, DataTypes, done) {
-    migration.dropTable('Content').complete(done);
+    migration.dropTable('Administrators').complete(done);
   }
 };
