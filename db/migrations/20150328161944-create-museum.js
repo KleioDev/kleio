@@ -1,11 +1,8 @@
-/**
- * Created by cesarcruz on 3/10/15.
- * Museum model
- */
+"use strict";
 
-module.exports = function(sequelize, DataTypes) {
-
-    var museum = sequelize.define('Museum', {
+module.exports = {
+  up: function(migration, DataTypes, done) {
+    migration.createTable('Museums', {
         id : {
             type : DataTypes.INTEGER,
             allowNull : false,
@@ -54,19 +51,23 @@ module.exports = function(sequelize, DataTypes) {
             isUrl : true
         },
         phoneExtension : {
-          type : DataTypes.STRING,
-          allowNull : true
+            type : DataTypes.STRING,
+            allowNull : true
         },
         createdAt : {
-            type : DataTypes.DATE
+            type : DataTypes.DATE,
+            allowNull : false
         },
         updatedAt : {
-            type : DataTypes.DATE
+            type : DataTypes.DATE,
+            allowNull : false
         }
-
     }, {
-        timestamps: true
-    });
+        freezeTableName : true
+    }).complete(done);
+  },
 
-    return museum;
+  down: function(migration, DataTypes, done) {
+    migration.dropTable('Museums').complete(done);
+  }
 };
