@@ -52,3 +52,9 @@ exports.contentTwo = {
     description : 'Don Ramon is a straight up thug',
     type : 'video'
 }
+
+exports.exhibition = {
+    name : 'Master Exhibition',
+    description : 'This Exhibition will hold all other exhibitions, an object must always belong to an exhibition.',
+    MuseumId : 1
+}

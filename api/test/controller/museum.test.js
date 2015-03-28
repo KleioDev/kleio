@@ -16,25 +16,23 @@ describe('Museum', function() {
     /**
      * Create database instance for testing
      */
-    before(function() {
-       return Museum.create(museum);
+    before(function *() {
+       yield Museum.create(museum);
     });
 
     describe('GET /museum', function(){
-        it('should receieve an ok status', function(){
-             return request.get('/museum').expect(200);
+        it('should receieve an ok status', function *(){
+             yield request.get('/museum').expect(200);
         });
 
-        it('should return a JSON object', function() {
-            return request.get('/museum').then(function(res) {
-                expect(res.body).to.be.a('object');
-            }) ;
+        it('should return a JSON object', function *() {
+            var res = yield request.get('/museum');
+            expect(res.body).to.be.a('object');
         });
 
-        it('Should have title attribute', function() {
-            return request.get('/museum').then(function(res){
-                expect(res.body.title).to.be.a('string');
-            });
+        it('Should have title attribute', function *() {
+            var res = yield request.get('/museum');
+            expect(res.body.title).to.be.a('string');
         });
 
     });
@@ -42,7 +40,7 @@ describe('Museum', function() {
     /**
      * Destroy the instance once the tests are complete
      */
-    after(function() {
-        return Museum.destroy({where : { title : museum.title}});
+    after(function * () {
+        yield Museum.destroy({where : { title : museum.title}});
     });
 });
