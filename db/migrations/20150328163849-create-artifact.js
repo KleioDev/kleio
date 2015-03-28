@@ -1,12 +1,8 @@
-/**
- * Created by cesarcruz on 3/10/15.
- * Object Model
- */
+"use strict";
 
-module.exports = function(sequelize, DataTypes) {
-
-
-    var Object =  sequelize.define('Object', {
+module.exports = {
+  up: function(migration, DataTypes, done) {
+    migration.createTable('Artifacts', {
         id : {
             type : DataTypes.INTEGER,
             allowNull : false,
@@ -55,22 +51,27 @@ module.exports = function(sequelize, DataTypes) {
             allowNull : false
         },
         ArtistId : {
-            type : DataTypes.INTEGER
+            type : DataTypes.INTEGER,
+            references : 'Artists',
+            referencesKey : 'id'
         },
         qrcode : {
-            type : DataTypes.STRING(1000),
-            isUrl : true
+            type : DataTypes.STRING(1000)
         },
         createdAt : {
-            type : DataTypes.DATE
+            type : DataTypes.DATE,
+            allowNull : false
         },
         updatedAt : {
-            type : DataTypes.DATE
+            type : DataTypes.DATE,
+            allowNull : false
         }
     }, {
-        timestamps: true
-    });
+       freezeTableName : true
+    }).complete(done);
+  },
 
-    return Object;
+  down: function(migration, DataTypes, done) {
+    migration.dropTable('Artifacts').complete(done);
+  }
 };
-
