@@ -29,7 +29,7 @@ module.exports = function(sequelize, DataTypes){
         location : {
             type : DataTypes.STRING(1000)
         },
-        AdministratorId : { //The Author of the Event
+        author : { //The Author of the Event
             type : DataTypes.INTEGER
         },
         createdAt : {
