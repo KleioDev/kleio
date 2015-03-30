@@ -7,11 +7,14 @@ var middleware  = require('../middleware'),
 
 module.exports = function(){
 
+    //TODO: Implement master collection
+
     var loadModels = middleware.loadModel();
 
     var exhibitionController = new Router()
 
-        .get('/exhibition', loadModels, index);
+        .get('/exhibition', loadModels, index)
+        .get('/exhibition/:id', loadModels, show);
 
     return exhibitionController.routes();
 }
@@ -45,5 +48,34 @@ function *index() {
     this.status = 200;
 
     this.body = { exhibitions : exhibitions};
+
+}
+
+/**
+ * Get a single exhibition based on id parameter
+ */
+function *show(){
+    var exhibition,
+        id = this.params.id;
+
+    if(!id || id < 1){
+        this.throw('Bad Request', 400);
+    }
+
+    try {
+        exhibition = yield this.models['Exhibition'].find({
+            where : { id : id}
+        });
+    } catch(err) {
+        this.throw(err.message, err.status || 500);
+    }
+
+    if(!exhibition){
+        this.throw('Not Found', 404);
+    }
+
+    this.status = 200;
+
+    this.body = exhibition;
 
 }

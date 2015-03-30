@@ -11,7 +11,7 @@ module.exports = function(){
     var newsController = new Router()
 
         .get('/news', loadModels, index)
-        .get('/news/:id', loadModels, singleEvent);
+        .get('/news/:id', loadModels, show);
 
     return newsController.routes();
 }
@@ -45,7 +45,7 @@ function *index() {
 
 }
 
-function *singleEvent() {
+function *show() {
 
     var news,
         id = this.params.id;

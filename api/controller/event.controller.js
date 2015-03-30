@@ -12,7 +12,7 @@ module.exports = function(){
     var eventController = new Router()
 
         .get('/events', loadModels, index)
-        .get('/events/:id', loadModels, singleEvent);
+        .get('/events/:id', loadModels, show);
 
 
     return eventController.routes();
@@ -50,7 +50,7 @@ function *index() {
     this.body = events.getData();
 }
 
-function *singleEvent() {
+function *show() {
     var event,
         id = this.params.id;
 
