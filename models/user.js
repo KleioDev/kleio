@@ -41,7 +41,7 @@ module.exports = function(sequelize, DataTypes) {
             defaultValue : true
         },
         facebook_id : {
-            type : DataType.STRING
+            type : DataTypes.STRING
         },
         facebook_link : {
             type : DataTypes.STRING(1000)
