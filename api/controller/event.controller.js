@@ -22,14 +22,20 @@ module.exports = function(){
  * Get a list of all the events sorted by event date
  */
 function *index() {
-    var events;
+    var events,
+        offset = this.query.page;
+
+    if(!offset || offset < 1) {
+        offset = 1;
+    }
 
     try {
 
         events = yield this.models['Event'].findAll({
             order : '"eventDate" DESC',
             limit : 25,
-            attributes : ['title', 'description', 'eventDate']
+            attributes : ['id', 'title', 'description', 'eventDate'],
+            offset : offset
         });
     } catch (err) {
         this.throw(err.message, err.status || 500);

@@ -28,7 +28,7 @@ function *index() {
         news = yield this.models['News'].findAll({
             order : '"createdAt" DESC',
             limit : 10,
-            attributes : ['title', 'image', 'description'],
+            attributes : ['id', 'title', 'image', 'description'],
             offset : offset
         });
     } catch (err) {
