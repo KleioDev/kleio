@@ -25,7 +25,7 @@ function *index() {
     }
 
     try {
-        images = yield this.sequelize.query('select * from "Images" where "id" in (select id from "ArtifactImages" where "ArtifactId" = '+ id +');', {type: this.sequelize.QueryTypes.SELECT});
+        images = yield this.sequelize.query('select * from "Images" where "id" in (select "ImageId" from "ArtifactImages" where "ArtifactId" = '+ id +');', {type: this.sequelize.QueryTypes.SELECT});
     } catch(err){
         this.throw(err.message, err.status || 500);
     }

@@ -5,19 +5,19 @@
 var middleware = require('../middleware'),
     Router = require('koa-router');
 
-module.exports = function() {
+module.exports = function(){
+
     var loadModels = middleware.loadModel();
 
-    var audibleController = new Router()
-        .get('/artifact/audible/:id', loadModels, index)
-        .get('/audible/:id', loadModels, show);
+    var archiveController = new Router()
+        .get('/artifact/archive/:id', loadModels, index)
+        .get('/archive/:id', loadModels, show);
 
-    return audibleController.routes();
+    return archiveController.routes();
 }
 
-
 function *index() {
-    var audibles,
+    var archives,
         id = parseInt(this.params.id);
 
     if(!id || id === NaN){
@@ -25,22 +25,22 @@ function *index() {
     }
 
     try {
-        audibles = yield this.sequelize.query('select * from "Audibles" where "id" in (select "AudibleId" from "ArtifactAudibles" where "ArtifactId" = '+ id +');', {type: this.sequelize.QueryTypes.SELECT})
+        archives = yield this.sequelize.query('select * from "Texts" where "id" in (select "TextId" from "ArtifactTexts" where "ArtifactId" = '+id+');', {type: this.sequelize.QueryTypes.SELECT});
     } catch(err){
         this.throw(err.message, err.status || 500);
     }
 
-    if(!audibles || audibles.length < 1){
+    if(!archives || archives.length < 1){
         this.throw('Not Found', 404);
     }
 
     this.status = 200;
 
-    this.body = { audibles : audibles };
+    this.body = { archives : archives};
 }
 
-function *show(){
-    var audible,
+function *show() {
+    var archive,
         id = parseInt(this.params.id);
 
     if(!id || id === NaN){
@@ -48,20 +48,20 @@ function *show(){
     }
 
     try {
-        audible = yield this.models['Audible'].find({
+        archive = yield this.models['Text'].find({
             where : {
                 id : id
             }
         });
-    } catch(err){
+    } catch(err) {
         this.throw(err.message, err.status || 500);
     }
 
-    if(!audible) {
+    if(!archive){
         this.throw('Not Found', 404);
     }
 
     this.status = 200;
 
-    this.body = audible;
+    this.body = archive;
 }
