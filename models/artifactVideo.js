@@ -1,10 +1,10 @@
 /**
- * Created by cesarcruz on 3/28/15.
+ * Created by cesarcruz on 3/30/15.
  */
 
 module.exports = function(sequelize, DataTypes){
 
-    var ArtifactContent = sequelize.define('ArtifactContent', {
+    var ArtifactVideo = sequelize.define('ArtifactVideo', {
         id : {
             type : DataTypes.INTEGER,
             allowNull : false,
@@ -15,7 +15,7 @@ module.exports = function(sequelize, DataTypes){
             type : DataTypes.INTEGER,
             allowNull : false
         },
-        ContentId : {
+        VideoId : {
             type : DataTypes.INTEGER,
             allowNUll : false
         },
@@ -25,7 +25,9 @@ module.exports = function(sequelize, DataTypes){
         updatedAt : {
             type : DataTypes.DATE
         }
+    }, {
+        timestamps : true
     });
 
-    return ArtifactContent;
+    return ArtifactVideo;
 }

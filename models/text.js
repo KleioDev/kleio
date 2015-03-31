@@ -28,6 +28,8 @@ module.exports = function(sequelize, DataTypes){
         updatedAt : {
             type : DataTypes.DATE
         }
+    }, {
+        timestamps : true
     });
 
     return Text;

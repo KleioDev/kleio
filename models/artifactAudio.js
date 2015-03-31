@@ -1,26 +1,23 @@
 /**
- * Created by cesarcruz on 3/28/15.
+ * Created by cesarcruz on 3/30/15.
  */
 
 module.exports = function(sequelize, DataTypes){
 
-    var Audio = sequelize.define('Audio', {
+    var ArtifactAudio = sequelize.define('ArtifactAudio', {
         id : {
             type : DataTypes.INTEGER,
             allowNull : false,
             primaryKey : true,
             autoIncrement : true
         },
-        title : {
-            type : DataTypes.STRING,
+        ArtifactId : {
+            type : DataTypes.INTEGER,
             allowNull : false
         },
-        description : {
-            type : DataTypes.TEXT
-        },
-        link : {
-            type : DataTypes.STRING(1000),
-            allowNull : false
+        AudioId : {
+            type : DataTypes.INTEGER,
+            allowNUll : false
         },
         createdAt : {
             type : DataTypes.DATE
@@ -32,5 +29,5 @@ module.exports = function(sequelize, DataTypes){
         timestamps : true
     });
 
-    return Audio;
+    return ArtifactAudio;
 }
