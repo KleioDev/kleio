@@ -73,28 +73,25 @@ module.exports = function(sequelize, DataTypes) {
             type : DataTypes.DATE
         }
     }, {
-        timestamps: true
+        timestamps: true,
+        classMethods : {
+            associate: function(models){
+                Artifact.belongsTo(Artist, {foreignKey : 'ArtistId'});
+
+                Artifact.belongsToMany(models.Video, { through: 'ArtifactVideo' });
+                models.Video.belongsToMany(Artifact, { through: 'ArtifactVideo' });
+
+                Artifact.belongsToMany(models.Audible, { through: 'ArtifactAudible' });
+                models.Audible.belongsToMany(Artifact, { through : 'ArtifactAudible' });
+
+                Artifact.belongsToMany(models.Image, { through: 'ArtifactImage' });
+                models.Image.belongsToMany(Artifact, { through : 'ArtifactImage' });
+
+                Artifact.belongsToMany(models.Text, { through: 'ArtifactText' });
+                models.Text.belongsToMany(Artifact, { through : 'ArtifactText' });
+            }
+        }
     });
-
-    //Artist
-    Artifact.belongsTo(Artist, {foreignKey : 'ArtistId'});
-
-    //Video
-    Artifact.belongsToMany(Video, { through: 'ArtifactVideo' });
-    Video.belongsToMany(Artifact, { through : 'ArtifactVideo' });
-
-    //Audio
-    Artifact.belongsToMany(Audio, { through: 'ArtifactAudio' });
-    Audio.belongsToMany(Artifact, { through : 'ArtifactAudio' });
-
-    //Image
-    Artifact.belongsToMany(Image, { through: 'ArtifactImage' });
-    Image.belongsToMany(Artifact, { through : 'ArtifactImage' });
-
-    //Text
-    Artifact.belongsToMany(Text, { through: 'ArtifactText' });
-    Text.belongsToMany(Artifact, { through : 'ArtifactText' });
-
 
     return Artifact;
 };

@@ -53,16 +53,26 @@ function *show(){
     var artifact,
         id = this.params.id;
 
-    if(typeof id !== 'number'){
-        this.throw('Bad Request', 404);
-    }
+
+    //if(typeof id !== 'number'){
+    //    this.throw('Bad Request', 404);
+    //}
 
     try {
-        artifact = yield this.models['Artifact'].find({
+        var Artifact = this.models['Artifact'],
+            Video = this.models['Video'],
+            Audible = this.models['Audible'],
+            Image = this.models['Image'],
+            Text = this.models['Text'];
+
+        artifact = yield Artifact.find({
             where : {
                 id : id
-            }
+            },
+            include : [Video, Audible, Image, Text]
         });
+
+
     } catch(err) {
         this.throw(err.message, err.status || 500);
     }

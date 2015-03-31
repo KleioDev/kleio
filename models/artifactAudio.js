@@ -4,7 +4,7 @@
 
 module.exports = function(sequelize, DataTypes){
 
-    var ArtifactAudio = sequelize.define('ArtifactAudio', {
+    var ArtifactAudible = sequelize.define('ArtifactAudible', {
         id : {
             type : DataTypes.INTEGER,
             allowNull : false,
@@ -15,7 +15,7 @@ module.exports = function(sequelize, DataTypes){
             type : DataTypes.INTEGER,
             allowNull : false
         },
-        AudioId : {
+        AudibleId : {
             type : DataTypes.INTEGER,
             allowNUll : false
         },
@@ -29,5 +29,5 @@ module.exports = function(sequelize, DataTypes){
         timestamps : true
     });
 
-    return ArtifactAudio;
+    return ArtifactAudible;
 }

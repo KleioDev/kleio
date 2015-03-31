@@ -4,7 +4,7 @@
 
 module.exports = function(sequelize, DataTypes){
 
-    var Audio = sequelize.define('Audio', {
+    var Audible = sequelize.define('Audible', {
         id : {
             type : DataTypes.INTEGER,
             allowNull : false,
@@ -32,5 +32,5 @@ module.exports = function(sequelize, DataTypes){
         timestamps : true
     });
 
-    return Audio;
+    return Audible;
 }
