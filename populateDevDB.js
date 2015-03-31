@@ -15,6 +15,10 @@ var Room = Model.sequelize.models['Room'];
 var Text = Model.sequelize.models['Text'];
 var Video = Model.sequelize.models['Video'];
 var Administrator = Model.sequelize.models['Administrator'];
+var ArtifactAudible = Model.sequelize.models['ArtifactAudible'];
+var ArtifactVideo = Model.sequelize.models['ArtifactVideo'];
+var ArtifactImage = Model.sequelize.models['ArtifactImage'];
+var ArtifactText = Model.sequelize.models['ArtifactText'];
 
 //Artist.create({
 //    name : 'César',
@@ -101,4 +105,22 @@ var Administrator = Model.sequelize.models['Administrator'];
 //    title : 'Volkswagon Vader Commercial',
 //    link : 'https://www.youtube.com/watch?v=R55e-uHQna0',
 //    description : 'Vader Commercial',
+//})
+
+
+//ArtifactAudible.create({
+//    ArtifactId : 2,
+//    AudibleId : 1
+//})
+//ArtifactVideo.create({
+//    ArtifactId : 2,
+//    VideoId : 1
+//})
+//ArtifactImage.create({
+//    ArtifactId : 2,
+//    ImageId : 1
+//})
+//ArtifactText.create({
+//    ArtifactId : 2,
+//    TextId : 1
 //})

@@ -25,8 +25,9 @@ function *index(){
     }
 
     try {
-        videos = yield this.models['Artifact'];
-    } catch(err){
+        //TODO: Escape Parameters in this query
+        videos = yield this.sequelize.query('select * from "Videos" where "id" in (select id from "ArtifactVideos" where "ArtifactId" = '+ id +');', {type: this.sequelize.QueryTypes.SELECT})
+    } catch(err) {
         console.log(err);
         this.throw(err.message, err.status || 500);
     }
