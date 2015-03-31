@@ -19,24 +19,22 @@ module.exports = function(){
 }
 
 function *create(){
-    var data = this.request.body.fields,
-        result,
-        feedback;
+    //x-www-form-urlencoded
+    var feedback = this.request.body.fields,
+        result;
 
     if(!feedback){
         this.throw('Bad Request', 400);
     }
 
     try {
-        feedback = yield this.models['Feedback'].build(data);
+        result = yield this.models['Feedback'].create(feedback);
     } catch(err) {
-        this.throw('Invalid Parameters', 400);
-    }
-
-    try {
-        result = yield feedback.save();
-    } catch(err) {
-        this.throw(err.message, err.status || 500);
+        if(typeof err ==='ValidationError'){
+            this.throw('Invalid Parameters', 400);
+        } else {
+            this.throw(err.message, err.status || 500);
+        }
     }
 
     if(!result){
