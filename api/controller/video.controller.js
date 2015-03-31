@@ -20,7 +20,7 @@ function *index(){
     var videos,
         id = this.params.id;
 
-    if(!id || id < 1){
+    if(!id || parseInt(id) < 1){
         this.throw('Bad Request', 400);
     }
 
@@ -42,5 +42,30 @@ function *index(){
 }
 
 function *show(){
+    var video,
+        id;
 
+    try {
+        id = parseInt(this.params.id);
+    } catch(err) {
+        this.throw('Invalid Parameters', 400);
+    }
+
+    try {
+        video = yield this.models['Video'].find({
+            where : {
+                id : id
+            }
+        });
+    } catch(err) {
+        this.throw(err.message, err.status || 500);
+    }
+
+    if(!video){
+        this.throw('Not Found', 404);
+    }
+
+    this.status = 200;
+
+    this.body = video;
 }
