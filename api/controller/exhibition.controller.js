@@ -14,7 +14,8 @@ module.exports = function(){
     var exhibitionController = new Router()
 
         .get('/exhibition', loadModels, index)
-        .get('/exhibition/:id', loadModels, show);
+        .get('/exhibition/:id', loadModels, show)
+        .get('/exhibition/near/me', loadModels, near);
 
     return exhibitionController.routes();
 }
@@ -78,4 +79,20 @@ function *show(){
 
     this.body = exhibition;
 
+}
+
+function *near(){
+    var exhibitions,
+        beacons = this.request.query,
+        beaconKeys;
+
+    try {
+        beaconsKeys = Object.keys(beacons);
+    } catch(err) {
+        this.throw(err.message, err.status || 500);
+    }
+
+   beaconsKeys.forEach(function(code, index){
+       console.log(beacons[code]);
+   });
 }
