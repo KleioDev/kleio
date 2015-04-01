@@ -38,7 +38,15 @@ module.exports = function(sequelize, DataTypes) {
             type : DataTypes.DATE
         }
     }, {
-        timestamps: true
+        timestamps: true,
+        classMethods : {
+            associate: function(models){
+
+                Exhibition.belongsToMany(models.Beacon, { through: 'ExhibitionBeacon' });
+                models.Beacon.belongsToMany(Exhibition, { through: 'ExhibitionBeacon' });
+
+            }
+        }
     });
 
     return Exhibition;

@@ -83,16 +83,36 @@ function *show(){
 
 function *near(){
     var exhibitions,
-        beacons = this.request.query,
-        beaconKeys;
+        beacons = [],
+        query = this.request.query,
+        Exhibition = this.models['Exhibition'];
 
     try {
-        beaconsKeys = Object.keys(beacons);
+        Object.keys(query).forEach(function(code, index){
+            beacons.push(query[code]);
+        });
     } catch(err) {
         this.throw(err.message, err.status || 500);
     }
 
-   beaconsKeys.forEach(function(code, index){
-       console.log(beacons[code]);
-   });
+
+    try {
+        exhibitions = yield this.models['Beacon'].find({
+            where : {
+                code : beacons
+            },
+            include : [Exhibition]
+
+        });
+    } catch(err) {
+        this.throw(err.message, err.status || 500);
+    }
+
+    if(!exhibitions || exhibitions.length < 1){
+        this.throw('Not Found', 404);
+    }
+
+    this.status = 200;
+
+    this.body = { exhibitions : exhibitions['Exhibitions']};
 }

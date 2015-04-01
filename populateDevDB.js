@@ -19,7 +19,8 @@ var ArtifactAudible = Model.sequelize.models['ArtifactAudible'];
 var ArtifactVideo = Model.sequelize.models['ArtifactVideo'];
 var ArtifactImage = Model.sequelize.models['ArtifactImage'];
 var ArtifactText = Model.sequelize.models['ArtifactText'];
-var Beacons = Model.sequelize.models['Beacon']
+var Beacon = Model.sequelize.models['Beacon'];
+var ExhibitionBeacon = Model.sequelize.models['ExhibitionBeacon'];
 
 //Artist.create({
 //    name : 'César',
@@ -125,4 +126,13 @@ var Beacons = Model.sequelize.models['Beacon']
 //    ArtifactId : 2,
 //    TextId : 1
 //})
+
+//Beacon.create({
+//    code : 'B558CBDA-4472-4211-A350-FF1196FFE8C8'
+//});
+
+//ExhibitionBeacon.create({
+//    ExhibitionId : 1,
+//    BeaconId : 1
+//});
 
