@@ -21,6 +21,7 @@ var ArtifactImage = Model.sequelize.models['ArtifactImage'];
 var ArtifactText = Model.sequelize.models['ArtifactText'];
 var Beacon = Model.sequelize.models['Beacon'];
 var ExhibitionBeacon = Model.sequelize.models['ExhibitionBeacon'];
+var User = Model.sequelize.models['User'];
 
 //Artist.create({
 //    name : 'César',
@@ -136,3 +137,12 @@ var ExhibitionBeacon = Model.sequelize.models['ExhibitionBeacon'];
 //    BeaconId : 1
 //});
 
+//User.create({
+//    email : 'luis.medina14@upr.edu',
+//    firstName : 'Luis',
+//    lastName : 'Medina',
+//    gender : 'male',
+//    age_range : '10-30',
+//    points : 500,
+//    active : true
+//});
