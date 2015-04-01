@@ -19,6 +19,7 @@ var ArtifactAudible = Model.sequelize.models['ArtifactAudible'];
 var ArtifactVideo = Model.sequelize.models['ArtifactVideo'];
 var ArtifactImage = Model.sequelize.models['ArtifactImage'];
 var ArtifactText = Model.sequelize.models['ArtifactText'];
+var Beacons = Model.sequelize.models['Beacon']
 
 //Artist.create({
 //    name : 'César',
@@ -124,3 +125,4 @@ var ArtifactText = Model.sequelize.models['ArtifactText'];
 //    ArtifactId : 2,
 //    TextId : 1
 //})
+
