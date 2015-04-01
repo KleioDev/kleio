@@ -22,6 +22,7 @@ var ArtifactText = Model.sequelize.models['ArtifactText'];
 var Beacon = Model.sequelize.models['Beacon'];
 var ExhibitionBeacon = Model.sequelize.models['ExhibitionBeacon'];
 var User = Model.sequelize.models['User'];
+var Match = Model.sequelize.models['Match'];
 
 //Artist.create({
 //    name : 'César',
@@ -146,3 +147,10 @@ var User = Model.sequelize.models['User'];
 //    points : 500,
 //    active : true
 //});
+
+//Match.create({
+//    UserId : 1,
+//    ArtifactId : 2,
+//    attempts : 1,
+//    correct : false
+//})
