@@ -35,11 +35,10 @@ GET /museum?page=2
 Will result in a requests for all museums, starting at the second paginataion page. More on this on [API Routes Definition](#api-routes)
 
 ### Content <a id="content"></a>
-- - -
+
 Communication to and from the API server will happen through the use of HTTP Verbs and using JSON data, for both response and requests.
 
 ### API Routes Definition <a id="api-routes"></a>
-- - - 
 
 Functionality is broken up into several components. Each components will have similar URL structure. Components are as follows:
 
