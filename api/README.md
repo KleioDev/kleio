@@ -51,21 +51,19 @@ GET /museum?page=page_number
 ```
 This will return the Museum's general information, as a JSON object, including:
 
-Key | (Possible) Value 
------------|----------
-id | The Museum instance id 
-|name| The Name of the Museum |
-|description | A brief description of the museum |
-| terms | The museum's terms of service |
-| about | Legal information regarding the Museum | 
-|hoursOfOperation | The Museum's hours of operation, as a string |
-|socialMediaLinks | An array containing the social media links that are related to the museum |
-|phone | Phone number for the Museum | 
-|email | Email for the Museum |
-|image | URL location for a Museum Image | 
-|phoneExtension | The Museum phone extension |
-| createdAt | Date and time of creation |
-| updatedAt | Date and time of last update |
+```
+{
+  "name": "Museo de Arte De La Universidad de Puerto Rico en Mayagüez",
+  "description": "El Colegio de Mayagüez se enorgulleze en presentar el Museo de Arte de la universidad de Puerto Rico",
+  "hoursOfOperation": "Lunes a Viernes de 8:00AM a 10:00PM",
+  "email": "musa@upr.edu",
+  "phone": "787878787",
+  "image": "http://i.imgur.com/KN4vh.jpg",
+  "location": "http://i.imgur.com/KN4vh.jpg",
+  "terms": "No bregues mal",
+  "about": "Establecido en Junio 2015"
+}
+```
 
 
 
