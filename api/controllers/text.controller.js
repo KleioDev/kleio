@@ -16,11 +16,15 @@ module.exports = function(){
     return archiveController.routes();
 }
 
+/**
+ * Get a list of Archives related to an artifact
+ * Parameter : id -> ArtifactId
+ */
 function *index() {
     var archives,
         id = parseInt(this.params.id);
 
-    if(!id || id === NaN){
+    if(isNaN(id)){
         this.throw('Invalid Parameters', 400);
     }
 
@@ -39,11 +43,15 @@ function *index() {
     this.body = { archives : archives};
 }
 
+/**
+ * Get an Archive instance
+ * Parameter : id -> ArchiveId
+ */
 function *show() {
     var archive,
         id = parseInt(this.params.id);
 
-    if(!id || id === NaN){
+    if(isNaN(id)){
         this.throw('Invalid Parameters', 400);
     }
 

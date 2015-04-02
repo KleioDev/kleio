@@ -6,6 +6,10 @@ var middleware = require('../middleware'),
     Router = require('koa-router'),
     koaBody = require('koa-better-body')();
 
+/**
+ * Handle requests related to Matches
+ * @returns {*}
+ */
 module.exports = function(){
 
     var loadModels = middleware.loadModel(),
@@ -17,12 +21,15 @@ module.exports = function(){
     return matchController.routes();
 }
 
+/**
+ * Get a Clue to initiate the match process
+ * Parameter: id -> is 0 return a random clue, if > 0, return the appropriate Clue
+ */
 function *index(){
     var clue,
         id = parseInt(this.params.id),
         count;
 
-    //TODO: Fix NaN, should do a proper check
     if(isNaN(id)){
         this.throw('Invalid Parameters', 400);
     }
@@ -57,6 +64,13 @@ function *index(){
 
 }
 
+/**
+ * Submit a guess to a given Clue
+ * Payload : {
+ *  ClueId : An Integer with the id of the Clue,
+ *  UserId : An Integer with the id of the User trying to match.
+ *  qrcode : A String with the qr code that is being tested
+ */
 function *create(){
     var match,
         artifact,

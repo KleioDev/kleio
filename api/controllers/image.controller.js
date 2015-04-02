@@ -5,6 +5,10 @@
 var middleware = require('../middleware'),
     Router = require('koa-router');
 
+/**
+ * Handle requests related to Images
+ * @returns {*}
+ */
 module.exports = function(){
 
     var loadModels = middleware.loadModel();
@@ -16,11 +20,16 @@ module.exports = function(){
     return imageController.routes();
 }
 
+/**
+ * Get a list of images related to artifacts
+ * Parameters: id -> ArtifactId
+ *
+ */
 function *index() {
     var images,
         id = parseInt(this.params.id);
 
-    if(!id || id === NaN){
+    if(isNaN(id)){
         this.throw('Invalid Parameters', 400);
     }
 
@@ -39,6 +48,10 @@ function *index() {
     this.body = { images : images};
 }
 
+/**
+ * Get an Image
+ * Parameter: id -> ImageId
+ */
 function *show() {
     var image,
         id = parseInt(this.params.id);

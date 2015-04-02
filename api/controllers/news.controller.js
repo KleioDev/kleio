@@ -5,6 +5,10 @@
 var middleware = require('../middleware'),
     Router = require('koa-router');
 
+/**
+ * Handle requests related to Museum News
+ * @returns {*}
+ */
 module.exports = function(){
     var loadModels = middleware.loadModel();
 
@@ -16,20 +20,24 @@ module.exports = function(){
     return newsController.routes();
 }
 
+/**
+ * Get a list of all Museum News, limited to 25 at a given time.
+ * Query Parameter : page -> The page number that wants to fetched
+ */
 function *index() {
     var news,
         offset = this.query.page;
 
-    if(!offset || offset < 2){
-        offset = 1
+    if(!offset || offset < 1){
+        offset = 0;
     }
 
     try {
         news = yield this.models['News'].findAll({
-            //order : '"createdAt" DESC',
-            //limit : 10,
-            //attributes : ['id', 'title', 'image', 'description'],
-            //offset : offset
+            order : '"createdAt" DESC',
+            limit : 10,
+            attributes : ['id', 'title', 'image', 'description'],
+            offset : offset
         });
     } catch (err) {
         this.throw(err.message, err.status || 500);
@@ -45,6 +53,10 @@ function *index() {
 
 }
 
+/**
+ * Get a News Instance, given an Id
+ * Parameter : id -> NewsId
+ */
 function *show() {
 
     var news,

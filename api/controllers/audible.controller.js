@@ -5,6 +5,10 @@
 var middleware = require('../middleware'),
     Router = require('koa-router');
 
+/**
+ * Handle requests related to audible media content
+ * @returns {*}
+ */
 module.exports = function() {
     var loadModels = middleware.loadModel();
 
@@ -15,12 +19,16 @@ module.exports = function() {
     return audibleController.routes();
 }
 
-
+/**
+ * Get a list of audible content related to a given Artifact
+ * Parameters: id -> ArtifactId
+ * Query Parameters: page -> The page number that wants to fetched
+ */
 function *index() {
     var audibles,
         id = parseInt(this.params.id);
 
-    if(!id || id === NaN){
+    if(isNaN(id)){
         this.throw('Invalid Parameters', 400);
     }
 
@@ -39,11 +47,15 @@ function *index() {
     this.body = { audibles : audibles };
 }
 
+/**
+ * Get a single Audible
+ * Parameter: id -> AudibleId
+ */
 function *show(){
     var audible,
         id = parseInt(this.params.id);
 
-    if(!id || id === NaN){
+    if(isNaN(id)){
         this.throw('Invalid Parameters', 400);
     }
 

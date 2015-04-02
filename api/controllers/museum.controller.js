@@ -5,6 +5,10 @@
 var middleware = require('../middleware'),
     Router = require('koa-router');
 
+/**
+ * Handle Requests Related to the Museum
+ * @returns {*}
+ */
 module.exports = function(){
     var loadModels =  middleware.loadModel();
 
@@ -15,6 +19,9 @@ module.exports = function(){
     return museumController.routes();
 }
 
+/**
+ * Get the most recently updated version of the Museum instance
+ */
 function *index(){
 
     try{

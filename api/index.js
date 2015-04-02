@@ -4,12 +4,11 @@
 var koa = require('koa'),
     app,
     controllerBundle = require('./controllers')(),
-    utils = require('./middleware');
     _ = require('lodash'),
     json = require('koa-json');
 
 /**
- * Initialize API
+ * Initialize API and load Controllers
  * @param database
  * @returns {*|exports}
  */

@@ -5,6 +5,10 @@
 var middleware = require('../middleware'),
     Router = require('koa-router');
 
+/**
+ * Handle request related to Artifacts
+ * @returns {*}
+ */
 module.exports = function(){
     var loadModels = middleware.loadModel();
 
@@ -16,22 +20,25 @@ module.exports = function(){
 }
 
 /**
- * Get a list of all artifacts, limited 10 at a time
+ * Get a list of all artifacts
+ * The list will be limited to 10 at a time.
+ * Query Parameters: Offset, indicates page that is being requests, if ommited will default
  */
 function *index(){
     var artifacts,
         offset = this.query.page;
 
     if(!offset || offset < 1){
-        offset = 1
+        offset = 0;
     }
 
     try {
         artifacts = yield this.models['Artifact'].findAll({
             order : '"createdAt" DESC',
             limit : 10,
-            attributes : ['image', 'title', 'description', 'id']
-        });
+            attributes : ['image', 'title', 'description', 'id'],
+            offset : offset
+            });
     } catch(err){
         this.throw(err.message, err.status || 500);
     }
@@ -47,16 +54,17 @@ function *index(){
 }
 
 /**
- * Get a single artifact instance based on a provided id
+ * Get a single artifact instance
+ * Parameter: id -> ArtifactId
  */
 function *show(){
     var artifact,
-        id = this.params.id;
+        id = parseInt(this.params.id);
 
 
-    //if(typeof id !== 'number'){
-    //    this.throw('Bad Request', 404);
-    //}
+    if(isNaN(id)){
+        this.throw('Bad Request', 404);
+    }
 
     try {
         var Artifact = this.models['Artifact'],

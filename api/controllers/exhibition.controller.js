@@ -5,6 +5,10 @@
 var middleware  = require('../middleware'),
     Router = require('koa-router');
 
+/**
+ * Handle requests related to exhibitions
+ * @returns {*}
+ */
 module.exports = function(){
 
     //TODO: Implement master collection
@@ -21,22 +25,24 @@ module.exports = function(){
 }
 
 /**
- *
+ * Get a list of al exhibitions, limited to 25 at a time.
+ * Query Parameter: page -> The page number that wants to fetched
  */
 function *index() {
     var exhibitions,
         offset = this.query.page;
 
     if(!offset || offset < 1){
-        offset = 1;
+        offset = 0;
     }
 
     //TODO: Show(return) number of objects in an exhibition
     try {
         exhibitions = yield this.models['Exhibition'].findAll({
             order : '"createdAt" DESC',
-            limit : 10,
-            attributes : ['image', 'title', 'description']
+            limit : 25,
+            attributes : ['image', 'title', 'description'],
+            offset : offset
         });
     } catch(err) {
         this.throw(err.message, err.status || 500);
@@ -54,6 +60,7 @@ function *index() {
 
 /**
  * Get a single exhibition based on id parameter
+ * Parameter: id -> ExhibitionId
  */
 function *show(){
     var exhibition,
@@ -81,6 +88,10 @@ function *show(){
 
 }
 
+/**
+ * Get a list of exhibitions near my location
+ * Query Parameters: beacon : beacon codes that will be used to locate exhibitions
+ */
 function *near(){
     var exhibitions,
         beacons = [],

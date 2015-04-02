@@ -5,6 +5,10 @@
 var middleware = require('../middleware'),
     Router = require('koa-router');
 
+/**
+ * Handle requests related to Videos
+ * @returns {*}
+ */
 module.exports = function(){
 
     var loadModels = middleware.loadModel(),
@@ -16,6 +20,10 @@ module.exports = function(){
     return videoController.routes();
 }
 
+/**
+ * Get a list of video instances, limited to 25 at a time
+ * Query Parameter : page -> The page number that wants to fetched
+ */
 function *index(){
     var videos,
         id = this.params.id;
@@ -41,6 +49,10 @@ function *index(){
     this.body = { videos : videos};
 }
 
+/**
+ * Get a Video instance
+ * Parameter: id -> VideoId
+ */
 function *show(){
     var video,
         id;

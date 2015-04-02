@@ -6,6 +6,10 @@ var middleware = require('../middleware'),
     Router = require('koa-router'),
     koaBody = require('koa-better-body')();
 
+/**
+ * Handle requests related to Feedback
+ * @returns {*}
+ */
 module.exports = function(){
 
     var loadModels = middleware.loadModel();
@@ -18,6 +22,14 @@ module.exports = function(){
 
 }
 
+/**
+ * Submit Feedback information
+ * Payload : {
+ *  title : String with the title
+ *  message : String with the feedback message
+ *  type : String with the feedback type, could be bug, general or content_issue
+ * }
+ */
 function *create(){
     //x-www-form-urlencoded
     var feedback = this.request.body.fields,

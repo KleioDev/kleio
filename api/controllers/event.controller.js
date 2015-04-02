@@ -5,6 +5,10 @@
 var middleware = require('../middleware'),
     Router = require('koa-router');
 
+/**
+ * Handle requests related to events
+ * @returns {*}
+ */
 module.exports = function(){
 
     var loadModels = middleware.loadModel();
@@ -19,23 +23,24 @@ module.exports = function(){
 }
 
 /**
- * Get a list of all the events sorted by event date
+ * Get a list of Museum Events, limited to 25 at a given time.
+ * Query Parameters: page -> The page number that wants to fetched
  */
 function *index() {
     var events,
         offset = this.query.page;
 
     if(!offset || offset < 1) {
-        offset = 1;
+        offset = 0;
     }
 
     try {
 
         events = yield this.models['Event'].findAll({
-            //order : '"eventDate" DESC',
-            //limit : 25,
-            //attributes : ['id', 'title', 'description', 'eventDate'],
-            //offset : offset
+            order : '"eventDate" DESC',
+            limit : 25,
+            attributes : ['id', 'title', 'description', 'eventDate'],
+            offset : offset
         });
     } catch (err) {
         this.throw(err.message, err.status || 500);
@@ -50,6 +55,10 @@ function *index() {
     this.body = { events : events};
 }
 
+/**
+ * Get a Museum Event
+ * Parameter: id -> Event id
+ */
 function *show() {
     var event,
         id = this.params.id;

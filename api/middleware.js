@@ -4,8 +4,6 @@
 
 var database = require('../models');
 
-//TODO: Take models and return a middleware function that adds models to ctx
-
 /**
  * Generate middleware functions
  */
@@ -34,7 +32,4 @@ function *authenticate() {
     //TODO: Fill
 }
 
-
-
-//Controllers will eventually need middleware like authenticating a user, access to the models
 
