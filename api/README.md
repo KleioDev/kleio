@@ -281,4 +281,203 @@ The response will include all the information for a given artifact and also incl
 }
 ```
 
+### Media Content <a id="media"></a>
 
+Media Content are pieces of information in the form of *images, audibles, videos or archives* that are related somehow to an artifact and as so, are presented alongside the artifact. As was previously mentioned, the media content is delieved once a single artifact is retrieved. 
+
+### Audible <a id="audible"></a>
+
+This refers to contant that is distributed by means of audio files. For now, this content can only be delived by means of a URL that locates the actual content. As of this version, only content related to an existing artifact can be shown.
+
+**Request**
+
+```
+GET /artifact/audible/:id?page=page_number
+```
+In this case, the *id* parameter refers to the id parameter of an *artifact*
+
+**Response**
+
+A list of all the audibles for a given artifact.
+
+```
+{
+  "audibles": [
+    {
+      "id": 1,
+      "title": "Emperial March",
+      "description": "When you hear this, you know the emperor is comming",
+      "link": "https://soundcloud.com/roy-vader/the-imperial-march-darth",
+      "createdAt": "2015-03-31T18:58:08.042Z",
+      "updatedAt": "2015-03-31T18:58:08.042Z"
+    }
+  ]
+}
+```
+
+#### Audible - Single Audible
+
+Get a single audible content, based on it's id attribute.
+
+**Request**
+
+```
+GET /audible/:id
+```
+**Response**
+
+```
+{
+  "id": 1,
+  "title": "Emperial March",
+  "description": "When you hear this, you know the emperor is comming",
+  "link": "https://soundcloud.com/roy-vader/the-imperial-march-darth",
+  "createdAt": "2015-03-31T18:58:08.042Z",
+  "updatedAt": "2015-03-31T18:58:08.042Z"
+}
+```
+### Video <a id="video"></a>
+
+Video content in the form of a URL that points to a video resource.
+
+**Request**
+
+```
+GET /artifact/video/:id?page=page_number
+```
+
+**Response**
+
+```
+{
+  "videos": [
+    {
+      "id": 1,
+      "title": "Volkswagon Vader Commercial",
+      "description": "Vader Commercial",
+      "link": "https://www.youtube.com/watch?v=R55e-uHQna0",
+      "createdAt": "2015-03-31T18:58:08.051Z",
+      "updatedAt": "2015-03-31T18:58:08.051Z"
+    }
+  ]
+}
+```
+
+#### Video - Single Video
+
+Get a single video content, based on it's id attribute.
+
+**Request**
+
+```
+GET /video/:id
+```
+**Response**
+
+```
+{
+  "id": 1,
+  "title": "Volkswagon Vader Commercial",
+  "description": "Vader Commercial",
+  "link": "https://www.youtube.com/watch?v=R55e-uHQna0",
+  "createdAt": "2015-03-31T18:58:08.051Z",
+  "updatedAt": "2015-03-31T18:58:08.051Z"
+}
+```
+
+### Image <a id="image"></a>
+
+Image content in the form of a URL that points to a image resource.
+
+**Request**
+
+```
+GET /artifact/image/:id?page=page_number
+```
+
+**Response**
+
+```
+{
+  "images": [
+    {
+      "id": 1,
+      "title": "Who is Vader?",
+      "description": "A picture depicting who is this vader whos existance we are celebrating",
+      "link": "http://wersm.com/wp-content/uploads/2013/12/3474964-darth-vader.jpg",
+      "createdAt": "2015-03-31T18:58:08.047Z",
+      "updatedAt": "2015-03-31T18:58:08.047Z"
+    }
+  ]
+}
+```
+
+#### Image - Single Image
+
+Get a single image content, based on it's id attribute.
+
+**Request**
+
+```
+GET /image/:id
+```
+**Response**
+
+```
+{
+  "id": 1,
+  "title": "Who is Vader?",
+  "description": "A picture depicting who is this vader whos existance we are celebrating",
+  "link": "http://wersm.com/wp-content/uploads/2013/12/3474964-darth-vader.jpg",
+  "createdAt": "2015-03-31T18:58:08.047Z",
+  "updatedAt": "2015-03-31T18:58:08.047Z"
+}
+```
+### Archive <a id="archive"></a>
+
+Archive content in the form of a URL that points to a archive resource.
+
+**Request**
+
+```
+GET /artifact/archive/:id?page=page_number
+```
+
+**Response**
+
+```
+{
+  "archives": [
+    {
+      "id": 1,
+      "title": "Memoirs of Vader",
+      "description": "A journey into the life and death of Darth Vader",
+      "link": "http://www.starwars.com/databank/darth-vader",
+      "createdAt": "2015-03-31T18:58:08.050Z",
+      "updatedAt": "2015-03-31T18:58:08.050Z"
+    }
+  ]
+}
+```
+
+#### Archive - Single Archive
+
+Get a single archive content, based on it's id attribute.
+
+**Request**
+
+```
+GET /archive/:id
+```
+**Response**
+
+```
+{
+  "id": 1,
+  "title": "Memoirs of Vader",
+  "description": "A journey into the life and death of Darth Vader",
+  "link": "http://www.starwars.com/databank/darth-vader",
+  "createdAt": "2015-03-31T18:58:08.050Z",
+  "updatedAt": "2015-03-31T18:58:08.050Z"
+}
+```
