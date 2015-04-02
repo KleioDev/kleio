@@ -1,5 +1,4 @@
 # MuSA API
-- - -
 
 ### Overview
 
@@ -23,11 +22,11 @@
 * [Errors](#errors)
 
 ### Current Version Description <a id="description"></a>
-- - -
+
 The purpose of this API is fascilitating information to the MuSA mobile applications. The Museum of the University of Puerto Rico, Mayagüez Campus (MuSA) will allow students to browse all the collections of the museum from the comfort of their smartphone. A few extras are provided for users that make use of the application while inside of the Museum. This API is currently in it's ***Beta*** version, bugs or complains are more than welcomed.
 
 ### Schema <a id="schema"></a>
-- - - 
+
 This API follows a *flat* schema for all requests. For example:
 
 ```
@@ -53,9 +52,9 @@ GET /museum?page=page_number
 ```
 This will return the Museum's general information, as a JSON object, including:
 
-|Key | (Possible) Value |
-| - - - - - - - - - - - - - - |
-|id | The Museum instance id |
+Key | (Possible) Value 
+-----------|----------
+id | The Museum instance id 
 |name| The Name of the Museum |
 |description | A brief description of the museum |
 | terms | The museum's terms of service |
