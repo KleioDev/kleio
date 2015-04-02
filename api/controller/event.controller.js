@@ -32,10 +32,10 @@ function *index() {
     try {
 
         events = yield this.models['Event'].findAll({
-            order : '"eventDate" DESC',
-            limit : 25,
-            attributes : ['id', 'title', 'description', 'eventDate'],
-            offset : offset
+            //order : '"eventDate" DESC',
+            //limit : 25,
+            //attributes : ['id', 'title', 'description', 'eventDate'],
+            //offset : offset
         });
     } catch (err) {
         this.throw(err.message, err.status || 500);
@@ -47,7 +47,7 @@ function *index() {
 
     this.status = 200;
 
-    this.body = events.getData();
+    this.body = { events : events};
 }
 
 function *show() {
@@ -55,9 +55,9 @@ function *show() {
         id = this.params.id;
 
     //Check for a valid parameter
-    if(typeof id !== 'number'){
-        this.throw('Bad Request', 400);
-    }
+    //if(typeof id !== 'number'){
+    //    this.throw('Bad Request', 400);
+    //}
 
     try {
         event = yield this.models['Event'].find({

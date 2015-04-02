@@ -14,11 +14,11 @@
 		* [Video](#video)
 		* [Image](#image)
 		* [Archive](#archive)
-	* [User](#user)
 	* [Events](#events)
 	* [News](#news)
 	* [Feedback](#feedback)
 	* [Match Hunt](#match)
+	* [User](#user)
 * [Errors](#errors)
 
 ### Current Version Description <a id="description"></a>
@@ -481,3 +481,209 @@ GET /archive/:id
   "updatedAt": "2015-03-31T18:58:08.050Z"
 }
 ```
+
+### Events <a id="events"></a>
+
+Get a list of Museum events, sorted by the most recently created.
+
+**Request**
+
+```
+GET /events?page=page_number
+```
+
+**Response**
+
+```
+{
+  "events": [
+    {
+      "id": 2,
+      "title": "Vader Exhibition",
+      "description": "An exhibition showing Cesarangelos best Vader portraits",
+      "eventDate": "2015-05-02T07:24:00.000Z",
+      "image": "http://adsoftheworld.com/sites/default/files/styles/media_retina/public/images/sta-002_portfolio_darthv_ang_lr_1.jpg?itok=98Knqo57",
+      "location": "http://adsoftheworld.com/sites/default/files/styles/media_retina/public/images/sta-002_portfolio_darthv_ang_lr_1.jpg?itok=98Knqo57",
+      "author": 1,
+      "createdAt": "2015-03-31T19:02:43.100Z",
+      "updatedAt": "2015-03-31T19:02:43.100Z"
+    }
+  ]
+}
+```
+
+#### Event - Single Event
+
+**Request**
+
+```
+GET /events/:id
+```
+
+**Response**
+
+```
+{
+  "id": 2,
+  "title": "Vader Exhibition",
+  "description": "An exhibition showing Cesarangelos best Vader portraits",
+  "eventDate": "2015-05-02T07:24:00.000Z",
+  "image": "http://adsoftheworld.com/sites/default/files/styles/media_retina/public/images/sta-002_portfolio_darthv_ang_lr_1.jpg?itok=98Knqo57",
+  "location": "http://adsoftheworld.com/sites/default/files/styles/media_retina/public/images/sta-002_portfolio_darthv_ang_lr_1.jpg?itok=98Knqo57",
+  "author": 1,
+  "createdAt": "2015-03-31T19:02:43.100Z",
+  "updatedAt": "2015-03-31T19:02:43.100Z"
+}
+```
+
+### News <a id="news"></a>
+
+Get a list of all the news for the museum, sorted by date and time.
+
+**Request**
+
+```
+GET /news?page=page_number
+```
+
+**Response**
+
+```
+{
+  "news": [
+    {
+      "id": 1,
+      "title": "MuSA Café",
+      "description": "Museum of Art from the University of Puerto Rico Mayagüez Campus is proud to invite you to the MuSA Café Openning",
+      "image": "http://media.zenfs.com/en-US/video/video.pd2upload.com/video.yahoofinance.com@0c15ac80-566c-3267-897f-982c3aaddf98_FULL.jpg",
+      "AdministratorId": 1,
+      "createdAt": "2015-03-31T18:58:08.048Z",
+      "updatedAt": "2015-03-31T18:58:08.048Z"
+    }
+  ]
+}
+```
+
+#### News - Single News
+
+Get a single news article
+
+**Request**
+
+```
+GET /news/:id
+```
+
+**Response**
+
+```
+{
+  "id": 1,
+  "title": "MuSA Café",
+  "description": "Museum of Art from the University of Puerto Rico Mayagüez Campus is proud to invite you to the MuSA Café Openning",
+  "image": "http://media.zenfs.com/en-US/video/video.pd2upload.com/video.yahoofinance.com@0c15ac80-566c-3267-897f-982c3aaddf98_FULL.jpg",
+  "AdministratorId": 1,
+  "createdAt": "2015-03-31T18:58:08.048Z",
+  "updatedAt": "2015-03-31T18:58:08.048Z"
+}
+```
+
+### Feedback <a id="feedback"></a>
+A way for users to submit feedback to the museum
+
+**Request**
+
+```
+POST /feedback
+```
+
+
+**Payload**
+
+key | value
+----|------
+title | A String with the title of the provided feedback 
+message | A String with the feedback content
+type | A String representing the type of feedback, can be one of three; bug, general or content_problem
+
+### Match Hunt <a id="match"></a>
+
+Match hunt is a game that provides the User with a Clue, the user then tries to match this clue and is then rewarded with points.
+
+####Getting a Clue
+
+**Request**
+
+```
+GET /match/:id
+```
+
+This id attribute is provided to get either a particular Clue, or a Random Clue. If a *id == 0* a random Clue will be returned, else a Clue with the given *id* will be located.
+
+**Response**
+
+```
+{
+  "id": 1,
+  "image": "https://pbs.twimg.com/profile_images/3103894633/e0d179fc5739a20308331b432e4f3a51_400x400.jpeg",
+  "pointsValue": 15,
+  "createdAt": "2015-03-31T18:58:08.044Z",
+  "updatedAt": "2015-03-31T18:58:08.043Z"
+}
+```
+
+#### Attempting a Match
+
+A match is attempted using a POST request, this will try to match a given clue to an artifact. 
+
+**Request**
+
+```
+POST /match
+```
+
+**Payload**
+
+key | value
+----|------
+UserId | An Integer with the User's Id
+ClueId | An Integer pertaining to the current Clue Id
+qrcode | The scanned qrcode as a String
+
+### User <a id="user"></a>
+
+Get the leaderboard for the Museum, will give a sorted list of users based on their points total.
+
+**Request**
+
+```
+GET /leaderboard
+```
+
+**Response**
+
+```
+{
+  "leaderboard": [
+    {
+      "firstName": "Luis",
+      "lastName": "Medina",
+      "points": "500"
+    },
+    {
+      "firstName": "Cesar",
+      "lastName": "Cruz",
+      "points": "200"
+    },
+    {
+      "firstName": "Jose",
+      "lastName": "Martinez",
+      "points": "150"
+    }
+  ]
+}
+```
+
+### Errors <a id="errors"></a>
+
+##### TODO :D
