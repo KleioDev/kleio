@@ -47,7 +47,7 @@ Functionality is broken up into several components. Each components will have si
 Information reagarding the museum will be handles under the museum URL structure:
 
 ```
-GET /museum?page=page_number
+GET /museum
 ```
 This will return the Museum's general information, as a JSON object, including:
 
@@ -64,10 +64,90 @@ This will return the Museum's general information, as a JSON object, including:
   "about": "Establecido en Junio 2015"
 }
 ```
+### Exhibitions <a id="exhibitions"></a>
 
+Requests regarding museum exhibitions. An exhibition is a *related* collection of artifacts.
 
+```
+GET /exhibition?page=page_number
+```
 
+Will return a list of 25 exhibitions, sorted in a descending fashion by **most recently updated**. The **page** query parameter is used as an offset to receive a certain page. Each Exhibition entity within the list will contain title, image and description attributes.
 
+```
+{
+  "exhibitions": [
+    {
+      "image": "http://i.imgur.com/KN4vh.jpg",
+      "title": "Vader",
+      "description": "An exhibition showing Cesarangelos best Vader portraits"
+    }
+  ]
+}
+```
+#### Exhibition - Artifacts View
 
+View all the artifacts for a single exhibitions
 
+```
+GET /exhibition/:id
+```
+An exhibition is selected based on it's **id** parameter.
+
+```
+{
+  "id": 1,
+  "title": "Vader",
+  "description": "An exhibition showing Cesarangelos best Vader portraits",
+  "image": "http://i.imgur.com/KN4vh.jpg",
+  "active": true,
+  "MuseumId": 1,
+  "createdAt": "2015-03-31T18:58:08.046Z",
+  "updatedAt": "2015-03-31T18:58:08.046Z"
+}
+```
+
+#### Exhibitions - Near Me
+
+Find all exhibitions which can be found near the user's physicall location. This is done using iBeacons.
+
+```
+GET /exhibition/near/me?beaconX=beacon_code
+```
+The beacon code is provided by means of the beaconX request query parameter. If I were to pass a single iBeacon code, the query would be as follows:
+
+```
+GET /exhibition/near/me?beacon1=B558CBDA-4472-4211-A350-FF1196FFE8C8
+```
+
+If I were to send two iBeacon codes:
+
+```
+GET /exhibitions/near/me?beacon1=B558CBDA-4472-4211-A350-FF1196FFE8C8&beacon2=BCC8CBDA-88AA-4211-A350-FF1196FFE8C8
+```
+Essentially concatinating ibeacon codes as needed. The result should be:
+
+```
+{
+  "exhibitions": [
+    {
+      "id": 1,
+      "title": "Vader",
+      "description": "An exhibition showing Cesarangelos best Vader portraits",
+      "image": "http://i.imgur.com/KN4vh.jpg",
+      "active": true,
+      "MuseumId": 1,
+      "createdAt": "2015-03-31T18:58:08.046Z",
+      "updatedAt": "2015-03-31T18:58:08.046Z",
+      "ExhibitionBeacon": {
+        "id": 1,
+        "ExhibitionId": 1,
+        "BeaconId": 1,
+        "createdAt": "2015-04-01T03:25:28.787Z",
+        "updatedAt": "2015-04-01T03:25:28.787Z"
+      }
+    }
+  ]
+}
+```
 
