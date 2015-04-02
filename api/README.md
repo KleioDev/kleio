@@ -151,3 +151,134 @@ Essentially concatinating ibeacon codes as needed. The result should be:
 }
 ```
 
+### Artifacts <a id="artifacts"></a>
+
+An artifact is essentially any art piece within the Museum. 
+
+Request URL:
+
+```
+GET /artifact?page=page_number
+```
+Response:
+
+A list of artifacts. Pagination is used so only 25 artifacts are receieved at a given time. The page request query parameter can be used to fetch a different page:
+
+```
+{
+  "artifacts": [
+    {
+      "image": "https://scontent-atl.xx.fbcdn.net/hphotos-xfa1/v/l/t1.0-9/399196_1405515439661511_227192283_n.jpg?oh=e9ecb5131e950c53bb2ae70c3e42a58e&oe=55B5F870",
+      "title": "Hope Vader",
+      "description": "Darth Vader posing as the famous 2008 Obama hope poster",
+      "id": 2
+    }
+  ]
+}
+```
+
+#### Artifacts - Single Artifact
+
+Get a single artifact using and id.
+
+**Request:**
+
+```
+GET /artifact/:id
+```
+**Response:**
+
+The response will include all the information for a given artifact and also include lists of all it's related content, separated by content type.
+
+```
+{
+  "id": 2,
+  "title": "Hope Vader",
+  "description": "Darth Vader posing as the famous 2008 Obama hope poster",
+  "medium": "Oil base",
+  "classification": "Modern",
+  "attribution": null,
+  "type": "Painting",
+  "dimensions": "8x11.5",
+  "dated": "2013",
+  "period": "Modern",
+  "culture": "Puertorican",
+  "department": null,
+  "objectNumber": "0927450934875097345-984530980954303980245",
+  "image": "https://scontent-atl.xx.fbcdn.net/hphotos-xfa1/v/l/t1.0-9/399196_1405515439661511_227192283_n.jpg?oh=e9ecb5131e950c53bb2ae70c3e42a58e&oe=55B5F870",
+  "ArtistId": 1,
+  "qrcode": "https://scontent-atl.xx.fbcdn.net/hphotos-xfa1/v/l/t1.0-9/399196_1405515439661511_227192283_n.jpg?oh=e9ecb5131e950c53bb2ae70c3e42a58e&oe=55B5F870",
+  "createdAt": "2015-03-31T19:02:43.088Z",
+  "updatedAt": "2015-03-31T19:02:43.088Z",
+  "Videos": [
+    {
+      "id": 1,
+      "title": "Volkswagon Vader Commercial",
+      "description": "Vader Commercial",
+      "link": "https://www.youtube.com/watch?v=R55e-uHQna0",
+      "createdAt": "2015-03-31T18:58:08.051Z",
+      "updatedAt": "2015-03-31T18:58:08.051Z",
+      "ArtifactVideo": {
+        "id": 1,
+        "ArtifactId": 2,
+        "VideoId": 1,
+        "createdAt": "2015-03-31T21:22:54.701Z",
+        "updatedAt": "2015-03-31T21:22:54.701Z"
+      }
+    }
+  ],
+  "Audibles": [
+    {
+      "id": 1,
+      "title": "Emperial March",
+      "description": "When you hear this, you know the emperor is comming",
+      "link": "https://soundcloud.com/roy-vader/the-imperial-march-darth",
+      "createdAt": "2015-03-31T18:58:08.042Z",
+      "updatedAt": "2015-03-31T18:58:08.042Z",
+      "ArtifactAudible": {
+        "id": 1,
+        "ArtifactId": 2,
+        "AudibleId": 1,
+        "createdAt": "2015-03-31T21:22:54.689Z",
+        "updatedAt": "2015-03-31T21:22:54.689Z"
+      }
+    }
+  ],
+  "Images": [
+    {
+      "id": 1,
+      "title": "Who is Vader?",
+      "description": "A picture depicting who is this vader whos existance we are celebrating",
+      "link": "http://wersm.com/wp-content/uploads/2013/12/3474964-darth-vader.jpg",
+      "createdAt": "2015-03-31T18:58:08.047Z",
+      "updatedAt": "2015-03-31T18:58:08.047Z",
+      "ArtifactImage": {
+        "id": 1,
+        "ArtifactId": 2,
+        "ImageId": 1,
+        "createdAt": "2015-03-31T21:22:54.704Z",
+        "updatedAt": "2015-03-31T21:22:54.704Z"
+      }
+    }
+  ],
+  "Texts": [
+    {
+      "id": 1,
+      "title": "Memoirs of Vader",
+      "description": "A journey into the life and death of Darth Vader",
+      "link": "http://www.starwars.com/databank/darth-vader",
+      "createdAt": "2015-03-31T18:58:08.050Z",
+      "updatedAt": "2015-03-31T18:58:08.050Z",
+      "ArtifactText": {
+        "id": 2,
+        "ArtifactId": 2,
+        "TextId": 1,
+        "createdAt": "2015-03-31T21:24:44.015Z",
+        "updatedAt": "2015-03-31T21:24:44.015Z"
+      }
+    }
+  ]
+}
+```
+
+
