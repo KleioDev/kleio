@@ -13,11 +13,12 @@ var middleware = require('../middleware'),
  */
 module.exports = function(){
 
-    var loadModels = middleware.loadModel(),
+    var loadModels = middleware.loadModel()
+        auth = middleware.authentication,
         userController = new Router()
 
-        .get('/leaderboard', loadModels, leaderboard)
-        .post('/user', koaBody, loadModels, create);
+        .get('/leaderboard', loadModels, auth, leaderboard)
+        .post('/user', auth, koaBody, loadModels, create);
 
     return userController.routes();
 

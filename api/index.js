@@ -5,15 +5,14 @@ var koa = require('koa'),
     app,
     controllerBundle = require('./controllers')(),
     _ = require('lodash'),
-    json = require('koa-json');
+    json = require('koa-json'),
+    session = require('koa-session');
 
 /**
  * Initialize API and load Controllers
  * @param database
  * @returns {*|exports}
  */
-
-
 module.exports = function() {
 
     app = koa();

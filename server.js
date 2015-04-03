@@ -4,11 +4,16 @@
 var koa = require('koa'),
     Api = require('./api'),
     mount = require('koa-mount'),
-    db = require('./models');
+    db = require('./models'),
+    session = require('koa-session');
 
 var app = koa();
 
 var api = Api(db);
+
+app.keys = ['cesarsalad'];
+
+app.use(session(app));
 
 app.use(mount(api));
 
