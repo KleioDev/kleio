@@ -4,7 +4,8 @@
 
 
 var middleware = require('../middleware'),
-    Router = require('koa-router');
+    Router = require('koa-router'),
+    koaBody = require('koa-better-body')();
 
 /**
  * Handle requests related to Users
@@ -15,7 +16,8 @@ module.exports = function(){
     var loadModels = middleware.loadModel(),
         userController = new Router()
 
-        .get('/leaderboard', loadModels, leaderboard);
+        .get('/leaderboard', loadModels, leaderboard)
+        .post('/user', koaBody, loadModels, create);
 
     return userController.routes();
 
@@ -51,4 +53,26 @@ function *leaderboard(){
     this.status = 200;
 
     this.body = { leaderboard : leaderboard};
+}
+
+/**
+ * Create a User instance
+ */
+function *create() {
+    var user,
+        data = this.request.body
+
+        if(!data) {
+            this.throw('Bad Request', 400)
+        }
+
+        try {
+            user = yield this.models['User'].create(data);
+        } catch(err) {
+            this.throw(err.message , err.status || 500);
+        }
+
+        this.status = 200;
+
+        this.body = 'OK';
 }
