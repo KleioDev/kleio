@@ -5,7 +5,8 @@ var koa = require('koa'),
     Api = require('./api'),
     mount = require('koa-mount'),
     db = require('./models'),
-    session = require('koa-session');
+    session = require('koa-session'),
+    dotenv = require('dotenv').load();
 
 var app = koa();
 

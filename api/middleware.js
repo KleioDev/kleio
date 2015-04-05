@@ -29,17 +29,19 @@ function loadModel() {
  * Add authentication middleware to context
  */
 function *authenticate(next) {
-    //TODO: Fill
 
-    var id;
+    var user = this.session.user;
 
-    try {
-        id = this.session.user.id;
-    } catch(err) {
-        this.throw('Unauthorized User', 401);
+    if(!user){
+        //There's no user in session, blow up.
+        this.throw('Unauthorized', 401);
     }
 
-    this.state.user = this.models['User'].find({ where : { id : id } });
+    try {
+        this.state.user = this.models['User'].find({ where : { id : user.id } });
+    } catch(err) {
+        this.throw(err.message, err.status || 500);
+    }
 
     yield next;
 

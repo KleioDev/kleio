@@ -46,6 +46,9 @@ module.exports = function(sequelize, DataTypes) {
         facebook_link : {
             type : DataTypes.STRING(1000)
         },
+        accessToken : {
+            type : DataTypes.STRING
+        },
         createdAt : {
             type : DataTypes.DATE
         },

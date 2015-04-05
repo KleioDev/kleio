@@ -25,6 +25,7 @@
   "dependencies": {
     "chai": "^2.1.1",
     "co-mocha": "^1.1.0",
+    "co-request": "^0.2.1",
     "dotenv": "^0.5.1",
     "json": "^9.0.3",
     "koa": "^0.18.1",

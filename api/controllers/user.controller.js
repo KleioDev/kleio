@@ -5,7 +5,8 @@
 
 var middleware = require('../middleware'),
     Router = require('koa-router'),
-    koaBody = require('koa-better-body')();
+    koaBody = require('koa-better-body')(),
+    rq = require('co-request');
 
 /**
  * Handle requests related to Users
@@ -18,7 +19,7 @@ module.exports = function(){
         userController = new Router()
 
         .get('/leaderboard', loadModels, auth, leaderboard)
-        .post('/user', auth, koaBody, loadModels, create);
+        .post('/user', koaBody, loadModels, create);
 
     return userController.routes();
 
@@ -60,20 +61,48 @@ function *leaderboard(){
  * Create a User instance
  */
 function *create() {
-    var user,
-        data = this.request.body
+    var body = this.request.body;
 
-        if(!data) {
-            this.throw('Bad Request', 400)
-        }
+    //TODO: Have a file that programatically adds these to files
 
-        try {
-            user = yield this.models['User'].create(data);
-        } catch(err) {
-            this.throw(err.message , err.status || 500);
-        }
+    appId = process.env.FACEBOOK_APP_ID;
 
-        this.status = 200;
+    appSecret = process.env.FACEBOOK_APP_SECRET;
 
-        this.body = 'OK';
+
+
+    if(!body) {
+        this.throw('Bad Request: No Body', 400);
+    }
+
+    var accessToken = body.fields.accessToken;
+
+    var userId = body.fields.userId;
+
+    var longAccessTokenUrl = "/oauth/access_token?grant_type=fb_exchange_token&client_id=" + appId + "&client_secret=" + appSecret+ "&fb_exchange_token=" + accessToken;
+
+    var userProfileUrl = "https://graph.facebook.com/v2.3/" + userId;
+
+    var longAccessToke = yield rq(url);
+
+    var userCredentials = yield rq(userId);
+
+    try {
+        var user = yield this.models.User.create(userCredentials);
+    } catch(err) {
+        this.throw(err.message, err.status || 500);
+    }
+
+    if(!user) {
+        this.throw('Internal Server Error', 500);
+    }
+
+    this.status = 200;
+
+    this.body = 'OK';
+
+
+
 }
+
+
