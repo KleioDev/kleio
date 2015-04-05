@@ -12,13 +12,11 @@ describe('User', function() {
 
     before(function(){
         data = {
-            email : 'cesar.cruz5@upr.edu',
+            email : 'cesar@cesar.com',
             firstName : 'Cesar',
             lastName : 'Cruz',
             gender : 'male',
-            age : 23,
-            points : 9001,
-            banished : false
+            age_range : '10-30'
         }
         userModel = Model.sequelize.model('User');
     });
@@ -58,15 +56,12 @@ describe('User', function() {
         });
 
         it('should have a age attribute', function() {
-            expect(user.age).to.be.a('number').and.be.equal(data.age);
+            expect(user.age_range).to.be.a('string').and.be.equal(data.age_range);
         });
 
         it('should have a points attribute', function() {
-            expect(user.points).to.be.a('number').and.be.equal(data.points);
+            expect(user.points).to.be.a('number').and.be.equal(0);
         });
 
-        it('should have a banished attribute', function() {
-            expect(user.banished).to.be.a('boolean').and.be.equal(data.banished);
-        });
     });
 });

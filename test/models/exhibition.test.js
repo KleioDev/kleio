@@ -12,9 +12,11 @@ describe('Exhibition', function() {
 
     before(function(){
         data = {
-            name : 'Agustin Pirulo',
-            description : 'Classical works by Augustin Pirulo',
-            MuseumId :1
+            title : 'Master Collection',
+            description : 'Master Collection for the MuSA',
+            image : 'master.jpeg',
+            active : true,
+            MuseumId : 1
         }
         exhibitionModel = Model.sequelize.model('Exhibition');
     });
@@ -38,7 +40,7 @@ describe('Exhibition', function() {
         });
 
         it('should have a name attribute', function(){
-            expect(exhibition.name).to.be.a('string').and.be.equal(data.name);
+            expect(exhibition.title).to.be.a('string').and.be.equal(data.title);
         });
 
         it('should have a description attribute', function() {

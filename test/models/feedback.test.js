@@ -14,10 +14,9 @@ describe('Feedback', function(){
 
     before(function(){
        data = {
-           title: 'The Museum Needs More Chairs',
-           content: 'The musa needs more chairs for visitors to sit when visiting the museum, this would facilitate views art pieces',
-           seen: false,
-           type: 'complain',
+           title: 'The Museum App Rocks',
+           message: 'Greatest App in the market, by far',
+           type: 'general',
            MuseumId : 1
        }
        feedbackModel = Models.model('Feedback');

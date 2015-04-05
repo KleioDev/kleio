@@ -12,9 +12,9 @@ describe('Room', function() {
 
     before(function(){
         data = {
-            identifier : 'S-123',
-            description : 'El Laboratorio de Capstone',
-            ibeacons : ['ibeacon1', 'ibeacon2']
+            name : 'Agustin Stahl Room',
+            description : 'Room in honor of the late Agustin Stahl',
+            ibeacons : ['beacon1', 'beacon2']
         }
         roomModel = Model.sequelize.model('Room');
     });
@@ -38,7 +38,7 @@ describe('Room', function() {
         });
 
         it('should have a identifier attribute', function(){
-            expect(room.identifier).to.be.a('string').and.be.equal(data.identifier);
+            expect(room.name).to.be.a('string').and.be.equal(data.name);
         });
 
         it('should have a description attribute', function() {

@@ -13,9 +13,8 @@ describe('Match', function() {
     before(function(){
         data = {
             UserId : 2,
-            ObjectId : 1,
-            attempts : 3,
-            matched : true
+            ClueId : 1,
+            qrcode : 'zsrgmseinrg'
         }
         matchModel = Model.sequelize.model('Match');
     });
@@ -43,15 +42,8 @@ describe('Match', function() {
         });
 
         it('should have a ObjectId attribute', function() {
-            expect(match.ObjectId).to.be.a('number').and.be.equal(data.ObjectId);
+            expect(match.ClueId).to.be.a('number').and.be.equal(data.ClueId);
         });
 
-        it('should have a attempts attribute', function() {
-            expect(match.attempts).to.be.a('number').and.be.equal(data.attempts);
-        });
-
-        it('should have a matched attribute', function() {
-            expect(match.matched).to.be.a('boolean').and.be.equal(data.matched);
-        });
     });
 });
