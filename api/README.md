@@ -19,7 +19,7 @@
 	* [Feedback](#feedback)
 	* [Match Hunt](#match)
 	* [User](#user)
-* [Errors](#errors)
+* [Tests](#tests)
 
 ### Current Version Description <a id="description"></a>
 
@@ -684,6 +684,18 @@ GET /leaderboard
 }
 ```
 
-### Errors <a id="errors"></a>
+### Tests <a id="tests"></a>
 
-##### TODO :D
+Tests Scripts are provided to fascilitate the testing of the API server. Tests are separated into controller tests, and model tests.
+
+To execute controller tests:
+
+```
+npm run test:controllers
+```
+
+To execute model tests
+
+```
+npm run test:models
+```
