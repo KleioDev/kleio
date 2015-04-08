@@ -3,7 +3,8 @@
  */
 
 var middleware = require('../middleware'),
-    Router = require('koa-router');
+    Router = require('koa-router'),
+    koaBody = require('koa-better-body')();
 
 /**
  * Handle requests related to Museum News
@@ -15,7 +16,10 @@ module.exports = function(){
     var newsController = new Router()
 
         .get('/news', loadModels, index)
-        .get('/news/:id', loadModels, show);
+        .get('/news/:id', loadModels, show)
+        .post('/news', koaBody, loadModels, create)
+        .put('/news/:id', koaBody, loadModels, edit)
+        .delete('/news/:id', loadModels, destroy);
 
     return newsController.routes();
 }
@@ -83,3 +87,95 @@ function *show() {
     this.body = news;
 
 }
+
+/**
+ * Create an instance of News
+ * Payload: title, description, image, Administrator Id
+ */
+function *create(){
+    var news = this.request.body.fields,
+    result,
+    News = this.models['News'];
+
+    if(!news){
+        this.throw('Bad Request', 400);
+    }
+
+    try {
+        result = this.sequelize.transaction(function(t) {
+            return News.create(news, {transaction : t});
+        });
+    } catch(err) {
+        this.throw(err.message, err.status || 500);
+    }
+
+    if(!result) {
+        this.throw('Not Found', 404);
+    }
+
+    this.status = 200;
+}
+
+/**
+ * Update an instance of News
+ * Parameter: id --> News Id
+ * Payload: title, description, image, Administrator Id
+ * Note: Only the parameters that are included in the payload will be updated, the rest will remain the same
+ */
+function *edit(){
+    var news = this.request.body.fields,
+    result,
+    id = this.params.id,
+    News = this.models['News'];
+
+    if(!news) {
+        this.throw('Bad Request', 400);
+    }
+
+    try {
+        result = yield this.sequelize.transaction(function (t) {
+            return News.update(news, {
+                where : {
+                    id : id
+                }
+            }, {transaction : t});
+        });
+    } catch(err) {
+        this.throw(err.message, err.status || 500);
+    }
+
+    if(!result) {
+        this.throw('Not Found', 404);
+    }
+
+    this.status = 200;
+}
+
+/**
+ * Destroy an instance of News
+ * Parameter: id --> News Id
+ */
+function *destroy() {
+    var id = this.params.id,
+        News = this.models['News'],
+        result;
+
+    try {
+        result = yield this.sequelize.transaction(function (t) {
+            return News.destroy({
+                where : {
+                    id : id
+                }
+            });
+        });
+    } catch(err) {
+        this.throw(err.message, err.status || 500);
+    }
+
+    if(!result) {
+        this.throw('Not Found', 404);
+    }
+
+    this.status = 200;
+}
+

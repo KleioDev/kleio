@@ -94,7 +94,7 @@ function *show() {
  * Payload: title, description, eventDate, image, location and author
  */
 function *create(){
-    var event = this.request.body.fields
+    var event = this.request.body.fields,
     result,
     Event = this.models['Event'];
 
@@ -124,7 +124,7 @@ function *create(){
  * Payload: title, description, eventDate, image, location and author
  */
 function *edit(){
-    var event = this.request.body.fields
+    var event = this.request.body.fields,
         result,
         id = this.params.id,
         Event = this.models['Event'];
