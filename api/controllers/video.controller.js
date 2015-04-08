@@ -3,7 +3,8 @@
  */
 
 var middleware = require('../middleware'),
-    Router = require('koa-router');
+    Router = require('koa-router'),
+    koaBody = require('koa-better-body')();
 
 /**
  * Handle requests related to Videos
@@ -15,7 +16,10 @@ module.exports = function(){
         videoController = new Router()
 
         .get('/artifact/video/:id', loadModels, index)
-        .get('/video/:id', loadModels, show);
+        .get('/video/:id', loadModels, show)
+        .post('/video', koaBody, loadModels, create)
+        .put('/video/:id', koaBody, loadModels, edit)
+        .delete('/video/:id', loadModels, destroy);
 
     return videoController.routes();
 }
@@ -80,4 +84,101 @@ function *show(){
     this.status = 200;
 
     this.body = video;
+}
+
+/**
+ * Create an instance of Video
+ * Payload: title, description, link, ArtifactId
+ */
+function *create(){
+    var video = this.request.body.fields,
+        Video = this.models['Video'],
+        ArtifactVideo = this.models['ArtifactVideo'],
+        videoId;
+
+    if(!video) {
+        this.throw('Bad Request', 400);
+    }
+
+    try {
+        yield this.sequelize.transaction(function(t) {
+            return Video.create(video, {transaction : t}).then(function(video){
+                videoId = video.id;
+            });
+        });
+
+        yield this.sequelize.transaction(function(t) {
+            return ArtifactVideo.create({
+                VideoId : videoId,
+                ArtifactId : video.ArtifactId
+            }, {transaction : t});
+        });
+
+    } catch (err){
+        this.throw(err.message, err.status || 500);
+    }
+
+    this.status = 200;
+}
+
+/**
+ * Update an instance of Video
+ * Payload: title, description, link, ArtifactId
+ * Note: Only attributes included in the Payload will be updated.
+ */
+function *edit(){
+    var video = this.request.body.fields,
+        id = this.params.id,
+        result,
+        Video = this.models['Video'];
+
+    if(!video) {
+        this.throw('Bad Request', 400);
+    }
+
+    try {
+        result = yield this.sequelize.transaction(function (t){
+            return Video.update(video, {
+                where : {
+                    id  : id
+                }
+            }, {transaction : t});
+        });
+    } catch(err) {
+        this.throw(err.message. err.status || 500);
+    }
+
+    if(!result){
+        this.throw('Not Found', 404);
+    }
+
+    this.status = 200;
+}
+
+/**
+ * Destroy an instance of Archive
+ * Parameter: id --> Archive Id
+ */
+function *destroy() {
+    var id = this.params.id,
+        Video = this.models['Video'],
+        result;
+
+    try {
+        yield this.sequelize.transaction(function (t) {
+            return Video.destroy({
+                where: {
+                    id: id
+                }
+            }, {transaction: t});
+        });
+    } catch (err) {
+        this.throw(err.message, err.status || 500);
+    }
+
+    if (!result) {
+        this.throw('Not Found', 404);
+    }
+
+    this.status = 200;
 }
