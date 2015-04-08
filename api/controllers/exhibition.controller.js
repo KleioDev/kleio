@@ -19,7 +19,10 @@ module.exports = function(){
 
         .get('/exhibition', loadModels, index)
         .get('/exhibition/:id', loadModels, show)
-        .get('/exhibition/near/me', loadModels, near);
+        .get('/exhibition/near/me', loadModels, near)
+        .post('/exhibition', koaBody, loadModels, create)
+        .put('/exhibition/:id', koaBody, loadModels, edit)
+        .delete('/exhibition/:id', loadModels, destroy);
 
     return exhibitionController.routes();
 }
@@ -126,4 +129,86 @@ function *near(){
     this.status = 200;
 
     this.body = { exhibitions : exhibitions['Exhibitions']};
+}
+
+/**
+ * Create an instance of Exhibition
+ * Payload: title, description, active, image, museumId
+ */
+function *create(){
+    var exhibition = this.request.body.fields,
+        Exhibition = this.models['Exhibition'],
+        result;
+
+        if(!exhibition){
+            this.throw('Bad Request', 400);
+        }
+
+        try {
+            result = yield this.sequelize.transaction( function (t) {
+                return Exhibition.create(exhibition, {transaction : t});
+            });
+        } catch(err) {
+            this.throw(err.message, err.status || 500);
+        }
+
+        if(!result) {
+            this.throw('Not Found', 404);
+        }
+
+        this.status = 200;
+}
+
+/**
+ * Update an instance of Exhibition
+ * Payload: title, description, active, image, museumId
+ * Note: Will only update the available payload attributes
+ */
+function *edit(){
+    var exhibition = this.request.body.fields,
+        Exhibition = this.models['Exhibition'],
+        id = this.params.id,
+        result;
+
+    if(!exhibition){
+        this.throw('Bad Request', 400);
+    }
+
+    try {
+        result = yield this.sequelize.transaction( function (t) {
+            return Exhibition.update(exhibition, { where : { id : id } }, {transaction : t});
+        });
+    } catch(err) {
+        this.throw(err.message, err.status || 500);
+    }
+
+    if(!result) {
+        this.throw('Not Found', 404);
+    }
+
+    this.status = 200;
+}
+
+/**
+ * Destroy an instance of Exhibitions
+ * Parameter: id --> Exhibition Id
+ */
+function *destroy(){
+    var id = this.params.id,
+        Exhibition = this.models['Exhibition'],
+        result;
+
+        try {
+            result = yield this.sequelize.transaction( function (t) {
+                return Exhibition.destroy({ where : { id : id}}, { transaction : t});
+            })
+        } catch(err) {
+            this.throw(err.message, err.status || 500);
+        }
+
+        if(!result) {
+            this.throw('Not Found', 404);
+        }
+
+        this.status = 200;
 }
