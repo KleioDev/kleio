@@ -3,7 +3,8 @@
  */
 
 var middleware = require('../middleware'),
-    Router = require('koa-router');
+    Router = require('koa-router'),
+    koaBody = require('koa-better-body');
 
 /**
  * Handle requests related to events
@@ -16,7 +17,10 @@ module.exports = function(){
     var eventController = new Router()
 
         .get('/events', loadModels, index)
-        .get('/events/:id', loadModels, show);
+        .get('/events/:id', loadModels, show)
+        .post('/events', koaBody, loadModels, create)
+        .put('/events/:id', koaBody, loadModels, edit)
+        .delete('/events/:id', loadModels, destroy);
 
 
     return eventController.routes();
@@ -83,4 +87,95 @@ function *show() {
     this.status = 200;
 
     this.body = event;
+}
+
+/**
+ * Create an instance of Event
+ * Payload: title, description, eventDate, image, location and author
+ */
+function *create(){
+    var event = this.request.body.fields
+    result,
+    Event = this.models['Event'];
+
+    if(!event){
+        this.throw('Bad Request', 400);
+    }
+
+    try {
+        result = this.sequelize.transaction(function(t) {
+            return Event.create(event, {transaction : t});
+        });
+    } catch(err) {
+        this.throw(err.message, err.status || 500);
+    }
+
+    if(!result) {
+        this.throw('Not Found', 404);
+    }
+
+    this.status = 200;
+
+}
+
+/**
+ * Update an Event instance
+ * Parameter: id --> EventId
+ * Payload: title, description, eventDate, image, location and author
+ */
+function *edit(){
+    var event = this.request.body.fields
+        result,
+        id = this.params.id,
+        Event = this.models['Event'];
+
+        if(!event) {
+            this.throw('Bad Request', 400);
+        }
+
+        try {
+            result = yield this.sequelize.transaction(function (t) {
+                return Event.update(event, {
+                    where : {
+                        id : id
+                    }
+                }, {transaction : t});
+            });
+        } catch(err) {
+            this.throw(err.message, err.status || 500);
+        }
+
+        if(!result) {
+            this.throw('Not Found', 404);
+        }
+
+        this.status = 200;
+}
+
+/**
+ * Destroy an Event instance
+ * Parameter: id --> EventId
+ */
+function *destroy() {
+    var id = this.params.id,
+        Event = this.models['Event'],
+        result;
+
+        try {
+            result = yield this.sequelize.transaction(function (t) {
+                return Event.destroy({
+                    where : {
+                        id : id
+                    }
+                });
+            });
+        } catch(err) {
+            this.throw(err.message, err.status || 500);
+        }
+
+        if(!result) {
+            this.throw('Not Found', 404);
+        }
+
+        this.status = 200;
 }
