@@ -95,9 +95,10 @@ function *show(){
 function *edit() {
     var administrator = this.request.body.fields,
         id = this.params.id,
-        result;
+        result,
+        Administrator = this.models['Administrator'];
 
-        console.log(administrator);
+        //TODO: Add transaction to this.
 
         if(!administrator){
             this.throw('Bad Request', 400);
@@ -113,10 +114,12 @@ function *edit() {
         }
 
         try {
-            result = yield this.models['Administrator'].update(administrator, {
-                where : {
-                    id : id
-                }
+            result = yield this.sequelize.transaction(function(t) {
+                return Administrator.update(administrator, {
+                    where : {
+                        id : id
+                    }
+                }, {transaction : t})
             });
         } catch(err) {
             this.throw(err.message, err.status || 500);
@@ -162,7 +165,6 @@ function *create(){
     }
 
     this.status = 200;
-
 }
 
 /**
@@ -170,18 +172,25 @@ function *create(){
  */
 function *destroy() {
     var id = this.params.id,
+        Administrator = this.models['Administrator'],
         result;
 
     //TODO: add deleteAt timestamps, don't actually delete the instances
 
     try {
-        result = yield this.models['Administrator'].destroy({
-            where : {
-                id : id
-            }
+        result = yield this.sequelize.transaction(function(t) {
+            return Administrator.destroy({
+                where : {
+                    id : id
+                }
+            }, {transaction : t})
         });
     } catch(err) {
         this.throw(err.message, err.status || 500);
+    }
+
+    if(!result) {
+        this.throw('Not Found', 404);
     }
 
     this.status = 200;
