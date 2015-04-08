@@ -19,10 +19,127 @@ module.exports = function(){
         userController = new Router()
 
         .get('/leaderboard', loadModels, auth, leaderboard)
+        .get('/user', loadModels, index)
+        .get('/user/:id', loadModels, show)
+        .put('/user/:id', koaBody, loadModels, edit)
+        .delete('/user/:id', loadModels, destroy)
         .post('/user', koaBody, loadModels, create);
 
     return userController.routes();
 
+}
+
+/**
+ * Get a list of User instances
+ * Query Parameters: limit and offset
+ */
+function *index(){
+    var users,
+        offset = this.query.offset,
+        limit = this.query.limit;
+
+    if(!offset){
+        offset = 0;
+    }
+
+    //Default limit is 25
+    if(!limit){
+        limit = 25;
+    }
+
+    try {
+        users = yield this.models['User'].findAll({
+            offset : offset,
+            limit : limit
+        });
+    } catch(err) {
+        this.throw(err.message, err.status || 500);
+    }
+
+    if(!users || users.length < 1){
+        this.throw('Not Found', 404);
+    }
+
+    this.status = 200;
+
+    this.body = { users : users };
+}
+
+/**
+ * Get an instance of User
+ * Parameter: id --> User id
+ */
+function *show(){
+    var user,
+        id = this.params.id;
+
+    try {
+        user = yield this.models['User'].find({
+            where : {
+                id : id
+            }
+        });
+    } catch(err) {
+        this.throw(err.message, err.status || 500);
+    }
+
+    if(!user) {
+        this.throw('Not Found', 404);
+    }
+
+    this.status = 200;
+
+    this.body = user;
+}
+
+/**
+ * Udpate an instance of User
+ */
+function *edit(){
+    var user = this.request.body.fields
+        User = this.models['User'],
+        result,
+        id = this.params.id;
+
+    if(!user){
+        this.throw('Bad Request', 400);
+    }
+
+    try {
+        result = yield this.sequelize.transaction( function(t) {
+            return User.update(user, { where : { id : id }}, { transaction : t});
+        });
+    } catch(err) {
+        this.throw(err.message, err.status || 500);
+    }
+
+    if(!result){
+        this.throw('Not Found', 404);
+    }
+
+    this.status = 200;
+}
+
+/**
+ * Destroy an instance of User
+ */
+function *destroy(){
+    var id = this.params.id,
+        User = this.models['User'],
+        result;
+    try {
+        result = yield this.sequelize.transaction( function (t) {
+            return User.destroy({ where : { id : id }}, { transaction : t});
+        });
+    } catch(err) {
+        this.throw(err.message, err.status || 500);
+    }
+
+    if(!result) {
+        this.throw('Not Found', 404);
+    }
+
+    this.status = 200;
 }
 
 /**
@@ -31,16 +148,21 @@ module.exports = function(){
  */
 function *leaderboard(){
     var leaderboard,
-        offset = this.request.query.offset;
+        offset = this.request.query.offset
+        limit = this.query.limit;
 
     if(!offset || offset < 1){
         offset = 0;
     }
 
+    if(!limit){
+        limit = 25;
+    }
+
     try {
         leaderboard = yield this.models['User'].findAll({
             order : '"points" DESC',
-            limit : 25,
+            limit : limit,
             attributes : ['firstName', 'lastName', 'points'],
             offset : offset
         });
@@ -61,7 +183,8 @@ function *leaderboard(){
  * Create a User instance
  */
 function *create() {
-    var body = this.request.body;
+    var body = this.request.body.fields;
+
 
     //TODO: Have a file that programatically adds these to files
 
@@ -70,38 +193,35 @@ function *create() {
     appSecret = process.env.FACEBOOK_APP_SECRET;
 
 
-
     if(!body) {
-        this.throw('Bad Request: No Body', 400);
+        this.throw('Bad Request', 400);
     }
 
-    var accessToken = body.fields.accessToken;
+    var accessToken = body.accessToken;
 
-    var userId = body.fields.userId;
-
-    var longAccessTokenUrl = "/oauth/access_token?grant_type=fb_exchange_token&client_id=" + appId + "&client_secret=" + appSecret+ "&fb_exchange_token=" + accessToken;
+    var userId = body.userId;
 
     var userProfileUrl = "https://graph.facebook.com/v2.3/" + userId;
 
-    var longAccessToke = yield rq(url);
+    var longAccessToken = yield rq("https://graph.facebook.com/v2.3/oauth/access_token?grant_type=fb_exchange_token&client_id=" + appId + "&client_secret=" + appSecret+ "&fb_exchange_token=" + accessToken);
 
-    var userCredentials = yield rq(userId);
+    console.log(longAccessToken.body);
 
-    try {
-        var user = yield this.models.User.create(userCredentials);
-    } catch(err) {
-        this.throw(err.message, err.status || 500);
-    }
-
-    if(!user) {
-        this.throw('Internal Server Error', 500);
-    }
+    //var userCredentials = yield rq(userId);
+    //
+    //try {
+    //    var user = yield this.models.User.create(userCredentials);
+    //} catch(err) {
+    //    this.throw(err.message, err.status || 500);
+    //}
+    //
+    //if(!user) {
+    //    this.throw('Internal Server Error', 500);
+    //}
 
     this.status = 200;
 
     this.body = 'OK';
-
-
 
 }
 
