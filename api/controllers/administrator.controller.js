@@ -8,7 +8,7 @@ var middleware = require('../middleware'),
     koaBody = require('koa-better-body')();
 
 /**
- * Handle request related to Artifacts
+ * Handle request related to Administrators
  * @returns {*}
  */
 module.exports = function(){
@@ -86,6 +86,7 @@ function *show(){
 
     this.body = administrator;
 }
+
 /**
  * Update an instance of Administrator
  * Payload: firstName, lastName, phone, email, password

@@ -74,6 +74,7 @@ module.exports = function(sequelize, DataTypes) {
         }
     }, {
         timestamps: true,
+        paranoid : true,
         classMethods : {
             associate: function(models){
                 Artifact.belongsTo(Artist, {foreignKey : 'ArtistId'});
