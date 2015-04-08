@@ -23,6 +23,7 @@
   },
   "homepage": "https://github.com/KleioDev/musaAPI",
   "dependencies": {
+    "bcrypt": "^0.8.2",
     "chai": "^2.1.1",
     "co-mocha": "^1.1.0",
     "co-request": "^0.2.1",
