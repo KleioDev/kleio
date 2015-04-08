@@ -15,7 +15,10 @@ module.exports = function(){
 
     var imageController = new Router()
         .get('/artifact/image/:id', loadModels, index)
-        .get('/image/:id', loadModels, show);
+        .get('/image/:id', loadModels, show)
+        .post('/image', koaBody, loadModels, create)
+        .put('/image/:id', koaBody, loadModels, edit)
+        .delete('/image/:id', loadModels, destroy);
 
     return imageController.routes();
 }
@@ -77,4 +80,101 @@ function *show() {
     this.status = 200;
 
     this.body = image;
+}
+
+/**
+ * Create an instance of Image
+ * Payload: title, description, link, ArtifactId
+ */
+function *create(){
+    var image = this.request.body.fields,
+        Image = this.models['Image'],
+        ArtifactImage = this.models['ArtifactImage'],
+        imageId;
+
+    if(!image) {
+        this.throw('Bad Request', 400);
+    }
+
+    try {
+        yield this.sequelize.transaction(function(t) {
+            return Image.create(image, {transaction : t}).then(function(image){
+                imageId = image.id;
+            });
+        });
+
+        yield this.sequelize.transaction(function(t) {
+            return ArtifactImage.create({
+                ImageId : imageId,
+                ArtifactId : image.ArtifactId
+            }, {transaction : t});
+        });
+
+    } catch (err){
+        this.throw(err.message, err.status || 500);
+    }
+
+    this.status = 200;
+}
+
+/**
+ * Update an instance of Image
+ * Payload: title, description, link, ArtifactId
+ * Note: Only attributes included in the Payload will be updated.
+ */
+function *edit(){
+    var image = this.request.body.fields,
+        id = this.params.id,
+        result,
+        Image = this.models['Image'];
+
+    if(!image) {
+        this.throw('Bad Request', 400);
+    }
+
+    try {
+        result = yield this.sequelize.transaction(function (t){
+            return Image.update(image, {
+                where : {
+                    id  : id
+                }
+            }, {transaction : t});
+        });
+    } catch(err) {
+        this.throw(err.message. err.status || 500);
+    }
+
+    if(!result){
+        this.throw('Not Found', 404);
+    }
+
+    this.status = 200;
+}
+
+/**
+ * Destroy an instance of Image
+ * Parameter: id --> Image Id
+ */
+function *destroy(){
+    var id = this.params.id,
+        Image = this.models['Image'],
+        result;
+
+    try {
+        yield this.sequelize.transaction(function(t) {
+            return Image.destroy({
+                where : {
+                    id : id
+                }
+            }, { transaction : t});
+        });
+    } catch(err) {
+        this.throw(err.message, err.status || 500);
+    }
+
+    if(!result) {
+        this.throw('Not Found', 404);
+    }
+
+    this.status = 200;
 }

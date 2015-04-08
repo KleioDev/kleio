@@ -97,29 +97,29 @@ function *create(){
         ArtifactAudible = this.models['ArtifactAudible'],
         audibleId;
 
-        if(!audible) {
-            this.throw('Bad Request', 400);
-        }
+    if(!audible) {
+        this.throw('Bad Request', 400);
+    }
 
-        try {
-            yield this.sequelize.transaction(function(t) {
-                return Audible.create(audible, {transaction : t}).then(function(audio){
-                    audibleId = audio.id;
-                });
+    try {
+        yield this.sequelize.transaction(function(t) {
+            return Audible.create(audible, {transaction : t}).then(function(audio){
+                audibleId = audio.id;
             });
+        });
 
-            yield this.sequelize.transaction(function(t) {
-                return ArtifactAudible.create({
-                    AudibleId : audibleId,
-                    ArtifactId : audible.ArtifactId
-                }, {transaction : t});
-            });
+        yield this.sequelize.transaction(function(t) {
+            return ArtifactAudible.create({
+                AudibleId : audibleId,
+                ArtifactId : audible.ArtifactId
+            }, {transaction : t});
+        });
 
-        } catch (err){
-            this.throw(err.message, err.status || 500);
-        }
+    } catch (err){
+        this.throw(err.message, err.status || 500);
+    }
 
-        this.status = 200;
+    this.status = 200;
 
 }
 /**
