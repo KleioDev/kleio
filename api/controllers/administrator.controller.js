@@ -5,21 +5,24 @@
 var middleware = require('../middleware'),
     Router = require('koa-router'),
     bcrypt = require('bcrypt'),
-    koaBody = require('koa-better-body')();
+    koaBody = require('koa-better-body')(),
+    jwt = require('koa-jwt');
 
 /**
  * Handle request related to Administrators
  * @returns {*}
  */
 module.exports = function(){
-    var loadModels = middleware.loadModel();
+    var loadModels = middleware.loadModel(),
+        adminAuth = middleware.adminAuth;
 
     var administratorController = new Router()
-        .get('/administrator', loadModels, index)
-        .get('/administrator/:id', loadModels, show)
-        .post('/administrator', koaBody, loadModels, create)
-        .put('/administrator/:id', koaBody, loadModels, edit)
-        .delete('/administrator/:id', loadModels, destroy);
+        .get('/administrator', adminAuth, loadModels, index)
+        .get('/administrator/:id', adminAuth,loadModels, show)
+        .post('/administrator', adminAuth, koaBody, loadModels, create)
+        .put('/administrator/:id', adminAuth, koaBody, loadModels, edit)
+        .delete('/administrator/:id', adminAuth, loadModels, destroy)
+        .post('/authenticate', koaBody, loadModels, login);
 
     return administratorController.routes();
 }
@@ -192,6 +195,36 @@ function *destroy() {
     if(!result) {
         this.throw('Not Found', 404);
     }
+
+    this.status = 200;
+}
+
+function *login(){
+    var payload = this.request.body.fields,
+        admin;
+
+    if(!payload) {
+        this.throw('Bad Request', 400);
+    }
+
+    try {
+        admin = yield this.models['Administrator'].find({
+            where : {
+                email : payload.email
+            }
+        });
+    } catch(err) {
+        this.throw(err.message, err.status || 500);
+    }
+
+    if(!bcrypt.compareSync(payload.password, admin.password)) {
+        this.throw('Unauthorized', 401);
+    }
+
+    //Success!!
+    var token = jwt.sign({email : admin.email, name : admin.firstName +' '+ admin.lastName}, 'some-secret', { expiresInMinutes: 60*5});
+
+    this.body = token;
 
     this.status = 200;
 }

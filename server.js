@@ -5,8 +5,9 @@ var koa = require('koa'),
     Api = require('./api'),
     mount = require('koa-mount'),
     db = require('./models'),
-    session = require('koa-session'),
-    dotenv = require('dotenv').load();
+    jwt = require('koa-jwt'),
+    session = require('koa-session');
+    require('dotenv').load();
 
 var app = koa();
 
@@ -15,6 +16,23 @@ var api = Api(db);
 app.keys = ['cesarsalad'];
 
 app.use(session(app));
+
+//Don't expose JWT errors
+app.use(function *(next){
+    try {
+        yield next;
+    } catch(err) {
+        if (err.status == 401){
+            this.status = 401;
+
+            this.body = 'protected resource, use Authorization to get access\n';
+        } else {
+            throw err;
+        }
+    }
+});
+
+app.use(jwt({ secret : 'some-secret', passthrough: true}));
 
 app.use(mount(api));
 

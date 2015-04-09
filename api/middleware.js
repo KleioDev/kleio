@@ -9,7 +9,8 @@ var database = require('../models');
  */
 module.exports = {
     loadModel : loadModel,
-    authentication : authenticate
+    authentication : authenticate,
+    adminAuth : adminAuth
 }
 
 /**
@@ -45,6 +46,19 @@ function *authenticate(next) {
 
     yield next;
 
+}
+
+/**
+ * Check ctx.user for an existing JWT Payload
+ * @param next
+ */
+function *adminAuth(next){
+
+    if(this.user){
+        yield next;
+    } else {
+        this.throw('Unauthorized', 401);
+    }
 }
 
 
