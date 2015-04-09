@@ -6,10 +6,18 @@ var koa = require('koa'),
     mount = require('koa-mount'),
     db = require('./models'),
     jwt = require('koa-jwt'),
+    cors = require('koa-cors');
     session = require('koa-session');
     require('dotenv').load();
 
 var app = koa();
+
+//CORS
+app.use(cors({
+    origin : true,
+    methods : ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+    headers : ['Content-Type', 'Authorization']
+}));
 
 var api = Api(db);
 

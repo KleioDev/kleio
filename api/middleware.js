@@ -54,6 +54,8 @@ function *authenticate(next) {
  */
 function *adminAuth(next){
 
+//TODO Verify that the token is valid.
+
     if(this.user){
         yield next;
     } else {
