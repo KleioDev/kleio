@@ -12,7 +12,8 @@
     "test:models": "NODE_ENV=test mocha -- test/models/*.js",
     "test:controllers": "NODE_ENV=test mocha --harmony -- api/test/controller/*.js",
     "db:create": "node_modules/.bin/create_database",
-    "db:drop": "node_modules/.bin/drop_database"
+    "db:drop": "node_modules/.bin/drop_database",
+    "pm2" : "pm2 start server.js --node-args=\"--harmony\""
   },
   "repository": {
     "type": "git",
