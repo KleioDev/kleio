@@ -17,11 +17,11 @@ module.exports = function(){
         adminAuth = middleware.adminAuth;
 
     var administratorController = new Router()
-        .get('/administrator', loadModels, index)
-        .get('/administrator/:id',loadModels, show)
-        .post('/administrator', koaBody, loadModels, create)
-        .put('/administrator/:id', koaBody, loadModels, edit)
-        .delete('/administrator/:id', loadModels, destroy)
+        .get('/administrator', adminAuth, loadModels, index)
+        .get('/administrator/:id',adminAuth, loadModels, show)
+        .post('/administrator', adminAuth, koaBody, loadModels, create)
+        .put('/administrator/:id', adminAuth, koaBody, loadModels, edit)
+        .delete('/administrator/:id', adminAuth, loadModels, destroy)
         .post('/authenticate', koaBody, loadModels, login);
 
     return administratorController.routes();
