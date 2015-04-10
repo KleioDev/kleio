@@ -14,15 +14,16 @@ var middleware = require('../middleware'),
  */
 module.exports = function(){
 
-    var loadModels = middleware.loadModel()
+    var loadModels = middleware.loadModel(),
+        adminAuth = middleware.adminAuth,
         auth = middleware.authentication,
         userController = new Router()
 
         .get('/leaderboard', loadModels, auth, leaderboard)
-        .get('/user', loadModels, index)
+        .get('/user', loadModels, adminAuth, index)
         .get('/user/:id', loadModels, show)
-        .put('/user/:id', koaBody, loadModels, edit)
-        .delete('/user/:id', loadModels, destroy)
+        .put('/user/:id', koaBody, loadModels, adminAuth, edit)
+        .delete('/user/:id', loadModels, adminAuth, destroy)
         .post('/user', koaBody, loadModels, create);
 
     return userController.routes();

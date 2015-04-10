@@ -11,14 +11,15 @@ var middleware = require('../middleware'),
  * @returns {*}
  */
 module.exports = function() {
-    var loadModels = middleware.loadModel();
+    var loadModels = middleware.loadModel(),
+        adminAuth = middleware.adminAuth;
 
     var audibleController = new Router()
         .get('/artifact/audible/:id', loadModels, index)
         .get('/audible/:id', loadModels, show)
-        .post('/audible', koaBody, loadModels, create)
-        .put('/audible/:id', koaBody, loadModels, edit)
-        .delete('/audible/:id', loadModels, destroy);
+        .post('/audible', koaBody, loadModels, adminAuth, create)
+        .put('/audible/:id', koaBody, loadModels, adminAuth, edit)
+        .delete('/audible/:id', loadModels, adminAuth, destroy);
 
     return audibleController.routes();
 }

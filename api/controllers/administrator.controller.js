@@ -17,11 +17,11 @@ module.exports = function(){
         adminAuth = middleware.adminAuth;
 
     var administratorController = new Router()
-        .get('/administrator', adminAuth, loadModels, index)
-        .get('/administrator/:id',adminAuth, loadModels, show)
-        .post('/administrator', adminAuth, koaBody, loadModels, create)
-        .put('/administrator/:id', adminAuth, koaBody, loadModels, edit)
-        .delete('/administrator/:id', adminAuth, loadModels, destroy)
+        .get('/administrator', loadModels, adminAuth, index)
+        .get('/administrator/:id', loadModels, adminAuth, show)
+        .post('/administrator', koaBody, loadModels, adminAuth, create)
+        .put('/administrator/:id', koaBody, loadModels, adminAuth, edit)
+        .delete('/administrator/:id', loadModels, adminAuth, destroy)
         .post('/authenticate', koaBody, loadModels, login);
 
     return administratorController.routes();
@@ -222,7 +222,7 @@ function *login(){
     }
 
     //Success!!
-    var token = jwt.sign({email : admin.email, name : admin.firstName +' '+ admin.lastName}, 'some-secret', { expiresInMinutes: 60});
+    var token = jwt.sign({email : admin.email, name : admin.firstName +' '+ admin.lastName}, 'some-secret', { expiresInMinutes: 60 * 24});
 
     this.body = token;
 

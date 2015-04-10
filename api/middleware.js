@@ -53,10 +53,24 @@ function *authenticate(next) {
  * @param next
  */
 function *adminAuth(next){
-
-//TODO Verify that the token is valid.
+    var response;
 
     if(this.user){
+
+        try {
+            response = yield this.models['Administrator'].find({
+                where : {
+                    email : this.user.email
+                }
+            });
+        } catch(err) {
+            this.throw(err.message, err.status || 500);
+        }
+
+        if(!response){
+            this.throw('Forbidden', 403);
+        }
+
         yield next;
     } else {
         this.throw('Unauthorized', 401);

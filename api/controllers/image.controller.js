@@ -12,14 +12,15 @@ var middleware = require('../middleware'),
  */
 module.exports = function(){
 
-    var loadModels = middleware.loadModel();
+    var loadModels = middleware.loadModel(),
+        adminAuth = middleware.adminAuth;
 
     var imageController = new Router()
         .get('/artifact/image/:id', loadModels, index)
         .get('/image/:id', loadModels, show)
-        .post('/image', koaBody, loadModels, create)
-        .put('/image/:id', koaBody, loadModels, edit)
-        .delete('/image/:id', loadModels, destroy);
+        .post('/image', koaBody, loadModels, adminAuth, create)
+        .put('/image/:id', koaBody, loadModels, adminAuth, edit)
+        .delete('/image/:id', loadModels, adminAuth, destroy);
 
     return imageController.routes();
 }

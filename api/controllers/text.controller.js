@@ -8,14 +8,15 @@ var middleware = require('../middleware'),
 
 module.exports = function(){
 
-    var loadModels = middleware.loadModel();
+    var loadModels = middleware.loadModel(),
+        adminAuth = middleware.adminAuth;
 
     var archiveController = new Router()
         .get('/artifact/archive/:id', loadModels, index)
         .get('/archive/:id', loadModels, show)
-        .post('/archive', koaBody, loadModels, create)
-        .put('/archive/:id', koaBody, loadModels, edit)
-        .delete('/archive/:id', loadModels, destroy);
+        .post('/archive', koaBody, loadModels, adminAuth, create)
+        .put('/archive/:id', koaBody, loadModels, adminAuth, edit)
+        .delete('/archive/:id', loadModels, adminAuth, destroy);
 
     return archiveController.routes();
 }

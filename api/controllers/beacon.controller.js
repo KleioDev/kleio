@@ -9,13 +9,14 @@ var middleware = require('../middleware'),
 module.exports = function(){
 
     var loadModels = middleware.loadModel(),
+        adminAuth = middleware.adminAuth,
         beaconController = new Router()
 
             .get('/beacon', loadModels, index)
             .get('/beacon/:id', loadModels, show)
-            .post('/beacon', koaBody, loadModels, create)
-            .put('/beacon/:id', koaBody, loadModels, edit)
-            .delete('/beacon/:id', loadModels, destroy);
+            .post('/beacon', koaBody, loadModels, adminAuth, create)
+            .put('/beacon/:id', koaBody, loadModels, adminAuth, edit)
+            .delete('/beacon/:id', loadModels, adminAuth, destroy);
 
     return beaconController.routes();
 }

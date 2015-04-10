@@ -12,15 +12,16 @@ var middleware = require('../middleware'),
  */
 module.exports = function(){
 
-    var loadModels = middleware.loadModel();
+    var loadModels = middleware.loadModel(),
+        adminAuth = middleware.adminAuth;
 
     var feedbackController = new Router()
 
-        .get('/feedback', loadModels, index)
-        .get('/feedback/:id', loadModels, show)
-        .put('/feedback/:id', koaBody, loadModels, edit)
+        .get('/feedback', loadModels, adminAuth, index)
+        .get('/feedback/:id', loadModels, adminAuth, show)
+        .put('/feedback/:id', koaBody, loadModels, adminAuth, edit)
         .post('/feedback', koaBody, loadModels, create)
-        .delete('/feedback/:id', koaBody, loadModels, destroy);
+        .delete('/feedback/:id', koaBody, loadModels, adminAuth, destroy);
 
     return feedbackController.routes();
 

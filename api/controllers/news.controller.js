@@ -11,15 +11,16 @@ var middleware = require('../middleware'),
  * @returns {*}
  */
 module.exports = function(){
-    var loadModels = middleware.loadModel();
+    var loadModels = middleware.loadModel(),
+        adminAuth = middleware.adminAuth;
 
     var newsController = new Router()
 
         .get('/news', loadModels, index)
         .get('/news/:id', loadModels, show)
-        .post('/news', koaBody, loadModels, create)
-        .put('/news/:id', koaBody, loadModels, edit)
-        .delete('/news/:id', loadModels, destroy);
+        .post('/news', koaBody, loadModels, adminAuth, create)
+        .put('/news/:id', koaBody, loadModels, adminAuth, edit)
+        .delete('/news/:id', loadModels, adminAuth, destroy);
 
     return newsController.routes();
 }

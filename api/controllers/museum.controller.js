@@ -10,12 +10,13 @@ var middleware = require('../middleware'),
  * @returns {*}
  */
 module.exports = function(){
-    var loadModels =  middleware.loadModel();
+    var loadModels =  middleware.loadModel(),
+        adminAuth = middleware.adminAuth;
 
     var museumController = new Router()
 
         .get('/museum', loadModels, index)
-        .put('/museum/:id', koaBody, loadModels, edit);
+        .put('/museum/:id', koaBody, loadModels, adminAuth, edit);
 
     return museumController.routes();
 }

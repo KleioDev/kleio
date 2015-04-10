@@ -12,15 +12,16 @@ var middleware = require('../middleware'),
  */
 module.exports = function(){
 
-    var loadModels = middleware.loadModel();
+    var loadModels = middleware.loadModel(),
+        adminAuth = middleware.adminAuth;
 
     var eventController = new Router()
 
         .get('/events', loadModels, index)
         .get('/events/:id', loadModels, show)
-        .post('/events', koaBody, loadModels, create)
-        .put('/events/:id', koaBody, loadModels, edit)
-        .delete('/events/:id', loadModels, destroy);
+        .post('/events', koaBody, loadModels, adminAuth, create)
+        .put('/events/:id', koaBody, loadModels, adminAuth, edit)
+        .delete('/events/:id', loadModels, adminAuth, destroy);
 
 
     return eventController.routes();

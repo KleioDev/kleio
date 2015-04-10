@@ -13,16 +13,17 @@ module.exports = function(){
 
     //TODO: Implement master collection
 
-    var loadModels = middleware.loadModel();
+    var loadModels = middleware.loadModel(),
+        adminAuth = middleware.adminAuth;
 
     var exhibitionController = new Router()
 
         .get('/exhibition', loadModels, index)
         .get('/exhibition/:id', loadModels, show)
         .get('/exhibition/near/me', loadModels, near)
-        .post('/exhibition', koaBody, loadModels, create)
-        .put('/exhibition/:id', koaBody, loadModels, edit)
-        .delete('/exhibition/:id', loadModels, destroy);
+        .post('/exhibition', koaBody, loadModels, adminAuth, create)
+        .put('/exhibition/:id', koaBody, loadModels, adminAuth, edit)
+        .delete('/exhibition/:id', loadModels, adminAuth, destroy);
 
     return exhibitionController.routes();
 }
