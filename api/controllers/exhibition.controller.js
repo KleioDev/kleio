@@ -34,10 +34,23 @@ module.exports = function(){
  */
 function *index() {
     var exhibitions,
-        offset = this.query.page;
+        offset = this.query.page,
+        title = this.query.title,
+        description = this.query.description;
+
+
+    //TODO: Add search by query parameters
 
     if(!offset || offset < 1){
         offset = 0;
+    }
+    var where = {};
+    if(title) {
+        where.title = title;
+    }
+
+    if(description) {
+        where.description = description;
     }
 
     //TODO: Show(return) number of objects in an exhibition
@@ -46,7 +59,8 @@ function *index() {
             order : '"createdAt" DESC',
             limit : 25,
             attributes : ['image', 'title', 'description'],
-            offset : offset
+            offset : offset,
+            where : where
         });
     } catch(err) {
         this.throw(err.message, err.status || 500);
