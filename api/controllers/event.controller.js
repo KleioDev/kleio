@@ -33,19 +33,27 @@ module.exports = function(){
  */
 function *index() {
     var events,
-        offset = this.query.page;
+        query = this.query,
+        where = {};
 
-    if(!offset || offset < 1) {
+    if(!query.offset || query.offset < 1) {
         offset = 0;
     }
+
+    if(!query.limit){ query.limit = 25; }
+
+    if(query.title){ where.title = query.title; }
+
+    if(query.description){ where.description = query.description ;}
 
     try {
 
         events = yield this.models['Event'].findAll({
             order : '"eventDate" DESC',
-            limit : 25,
+            limit : query.limit,
             attributes : ['id', 'title', 'description', 'eventDate'],
-            offset : offset
+            offset : offset,
+            where : where
         });
     } catch (err) {
         this.throw(err.message, err.status || 500);
@@ -68,14 +76,10 @@ function *show() {
     var event,
         id = this.params.id;
 
-    //Check for a valid parameter
-    //if(typeof id !== 'number'){
-    //    this.throw('Bad Request', 400);
-    //}
 
     try {
         event = yield this.models['Event'].find({
-            where : { id : this.params.id}
+            where : { id : id}
         });
     } catch(err) {
         this.throw(err.message, err.status || 500);

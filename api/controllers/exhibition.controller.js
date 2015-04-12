@@ -36,7 +36,8 @@ function *index() {
     var exhibitions,
         offset = this.query.page,
         title = this.query.title,
-        description = this.query.description;
+        description = this.query.description,
+        limit = this.query.limit;
 
 
     //TODO: Add search by query parameters
@@ -45,12 +46,17 @@ function *index() {
         offset = 0;
     }
     var where = {};
+
     if(title) {
         where.title = title;
     }
 
     if(description) {
         where.description = description;
+    }
+
+    if(!limit) {
+        limit = 25;
     }
 
     //TODO: Show(return) number of objects in an exhibition

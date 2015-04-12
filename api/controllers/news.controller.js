@@ -31,18 +31,32 @@ module.exports = function(){
  */
 function *index() {
     var news,
-        offset = this.query.page;
+        offset = this.query.page,
+        limit = this.query.limit,
+        title = this.query.title,
+        description = this.query.description,
+        where = {};
 
     if(!offset || offset < 1){
         offset = 0;
     }
 
+    if(!limit){
+        limit = 25
+    }
+
+    if(title){ where.title = title; }
+
+    if(description){ where.description = description; }
+
+
     try {
         news = yield this.models['News'].findAll({
             order : '"createdAt" DESC',
-            limit : 10,
+            limit : limit,
             attributes : ['id', 'title', 'image', 'description'],
-            offset : offset
+            offset : offset,
+            where : where
         });
     } catch (err) {
         this.throw(err.message, err.status || 500);

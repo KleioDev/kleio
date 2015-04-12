@@ -154,3 +154,4 @@ var Match = Model.sequelize.models['Match'];
 //    attempts : 1,
 //    correct : false
 //})
+
