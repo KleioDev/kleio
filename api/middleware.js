@@ -31,7 +31,8 @@ function loadModel() {
  */
 function *authenticate(next) {
 
-    var user = this.session.user;
+    var user = this.session.user,
+        fbUser;
 
     if(!user){
         //There's no user in session, blow up.
@@ -39,7 +40,12 @@ function *authenticate(next) {
     }
 
     try {
-        this.state.user = this.models['User'].find({ where : { id : user.id } });
+        if(this.session.user.type === 'user'){
+            loggedUser = this.models['User'].find({ where : { id : this.session.user.id}});
+        } else {
+            loggedUser = this.models['Administrator'].find({ where : { id : this.session.user.id}});
+        }
+
     } catch(err) {
         this.throw(err.message, err.status || 500);
     }
