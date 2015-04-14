@@ -1,6 +1,8 @@
 /**
  * Created by cesarcruz on 3/10/15.
  */
+require('dotenv').load();
+
 var koa = require('koa'),
     Api = require('./api'),
     mount = require('koa-mount'),
@@ -8,7 +10,6 @@ var koa = require('koa'),
     jwt = require('koa-jwt'),
     cors = require('koa-cors');
     session = require('koa-session');
-    require('dotenv').load();
 
 var app = koa();
 
