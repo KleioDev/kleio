@@ -195,13 +195,11 @@ function *create() {
 
     var accessToken = body.accessToken;
 
-    var userId = body.userId;
+    var userId = body.userID;
 
-    var userProfileUrl = "https://graph.facebook.com/v2.3/" + userId;
+    var user = yield rq("https://graph.facebook.com/v2.3/"+userId+"?access_token="+ accessToken +"&client_id=" + appId + "&client_secret=" + appSecret);
 
-    var longAccessToken = yield rq("https://graph.facebook.com/v2.3/oauth/access_token?grant_type=fb_exchange_token&client_id=" + appId + "&client_secret=" + appSecret+ "&fb_exchange_token=" + accessToken);
-
-    console.log(longAccessToken.body);
+    console.log(user.body);
 
     //var userCredentials = yield rq(userId);
     //
@@ -216,8 +214,6 @@ function *create() {
     //}
 
     this.status = 200;
-
-    this.body = 'OK';
 
 }
 
