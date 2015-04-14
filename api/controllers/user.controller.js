@@ -184,13 +184,8 @@ function *leaderboard(){
  * Create a User instance
  */
 function *create() {
-    var body = this.request.body.fields;
-
-
-    //TODO: Have a file that programatically adds these to files
-
-    appId = process.env.FACEBOOK_APP_ID;
-
+    var body = this.request.body.fields,
+    appId = process.env.FACEBOOK_APP_ID,
     appSecret = process.env.FACEBOOK_APP_SECRET;
 
 

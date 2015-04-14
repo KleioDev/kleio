@@ -39,9 +39,6 @@ function *index() {
         description = this.query.description,
         limit = this.query.limit;
 
-
-    //TODO: Add search by query parameters
-
     if(!offset || offset < 1){
         offset = 0;
     }

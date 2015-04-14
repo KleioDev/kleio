@@ -32,7 +32,8 @@ module.exports = function(){
 function *index(){
     var artifacts,
         offset = this.request.query.offset,
-        limit = this.request.query.limit;
+        limit = this.request.query.limit,
+        where;
 
     if(!offset || offset < 1){
         offset = 0;
@@ -42,12 +43,23 @@ function *index(){
         limit = 25;
     }
 
+    if(this.query.description){
+        where.description = description;
+    }
+
+    if(this.query.title){
+        where.title = this.query.title;
+    }
+
+
+
     try {
         artifacts = yield this.models['Artifact'].findAll({
             order : '"createdAt" DESC',
             limit : limit,
             attributes : ['image', 'title', 'description', 'id'],
-            offset : offset
+            offset : offset,
+            where : where
             });
     } catch(err){
         this.throw(err.message, err.status || 500);
