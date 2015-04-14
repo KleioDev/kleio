@@ -40,7 +40,7 @@ app.use(function *(next){
     }
 });
 
-app.use(jwt({ secret : 'some-secret', passthrough: true}));
+app.use(jwt({ secret : process.env.APP_JWT_SECRET , passthrough: true}));
 
 app.use(mount(api));
 

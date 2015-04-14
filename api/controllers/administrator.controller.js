@@ -222,7 +222,7 @@ function *login(){
     }
 
     //Success!!
-    var token = jwt.sign({email : admin.email, name : admin.firstName +' '+ admin.lastName}, 'some-secret', { expiresInMinutes: 60 * 24});
+    var token = jwt.sign({email : admin.email, type : 'admin', id : admin.id}, process.env.APP_JWT_SECRET , { expiresInMinutes: 60 * 24});
 
     this.body = token;
 
