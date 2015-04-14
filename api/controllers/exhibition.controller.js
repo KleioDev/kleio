@@ -60,8 +60,7 @@ function *index() {
     try {
         exhibitions = yield this.models['Exhibition'].findAll({
             order : '"createdAt" DESC',
-            limit : 25,
-            attributes : ['image', 'title', 'description'],
+            limit : limit,
             offset : offset,
             where : where
         });
