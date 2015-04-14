@@ -6,7 +6,8 @@
 var middleware = require('../middleware'),
     Router = require('koa-router'),
     koaBody = require('koa-better-body')(),
-    rq = require('co-request');
+    rq = require('co-request'),
+    jwt = require('koa-jwt');
 
 /**
  * Handle requests related to Users
@@ -185,35 +186,45 @@ function *leaderboard(){
  */
 function *create() {
     var body = this.request.body.fields,
-    appId = process.env.FACEBOOK_APP_ID,
-    appSecret = process.env.FACEBOOK_APP_SECRET;
+        appId = process.env.FACEBOOK_APP_ID,
+        appSecret = process.env.FACEBOOK_APP_SECRET,
+        user, fbuser;
 
 
     if(!body) {
         this.throw('Bad Request', 400);
     }
 
-    var accessToken = body.accessToken;
+    var response = yield rq({
+        uri: "https://graph.facebook.com/v2.3/" + body.userID + "?access_token=" + body.accessToken + "&client_id=" + appId + "&client_secret=" + appSecret,
+        method: 'GET',
+        json: true
+    });
 
-    var userId = body.userID;
+    if(response.statusCode == 200){
+        var user = {
+            email : response.body.email,
+            firstName : response.body.first_name,
+            lastName : response.body.last_name,
+            gender : response.body.gender,
+            facebook_id : response.body.id,
+            accessToken : body.accessToken
+        }
 
-    var user = yield rq("https://graph.facebook.com/v2.3/"+userId+"?access_token="+ accessToken +"&client_id=" + appId + "&client_secret=" + appSecret);
+        try {
+            fbuser = yield this.models['User'].create(user);
+        } catch(err) {
+            this.throw(err.message, err.status || 500);
+        }
+    } else {
+        this.throw('Bad Request', 400);
+    }
 
-    console.log(user.body);
-
-    //var userCredentials = yield rq(userId);
-    //
-    //try {
-    //    var user = yield this.models.User.create(userCredentials);
-    //} catch(err) {
-    //    this.throw(err.message, err.status || 500);
-    //}
-    //
-    //if(!user) {
-    //    this.throw('Internal Server Error', 500);
-    //}
+    var token = jwt.sign({id : fbuser.id, type : 'user'}, 'some-secret', { expiresInMinutes: 60 * 24 * 60});
 
     this.status = 200;
+
+    this.body = token;
 
 }
 

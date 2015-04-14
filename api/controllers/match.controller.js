@@ -124,6 +124,4 @@ function *create(){
     }
 
     this.status = 200;
-
-    this.body = 'Worked';
 }
