@@ -1,7 +1,7 @@
-{
+module.exports = {
   "development": {
-    "username": "kleio",
-    "password": null,
+    "username": process.env.DEVELOPMENT_DB_USERNAME,
+    "password": process.env.DEVELOPMENT_DB_PASSWORD,
     "database": "kleio_development",
     "host": "127.0.0.1",
     "dialect": "postgres"

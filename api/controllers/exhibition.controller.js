@@ -42,7 +42,7 @@ function *index() {
     if(!offset || offset < 1){
         offset = 0;
     }
-    var where = {};
+    var where = {active : true};
 
     if(title) {
         where.title = title;
