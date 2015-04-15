@@ -29,8 +29,7 @@ function *index(){
     try{
         var museum = yield this.models['Museum'].findAll({
             order : '"updatedAt" DESC',
-            limit : 1,
-            attributes : ['name', 'description', 'hoursOfOperation', 'email', 'phone', 'image', 'location', 'terms', 'about']
+            limit : 1
         });
     } catch(err) {
         this.throw(err.message, err.status || 500);

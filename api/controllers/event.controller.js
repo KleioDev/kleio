@@ -51,7 +51,6 @@ function *index() {
         events = yield this.models['Event'].findAll({
             order : '"eventDate" DESC',
             limit : query.limit,
-            attributes : ['id', 'title', 'description', 'eventDate'],
             offset : offset,
             where : where
         });
