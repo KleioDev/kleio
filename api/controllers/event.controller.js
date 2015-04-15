@@ -4,7 +4,7 @@
 
 var middleware = require('../middleware'),
     Router = require('koa-router'),
-    koaBody = require('koa-better-body');
+    koaBody = require('koa-better-body')();
 
 /**
  * Handle requests related to events

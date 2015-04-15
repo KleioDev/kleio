@@ -15,6 +15,7 @@ module.exports = function(){
             .get('/beacon', loadModels, index)
             .get('/beacon/:id', loadModels, show)
             .post('/beacon', koaBody, loadModels, adminAuth, create)
+            .post('/beacon/register', koaBody, loadModels, adminAuth, register)
             .put('/beacon/:id', koaBody, loadModels, adminAuth, edit)
             .delete('/beacon/:id', loadModels, adminAuth, destroy);
 
@@ -171,4 +172,11 @@ function *destroy() {
     }
 
     this.status = 200;
+}
+
+/**
+ * Register an iBeacon to an Exhibition
+ */
+function *register(){
+
 }
