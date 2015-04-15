@@ -13,10 +13,11 @@ var middleware = require('../middleware'),
 module.exports = function(){
 
     var loadModels = middleware.loadModel(),
+        auth = middleware.authentication,
         matchController = new Router()
 
-        .get('/match/:id', loadModels, index)
-        .post('/match', loadModels, koaBody, create);
+        .get('/match/:id', loadModels, auth, index)
+        .post('/match', loadModels, koaBody, auth, create);
 
     return matchController.routes();
 }

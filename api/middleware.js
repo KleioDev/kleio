@@ -28,26 +28,30 @@ function loadModel() {
 
 /**
  * Add authentication middleware to context
+ * Allows facebook mobile application users and administrator users
  */
 function *authenticate(next) {
+    var loggedUser;
 
-    var user = this.session.user,
-        fbUser;
-
-    if(!user){
+    if(!this.user){
         //There's no user in session, blow up.
         this.throw('Unauthorized', 401);
     }
 
     try {
-        if(this.session.user.type === 'user'){
-            loggedUser = this.models['User'].find({ where : { id : this.session.user.id}});
+
+        if(this.user.type === 'user'){
+            loggedUser = this.models['User'].find({ where : { id : this.user.id}});
         } else {
-            loggedUser = this.models['Administrator'].find({ where : { id : this.session.user.id}});
+            loggedUser = this.models['Administrator'].find({ where : { id : this.user.id}});
         }
 
     } catch(err) {
         this.throw(err.message, err.status || 500);
+    }
+
+    if(!loggedUser){
+        this.throw('Forbidden', 403);
     }
 
     yield next;

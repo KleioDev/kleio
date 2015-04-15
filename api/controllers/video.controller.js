@@ -13,13 +13,14 @@ var middleware = require('../middleware'),
 module.exports = function(){
 
     var loadModels = middleware.loadModel(),
+        adminAuth = middleware.adminAuth,
         videoController = new Router()
 
         .get('/artifact/video/:id', loadModels, index)
         .get('/video/:id', loadModels, show)
-        .post('/video', koaBody, loadModels, create)
-        .put('/video/:id', koaBody, loadModels, edit)
-        .delete('/video/:id', loadModels, destroy);
+        .post('/video', koaBody, loadModels, adminAuth, create)
+        .put('/video/:id', koaBody, loadModels, adminAuth, edit)
+        .delete('/video/:id', loadModels, adminAuth, destroy);
 
     return videoController.routes();
 }

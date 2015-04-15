@@ -22,7 +22,7 @@ module.exports = function(){
 
         .get('/leaderboard', loadModels, auth, leaderboard)
         .get('/user', loadModels, adminAuth, index)
-        .get('/user/:id', loadModels, show)
+        .get('/user/:id', loadModels, auth, show)
         .put('/user/:id', koaBody, loadModels, adminAuth, edit)
         .delete('/user/:id', loadModels, adminAuth, destroy)
         .post('/user', koaBody, loadModels, create);
