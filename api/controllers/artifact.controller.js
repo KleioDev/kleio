@@ -33,7 +33,8 @@ function *index(){
     var artifacts,
         offset = this.request.query.offset,
         limit = this.request.query.limit,
-        where;
+        artist = this.query.artist,
+        where = {};
 
     if(!offset || offset < 1){
         offset = 0;
@@ -51,16 +52,31 @@ function *index(){
         where.title = this.query.title;
     }
 
+    if(this.query.artist){
+        try {
+            artist = yield this.models['Artist'].find({
+                where : { name : this.query.artist},
+                limit : 1
+            });
+        } catch(err){
+            this.throw(err.message, err.status || 500);
+        }
+
+        if(!artist){
+            this.throw('Artist Not Found', 404)
+        }
+
+        where.ArtistId = artist.id;
+    }
 
 
     try {
         artifacts = yield this.models['Artifact'].findAll({
             order : '"createdAt" DESC',
             limit : limit,
-            attributes : ['image', 'title', 'description', 'id'],
             offset : offset,
             where : where
-            });
+        });
     } catch(err){
         this.throw(err.message, err.status || 500);
     }
