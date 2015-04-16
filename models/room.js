@@ -23,10 +23,12 @@ module.exports = function(sequelize, DataTypes) {
             type : DataTypes.ARRAY(DataTypes.STRING)
         },
         createdAt : {
-            type : DataTypes.DATE
+            type : DataTypes.DATE,
+            isNull: true
         },
         updatedAt : {
-            type : DataTypes.DATE
+            type : DataTypes.DATE,
+            isNull : true
         }
     }, {
         timestamps : true

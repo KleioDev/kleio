@@ -180,7 +180,6 @@ function *destroy() {
  */
 function *register(){
     var payload = this.request.body.fields,
-        result,
         ExhibitionBeacon = this.models['ExhibitionBeacon'];
 
     if(!payload || !payload.ExhibitionId || !payload.BeaconId){
@@ -189,7 +188,10 @@ function *register(){
 
     try {
         yield this.sequelize.transaction(function (t){
-            return ExhibitionBeacon.create(payload, {transaction : t});
+            return ExhibitionBeacon.create({
+                BeaconId : payload.BeaconId,
+                ExhibitionId : payload.ExhibitionId
+            }, {transaction : t});
         });
     } catch(err){
         this.throw(err.message, err.status || 500)
@@ -206,8 +208,6 @@ function *unregister(){
     var id = this.params.id,
         ExhibitionBeacon = this.models['ExhibitionBeacon'];
 
-
-
     try {
         yield this.sequelize.transaction(function (t){
             return ExhibitionBeacon.delete({
@@ -221,5 +221,4 @@ function *unregister(){
     }
 
     this.status = 200;
-
 }
