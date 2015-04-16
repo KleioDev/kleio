@@ -47,7 +47,7 @@ module.exports = function(sequelize, DataTypes) {
             type : DataTypes.STRING(1000)
         },
         accessToken : {
-            type : DataTypes.STRING
+            type : DataTypes.STRING(1000)
         },
         createdAt : {
             type : DataTypes.DATE

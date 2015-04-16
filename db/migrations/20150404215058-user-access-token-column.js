@@ -3,7 +3,7 @@
 module.exports = {
   up: function(migration, DataTypes, done) {
     migration.addColumn('Users', 'accessToken', {
-        type : DataTypes.STRING
+        type : DataTypes.STRING(1000)
     }).complete(done);
   },
 

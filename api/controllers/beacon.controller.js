@@ -16,6 +16,7 @@ module.exports = function(){
             .get('/beacon/:id', loadModels, show)
             .post('/beacon', koaBody, loadModels, adminAuth, create)
             .post('/beacon/register', koaBody, loadModels, adminAuth, register)
+            .delete('/beacon/unregister/:id', loadModels, adminAuth, unregister)
             .put('/beacon/:id', koaBody, loadModels, adminAuth, edit)
             .delete('/beacon/:id', loadModels, adminAuth, destroy);
 
@@ -178,5 +179,44 @@ function *destroy() {
  * Register an iBeacon to an Exhibition
  */
 function *register(){
+    var payload = this.request.body.fields,
+        result,
+        ExhibitionBeacon = this.models['ExhibitionBeacon'];
+
+    if(!payload || !payload.ExhibitionId || !payload.BeaconId){
+        this.throw('Bad Request: Payload Error', 400);
+    }
+
+    try {
+        result = yield this.sequelize.transaction(function (t){
+            return ExhibitionBeacon.create(payload);
+        });
+    } catch(err){
+        this.throw(err.message, err.status || 500)
+    }
+
+    this.status = 200;
+
+}
+
+/**
+ * Unregister an iBeacon from an Exhibition
+ */
+function *unregister(){
+    var id = this.params.id,
+        result,
+        ExhibitionBeacon = this.models['ExhibitionBeacon'];
+
+
+
+    try {
+        result = yield this.sequelize.transaction(function (t){
+            return ExhibitionBeacon.create(payload);
+        });
+    } catch(err){
+        this.throw(err.message, err.status || 500)
+    }
+
+    this.status = 200;
 
 }
