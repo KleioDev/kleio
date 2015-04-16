@@ -7,7 +7,8 @@ var middleware = require('../middleware'),
     Router = require('koa-router'),
     koaBody = require('koa-better-body')(),
     rq = require('co-request'),
-    jwt = require('koa-jwt');
+    qs = require('qs'),
+    utils = require('../utilities');
 
 /**
  * Handle requests related to Users
@@ -186,22 +187,44 @@ function *leaderboard(){
  */
 function *create() {
     var body = this.request.body.fields,
-        appId = process.env.FACEBOOK_APP_ID,
-        appSecret = process.env.FACEBOOK_APP_SECRET,
-        user, fbuser;
+        user, fbuser, existingUser, token, response,
+        User = this.models['User'];
 
 
     if(!body) {
-        this.throw('Bad Request', 400);
+        this.throw('Bad Request: No Payload', 400);
     }
 
-    var response = yield rq({
-        uri: "https://graph.facebook.com/v2.3/" + body.userID + "?access_token=" + body.accessToken + "&client_id=" + appId + "&client_secret=" + appSecret,
-        method: 'GET',
-        json: true
-    });
+    //Check if the user already exists
+    try {
+        existingUser = yield this.models['User'].find({
+            where : { facebook_id : body.userID}
+        });
+    } catch(err){
+        this.throw(err.message, err.status || 500);
+    }
 
-    if(response.statusCode == 200){
+    if(!existingUser){
+
+        var uri = utils.fbCall({
+            route : body.userID,
+            accessToken : body.accessToken
+        });
+
+        try {
+            response = yield rq({
+                uri: uri,
+                method: 'GET',
+                json: true
+            });
+        } catch(err){
+            this.throw(err.message, err.status || 500);
+        }
+
+        if(response.statusCode !== 200 || !response.body.email){
+            this.throw('Bad Request: Facebook API', 400);
+        }
+
         var user = {
             email : response.body.email,
             firstName : response.body.first_name,
@@ -212,15 +235,17 @@ function *create() {
         }
 
         try {
-            fbuser = yield this.models['User'].create(user);
+            fbuser = yield this.sequelize.transaction( function (t) {
+                return User.create(user, { transaction : t});
+            });
         } catch(err) {
             this.throw(err.message, err.status || 500);
         }
-    } else {
-        this.throw('Bad Request', 400);
+
+
     }
 
-    var token = jwt.sign({id : fbuser.id, type : 'user'}, 'some-secret', { expiresInMinutes: 60 * 24 * 60});
+    token = utils.generateToken(existingUser || fbuser);
 
     this.status = 200;
 

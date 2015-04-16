@@ -188,8 +188,8 @@ function *register(){
     }
 
     try {
-        result = yield this.sequelize.transaction(function (t){
-            return ExhibitionBeacon.create(payload);
+        yield this.sequelize.transaction(function (t){
+            return ExhibitionBeacon.create(payload, {transaction : t});
         });
     } catch(err){
         this.throw(err.message, err.status || 500)
@@ -204,14 +204,17 @@ function *register(){
  */
 function *unregister(){
     var id = this.params.id,
-        result,
         ExhibitionBeacon = this.models['ExhibitionBeacon'];
 
 
 
     try {
-        result = yield this.sequelize.transaction(function (t){
-            return ExhibitionBeacon.create(payload);
+        yield this.sequelize.transaction(function (t){
+            return ExhibitionBeacon.delete({
+                where : {
+                    id : id
+                }
+            }, { transaction : t});
         });
     } catch(err){
         this.throw(err.message, err.status || 500)

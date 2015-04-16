@@ -13,7 +13,7 @@
     "test:controllers": "NODE_ENV=test mocha --harmony -- api/test/controller/*.js",
     "db:create": "node_modules/.bin/create_database",
     "db:drop": "node_modules/.bin/drop_database",
-    "pm2" : "pm2 start server.js --node-args=\"--harmony\""
+    "pm2": "pm2 start server.js --node-args=\"--harmony\""
   },
   "repository": {
     "type": "git",
@@ -48,6 +48,7 @@
     "mocha": "^2.2.1",
     "pg": "^4.3.0",
     "pg-hstore": "^2.3.1",
+    "qs": "^2.4.1",
     "sequelize": "^2.0.4",
     "sequelize-migration-pg-extras": "^1.0.1",
     "supertest": "^0.15.0",
