@@ -43,6 +43,8 @@ module.exports = function(sequelize, DataTypes) {
         classMethods : {
             associate: function(models){
 
+                Exhibition.hasMany(models.Artifact);
+
                 Exhibition.belongsToMany(models.Beacon, { through: 'ExhibitionBeacon' });
                 models.Beacon.belongsToMany(Exhibition, { through: 'ExhibitionBeacon' });
 

@@ -18,7 +18,7 @@ module.exports = function(){
         .get('/artifact', loadModels, index)
         .get('/artifact/:id', loadModels, show)
         .post('/artifact', koaBody, loadModels, adminAuth, create)
-        .put('/artifact/:id', koaBody, loadModels, adminAuth, edit)
+        .put('/artifact/:id', koaBody, loadModels,  edit)
         .delete('/artifact/:id', loadModels, adminAuth, destroy);
 
     return artifactController.routes();

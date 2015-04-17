@@ -90,9 +90,12 @@ function *show(){
         this.throw('Bad Request', 400);
     }
 
+    var Artifact = this.models['Artifact'];
+
     try {
         exhibition = yield this.models['Exhibition'].find({
-            where : { id : id}
+            where : { id : id},
+            include : [Artifact]
         });
     } catch(err) {
         this.throw(err.message, err.status || 500);
