@@ -4,23 +4,27 @@
 
 * [Current Version](#version)
 * [Schema](#schema)
+* [Parameters](#parameters)
 * [Errors](#errors)
-* [Routes Definition](#routes)
-	* [Museum](#museum)
-	* [Exhibitions](#exhibitions)
-	* [Artifacts](#artifacts) 
-	* [Media Content](#media)
-		* [Audible](#audible)
-		* [Video](#video)
-		* [Image](#image)
-		* [Archive](#archive)
-	* [Events](#events)
-	* [News](#news)
-	* [Feedback](#feedback)
-	* [Match Hunt](#match)
-	* [User](#user)
-
 * [Authentication](#tests)
+* [Models] (#models)
+* [Museum](#museum)
+* [Exhibitions](#exhibitions)
+* [Artifacts](#artifacts) 
+* [Media Content](#media)
+	* [Audible](#audible)
+	* [Video](#video)
+	* [Image](#image)
+	* [Archive](#archive)
+* [Events](#events)
+* [News](#news)
+* [Feedback](#feedback)
+* [Match Hunt](#match)
+* [User](#user)
+* [iBeacons](#beacon)
+* [Administrator](#administrator)
+
+
  
 
 ### Current Version <a id="version"></a>
@@ -32,23 +36,52 @@ The purpose of this API is fascilitating information to the MuSA mobile applicat
 
 As of the current version, the base URL for this API is `http://136.145.116.229:4567/`, this base API is subject to change do to early development. All communication to and from the API will be managed using *JSON* documents.
 
+### Parameters <a id="parameters"></a>
+
+Support for query parameters exists on a per-route basis, this is described further below under each API Entity. The parameters supported by this API as of this version are:
+
+Parameter | Description
+----|------ |-----
+page | For pagination purposes, select the page number, defaults to 0.
+per_page | For pagination purposes, select the amount of items per page, defaults to 25
+beacon_code | An iBeacon code
+title | Represent's the title attribute of a resource
+exhibition_id |An integer representing an Exhibition id
+artist | Represent's the name attribute of an Artist resource
+email | Represent's the email attribute of a resource
+first_name | Represent's the first_name attribute of a resource
+seen | Represent's the seen attribute of a resource
+type | Represents the type attribute of a resource
+resolved | Represents the resolved attribute of a resource
+name | Represents the name attribute of a resource
+
+
 ### Errors <a id="errors"></a>
 
 When an error is encountered, the API will respond with an appropiate status code and a message in the Body explaining the error. Possible errors are as follows:
 
 Error | Description | Status Code
 ----|------ |-----
-Not Found | A given resource was not found | 404
+Not Found | The resource resource was not found | 404
 Protected Resource | The resource that is trying to be accessed is protected, use proper Authorization header | 401
-Invalid Payload | Problems with the provided request body | 400
-Unauthorized | The user does not have access to this route | 403
+Invalid Payload | Problems with the current payload. Payload may be unabelable or some attributes may be missing | 400
+Unauthorized | The request source does not have access to this route | 403
 Invalid Parameters | The provided uri paramters are not acceptable | 400
+Internal Server Error | Oh noes, something went horribly wrong, case by case basis | 500
+
+### Authentication <a id="authentication"></a>
+
+Some routes will respond with a 401: Protected Resource error. This means that authentication is needed in order to access this information. The authentication process is as follows:
+
+1. 'POST /authenticate' with valid parameters
+2. Upon successful authentification, the server will respond with a Token, store this token for further requests
+
+Each request to a protected route will need to contain the Authorization header, providing the token.
 
 
+### Models <a id="models"></a>
 
-### API Routes Definition <a id="routes"></a>
-
-Functionality is broken up into several components. Each components will have similar URL structure. Components are as follows:
+Information on the model schema for this project is provided [here]()
 
 ### Museum <a id="museum"></a>
 
@@ -692,18 +725,7 @@ GET /leaderboard
 }
 ```
 
-### Tests <a id="tests"></a>
+### iBeacons <a id="beacon"></a>
 
-Tests Scripts are provided to fascilitate the testing of the API server. Tests are separated into controller tests, and model tests.
+### Administrator <a id="administrator"></a>
 
-To execute controller tests:
-
-```
-npm run test:controllers
-```
-
-To execute model tests
-
-```
-npm run test:models
-```

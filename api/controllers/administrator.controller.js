@@ -199,6 +199,9 @@ function *destroy() {
     this.status = 200;
 }
 
+/**
+ * Authenticate an administrator
+ */
 function *login(){
     var payload = this.request.body.fields,
         admin;

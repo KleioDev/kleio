@@ -27,7 +27,6 @@ module.exports = function(){
 
 /**
  * Get a list of video instances, limited to 25 at a time
- * Query Parameter : page -> The page number that wants to fetched
  */
 function *index(){
     var videos,
