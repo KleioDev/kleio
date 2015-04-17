@@ -5,12 +5,6 @@
 
 module.exports = function(sequelize, DataTypes) {
 
-    var Video = sequelize.import(__dirname + '/video'),
-        Audio = sequelize.import(__dirname + '/audio'),
-        Image = sequelize.import(__dirname + '/image'),
-        Text = sequelize.import(__dirname + '/text'),
-        Artist = sequelize.import(__dirname + '/artist');
-
     var Artifact =  sequelize.define('Artifact', {
         id : {
             type : DataTypes.INTEGER,
@@ -66,6 +60,9 @@ module.exports = function(sequelize, DataTypes) {
             type : DataTypes.STRING(1000),
             isUrl : true
         },
+        ExhibitionId : {
+            type : DataTypes.INTEGER
+        },
         createdAt : {
             type : DataTypes.DATE
         },
@@ -77,7 +74,9 @@ module.exports = function(sequelize, DataTypes) {
         paranoid : true,
         classMethods : {
             associate: function(models){
-                Artifact.belongsTo(Artist, {foreignKey : 'ArtistId'});
+                Artifact.belongsTo(models.Artist, {foreignKey : 'ArtistId'});
+
+                Artifact.belongsTo(models.Exhibition, {foreignKey : 'ExhibitionId'});
 
                 Artifact.belongsToMany(models.Video, { through: 'ArtifactVideo' });
                 models.Video.belongsToMany(Artifact, { through: 'ArtifactVideo' });
