@@ -13,11 +13,11 @@ module.exports = function(){
 
     var exhibitionBeaconController = new Router()
 
-        .get('/exhibition/beacon', loadModels, index)
-        .get('/exhibition/beacon/:id', loadModels, show)
-        .post('/exhibition/beacon', loadModels, koaBody, create)
-        .put('/exhibition/beacon/:id', loadModels, koaBody, edit)
-        .delete('/exhibition/beacon/:id', loadModels, destroy);
+        .get('/exhibition/beacon', loadModels, adminAuth, index)
+        .get('/exhibition/beacon/:id', loadModels, adminAuth, show)
+        .post('/exhibition/beacon', loadModels, koaBody, adminAuth, create)
+        .put('/exhibition/beacon/:id', loadModels, koaBody, adminAuth, edit)
+        .delete('/exhibition/beacon/:id', loadModels, adminAuth, destroy);
 
     return exhibitionBeaconController.routes();
 }
