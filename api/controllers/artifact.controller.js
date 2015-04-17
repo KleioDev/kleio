@@ -109,13 +109,14 @@ function *show(){
             Video = this.models['Video'],
             Audible = this.models['Audible'],
             Image = this.models['Image'],
-            Text = this.models['Text'];
+            Text = this.models['Text'],
+            Artist = this.models['Artist'];
 
         artifact = yield Artifact.find({
             where : {
                 id : id
             },
-            include : [Video, Audible, Image, Text]
+            include : [Video, Audible, Image, Text, Artist]
         });
 
 
