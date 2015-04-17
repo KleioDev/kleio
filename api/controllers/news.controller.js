@@ -27,28 +27,21 @@ module.exports = function(){
 
 /**
  * Get a list of all Museum News, limited to 25 at a given time.
- * Query Parameter : page -> The page number that wants to fetched
+ * Query parameters : page, per_page, title
  */
 function *index() {
     var news,
         offset = this.query.page,
-        limit = this.query.limit,
+        limit = this.query.per_page,
         title = this.query.title,
-        description = this.query.description,
         where = {};
 
-    if(!offset || offset < 1){
-        offset = 0;
-    }
+    if(!offset) offset = 0;
 
-    if(!limit){
-        limit = 25
-    }
 
-    if(title){ where.title = title; }
+    if(!limit) limit = 25
 
-    if(description){ where.description = description; }
-
+    if(title) where.title = title;
 
     try {
         news = yield this.models['News'].findAll({
@@ -61,9 +54,7 @@ function *index() {
         this.throw(err.message, err.status || 500);
     }
 
-    if(!news || news.length < 1){
-        this.throw('Not Found', 404);
-    }
+    if(!news || news.length < 1) this.throw('Not Found', 404);
 
     this.status = 200;
 
@@ -80,10 +71,6 @@ function *show() {
     var news,
         id = this.params.id;
 
-    if(!id || id < 1){
-        this.throw('Bad Request', 400);
-    }
-
     try{
         news = yield this.models['News'].find({
             where : { id : id}
@@ -92,9 +79,7 @@ function *show() {
         this.throw(err.message, err.status || 500);
     }
 
-    if(!news) {
-        this.throw('Not Found', 404);
-    }
+    if(!news) this.throw('Not Found', 404);
 
     this.status = 200;
 
@@ -104,63 +89,62 @@ function *show() {
 
 /**
  * Create an instance of News
- * Payload: title, description, image, Administrator Id
+ * Payload: title, description, image, AdministratorId
  */
 function *create(){
-    var news = this.request.body.fields,
-    result,
-    News = this.models['News'];
+    var payload = this.request.body.fields,
+        result,
+        News = this.models['News'];
 
-    if(!news){
-        this.throw('Bad Request', 400);
-    }
+    if(!payload) this.throw('Invalid Payload', 400);
 
     try {
         result = this.sequelize.transaction(function(t) {
-            return News.create(news, {transaction : t});
+            return News.create(payload, {transaction : t});
         });
     } catch(err) {
-        this.throw(err.message, err.status || 500);
+        if(typeof err ==='ValidationError'){
+            this.throw('Invalid Payload', 400);
+        } else {
+            this.throw(err.message, err.status || 500);
+        }
     }
 
-    if(!result) {
-        this.throw('Not Found', 404);
-    }
+    if(!result) this.throw('Not Found', 404);
 
-    this.status = 200;
+    this.status = 201;
 }
 
 /**
  * Update an instance of News
  * Parameter: id --> News Id
  * Payload: title, description, image, Administrator Id
- * Note: Only the parameters that are included in the payload will be updated, the rest will remain the same
  */
 function *edit(){
-    var news = this.request.body.fields,
-    result,
-    id = this.params.id,
-    News = this.models['News'];
+    var payload = this.request.body.fields,
+        result,
+        id = this.params.id,
+        News = this.models['News'];
 
-    if(!news) {
-        this.throw('Bad Request', 400);
-    }
+    if(!payload) this.throw('Invalid Payload', 400);
 
     try {
         result = yield this.sequelize.transaction(function (t) {
-            return News.update(news, {
+            return News.update(payload, {
                 where : {
                     id : id
                 }
             }, {transaction : t});
         });
     } catch(err) {
-        this.throw(err.message, err.status || 500);
+        if(typeof err ==='ValidationError'){
+            this.throw('Invalid Payload', 400);
+        } else {
+            this.throw(err.message, err.status || 500);
+        }
     }
 
-    if(!result) {
-        this.throw('Not Found', 404);
-    }
+    if(!result) this.throw('Not Found', 404);
 
     this.status = 200;
 }
@@ -179,16 +163,15 @@ function *destroy() {
             return News.destroy({
                 where : {
                     id : id
-                }
+                },
+                transaction : t
             });
         });
     } catch(err) {
         this.throw(err.message, err.status || 500);
     }
 
-    if(!result) {
-        this.throw('Not Found', 404);
-    }
+    if(!result) this.throw('Not Found', 404);
 
     this.status = 200;
 }

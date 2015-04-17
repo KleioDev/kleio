@@ -2,10 +2,10 @@
 
 ### Overview
 
-* [Current Version Description](#description)
+* [Current Version](#version)
 * [Schema](#schema)
-* [Content](#content)
-* [API Routes Definition](#api-routes)
+* [Errors](#errors)
+* [Routes Definition](#routes)
 	* [Museum](#museum)
 	* [Exhibitions](#exhibitions)
 	* [Artifacts](#artifacts) 
@@ -19,26 +19,34 @@
 	* [Feedback](#feedback)
 	* [Match Hunt](#match)
 	* [User](#user)
-* [Tests](#tests)
 
-### Current Version Description <a id="description"></a>
+* [Authentication](#tests)
+ 
+
+### Current Version <a id="version"></a>
 
 The purpose of this API is fascilitating information to the MuSA mobile applications. The Museum of the University of Puerto Rico, Mayagüez Campus (MuSA) will allow students to browse all the collections of the museum from the comfort of their smartphone. A few extras are provided for users that make use of the application while inside of the Museum. This API is currently in it's ***Beta*** version, bugs or complains are more than welcomed.
 
+
 ### Schema <a id="schema"></a>
 
-This API follows a *flat* schema for all requests. For example:
+As of the current version, the base URL for this API is `http://136.145.116.229:4567/`, this base API is subject to change do to early development. All communication to and from the API will be managed using *JSON* documents.
 
-```
-GET /museum?page=2
-```
-Will result in a requests for all museums, starting at the second paginataion page. More on this on [API Routes Definition](#api-routes)
+### Errors <a id="errors"></a>
 
-### Content <a id="content"></a>
+When an error is encountered, the API will respond with an appropiate status code and a message in the Body explaining the error. Possible errors are as follows:
 
-Communication to and from the API server will happen through the use of HTTP Verbs and using JSON data, for both response and requests.
+Error | Description | Status Code
+----|------ |-----
+Not Found | A given resource was not found | 404
+Protected Resource | The resource that is trying to be accessed is protected, use proper Authorization header | 401
+Invalid Payload | Problems with the provided request body | 400
+Unauthorized | The user does not have access to this route | 403
+Invalid Parameters | The provided uri paramters are not acceptable | 400
 
-### API Routes Definition <a id="api-routes"></a>
+
+
+### API Routes Definition <a id="routes"></a>
 
 Functionality is broken up into several components. Each components will have similar URL structure. Components are as follows:
 

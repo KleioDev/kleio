@@ -34,34 +34,35 @@ module.exports = function(){
 
 /**
  * Get a list of User instances
- * Query Parameters: limit and offset
+ * Query parameters: page, per_page, first_name, email
  */
 function *index(){
     var users,
         offset = this.query.offset,
-        limit = this.query.limit;
+        limit = this.query.limit,
+        first_name = this.query.first_name,
+        email = this.query.email,
+        where = {};
 
-    if(!offset){
-        offset = 0;
-    }
+    if(!offset) offset = 0;
 
-    //Default limit is 25
-    if(!limit){
-        limit = 25;
-    }
+    if(!limit) limit = 25;
+
+    if(first_name) where.first_name  = first_name;
+
+    if(email) where.email = email;
 
     try {
         users = yield this.models['User'].findAll({
             offset : offset,
-            limit : limit
+            limit : limit,
+            where : where
         });
     } catch(err) {
         this.throw(err.message, err.status || 500);
     }
 
-    if(!users || users.length < 1){
-        this.throw('Not Found', 404);
-    }
+    if(!users || users.length < 1) this.throw('Not Found', 404);
 
     this.status = 200;
 
@@ -86,9 +87,7 @@ function *show(){
         this.throw(err.message, err.status || 500);
     }
 
-    if(!user) {
-        this.throw('Not Found', 404);
-    }
+    if(!user) this.throw('Not Found', 404);
 
     this.status = 200;
 
@@ -99,26 +98,26 @@ function *show(){
  * Udpate an instance of User
  */
 function *edit(){
-    var user = this.request.body.fields
+    var payload = this.request.body.fields,
         User = this.models['User'],
         result,
         id = this.params.id;
 
-    if(!user){
-        this.throw('Bad Request', 400);
-    }
+    if(!payload) this.throw('Invalid Payload', 400);
 
     try {
         result = yield this.sequelize.transaction( function(t) {
-            return User.update(user, { where : { id : id }}, { transaction : t});
+            return User.update(payload, { where : { id : id }, transaction : t});
         });
     } catch(err) {
-        this.throw(err.message, err.status || 500);
+        if(typeof err ==='ValidationError'){
+            this.throw('Invalid Payload', 400);
+        } else {
+            this.throw(err.message, err.status || 500);
+        }
     }
 
-    if(!result){
-        this.throw('Not Found', 404);
-    }
+    if(!result) this.throw('Not Found', 404);
 
     this.status = 200;
 }
@@ -132,35 +131,29 @@ function *destroy(){
         result;
     try {
         result = yield this.sequelize.transaction( function (t) {
-            return User.destroy({ where : { id : id }}, { transaction : t});
+            return User.destroy({ where : { id : id }, transaction : t});
         });
     } catch(err) {
         this.throw(err.message, err.status || 500);
     }
 
-    if(!result) {
-        this.throw('Not Found', 404);
-    }
+    if(!result) this.throw('Not Found', 404);
 
     this.status = 200;
 }
 
 /**
  * Get a list of User scores, limited to 25 at a time
- * Query Parameter : page -> The page number that wants to fetche
+ * Query Parameter : page, per_page
  */
 function *leaderboard(){
     var leaderboard,
-        offset = this.request.query.offset
-        limit = this.query.limit;
+        offset = this.request.query.page,
+        limit = this.query.per_page;
 
-    if(!offset || offset < 1){
-        offset = 0;
-    }
+    if(!offset) offset = 0;
 
-    if(!limit){
-        limit = 25;
-    }
+    if(!limit) limit = 25;
 
     try {
         leaderboard = yield this.models['User'].findAll({
@@ -173,9 +166,7 @@ function *leaderboard(){
         this.throw(err.message, err.status || 500);
     }
 
-    if(!leaderboard || leaderboard < 1){
-        this.throw('Not Found', 404);
-    }
+    if(!leaderboard || leaderboard < 1) this.throw('Not Found', 404);
 
     this.status = 200;
 
@@ -186,19 +177,17 @@ function *leaderboard(){
  * Create a User instance
  */
 function *create() {
-    var body = this.request.body.fields,
-        user, fbuser, existingUser, token, response,
+    var payload = this.request.body.fields,
+        fbuser, existingUser, token, response,
         User = this.models['User'];
 
 
-    if(!body) {
-        this.throw('Bad Request: No Payload', 400);
-    }
+    if(!body) this.throw('Invalid Payload', 400);
 
-    //Check if the user already exists
+
     try {
         existingUser = yield this.models['User'].find({
-            where : { facebook_id : body.userID}
+            where : { facebook_id : payload.userID}
         });
     } catch(err){
         this.throw(err.message, err.status || 500);
@@ -207,8 +196,8 @@ function *create() {
     if(!existingUser){
 
         var uri = utils.fbCall({
-            route : body.userID,
-            accessToken : body.accessToken
+            route : payload.userID,
+            accessToken : payload.accessToken
         });
 
         try {
@@ -222,7 +211,7 @@ function *create() {
         }
 
         if(response.statusCode !== 200 || !response.body.email){
-            this.throw('Bad Request: Facebook API', 400);
+            this.throw('Internal Server Error', 500);
         }
 
         var user = {
@@ -239,7 +228,11 @@ function *create() {
                 return User.create(user, { transaction : t});
             });
         } catch(err) {
-            this.throw(err.message, err.status || 500);
+            if(typeof err ==='ValidationError'){
+                this.throw('Invalid Payload', 400);
+            } else {
+                this.throw(err.message, err.status || 500);
+            }
         }
 
 
@@ -247,7 +240,7 @@ function *create() {
 
     token = utils.generateToken(existingUser || fbuser);
 
-    this.status = 200;
+    this.status = 201;
 
     this.body = token;
 
@@ -262,7 +255,7 @@ function *reset(){
 
     try{
         yield this.sequelize.transaction( function (t) {
-            return User.update({ points : 0}, {where : {}}, { transaction : t});
+            return User.update({ points : 0}, {where : {}, transaction : t});
         });
     } catch(err){
         this.throw(err.message, err.status || 500);

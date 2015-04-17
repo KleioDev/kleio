@@ -31,23 +31,19 @@ module.exports = function(){
  */
 function *index(){
     var videos,
-        id = this.params.id;
+        id = parseInt(this.params.id);
 
-    if(!id || parseInt(id) < 1){
-        this.throw('Bad Request', 400);
+    if(isNaN(id)){
+        this.throw('Invalid Parameters', 400);
     }
 
     try {
-        //TODO: Escape Parameters in this query
         videos = yield this.sequelize.query('select * from "Videos" where "id" in (select "VideoId" from "ArtifactVideos" where "ArtifactId" = '+ id +');', {type: this.sequelize.QueryTypes.SELECT})
     } catch(err) {
-        console.log(err);
         this.throw(err.message, err.status || 500);
     }
 
-    if(!videos || videos.length < 1){
-        this.throw('Not Found', 404);
-    }
+    if(!videos || videos.length < 1) this.throw('Not Found', 404);
 
     this.status = 200;
 
@@ -60,13 +56,7 @@ function *index(){
  */
 function *show(){
     var video,
-        id;
-
-    try {
-        id = parseInt(this.params.id);
-    } catch(err) {
-        this.throw('Invalid Parameters', 400);
-    }
+        id = this.params.id;
 
     try {
         video = yield this.models['Video'].find({
@@ -78,9 +68,7 @@ function *show(){
         this.throw(err.message, err.status || 500);
     }
 
-    if(!video){
-        this.throw('Not Found', 404);
-    }
+    if(!video) this.throw('Not Found', 404);
 
     this.status = 200;
 
@@ -92,18 +80,16 @@ function *show(){
  * Payload: title, description, link, ArtifactId
  */
 function *create(){
-    var video = this.request.body.fields,
+    var payload = this.request.body.fields,
         Video = this.models['Video'],
         ArtifactVideo = this.models['ArtifactVideo'],
         videoId;
 
-    if(!video) {
-        this.throw('Bad Request', 400);
-    }
+    if(!payload) this.throw('Invalid Payload', 400);
 
     try {
         yield this.sequelize.transaction(function(t) {
-            return Video.create(video, {transaction : t}).then(function(video){
+            return Video.create(payload, {transaction : t}).then(function(video){
                 videoId = video.id;
             });
         });
@@ -111,15 +97,19 @@ function *create(){
         yield this.sequelize.transaction(function(t) {
             return ArtifactVideo.create({
                 VideoId : videoId,
-                ArtifactId : video.ArtifactId
+                ArtifactId : payload.ArtifactId
             }, {transaction : t});
         });
 
     } catch (err){
-        this.throw(err.message, err.status || 500);
+        if(typeof err ==='ValidationError'){
+            this.throw('Invalid Payload', 400);
+        } else {
+            this.throw(err.message, err.status || 500);
+        }
     }
 
-    this.status = 200;
+    this.status = 201;
 }
 
 /**
@@ -128,18 +118,16 @@ function *create(){
  * Note: Only attributes included in the Payload will be updated.
  */
 function *edit(){
-    var video = this.request.body.fields,
+    var payload = this.request.body.fields,
         id = this.params.id,
         result,
         Video = this.models['Video'];
 
-    if(!video) {
-        this.throw('Bad Request', 400);
-    }
+    if(!payload) this.throw('Invalid Payload', 400);
 
     try {
         result = yield this.sequelize.transaction(function (t){
-            return Video.update(video, {
+            return Video.update(payload, {
                 where : {
                     id  : id
                 }
@@ -149,9 +137,7 @@ function *edit(){
         this.throw(err.message. err.status || 500);
     }
 
-    if(!result){
-        this.throw('Not Found', 404);
-    }
+    if(!result) this.throw('Not Found', 404);
 
     this.status = 200;
 }
@@ -177,9 +163,7 @@ function *destroy() {
         this.throw(err.message, err.status || 500);
     }
 
-    if (!result) {
-        this.throw('Not Found', 404);
-    }
+    if (!result) this.throw('Not Found', 404);
 
     this.status = 200;
 }

@@ -23,29 +23,20 @@ module.exports = function(){
 
 /**
  * Get a list of Beacons
- * Query Parameters:
- * offset -> The page number that wants to fetched
- * limit -> Number of results to return
- * code -> iBeacon code, will try to match this code
+ * Query Parameters: page, per_page, beacon_code
  */
 function *index() {
     var beacons,
-        offset = this.query.offset,
-        limit = this.query.limit,
-        code = this.query.code,
+        offset = this.query.page,
+        limit = this.query.per_page,
+        code = this.query.beacon_code,
         where = {}, Room = this.models['Room'];
 
-    if(!offset || offset < 1) {
-        offset = 0;
-    }
+    if(!offset) offset = 0;
 
-    if(!limit || limit < 1){
-        limit = 25;
-    }
+    if(!limit) limit = 25;
 
-    if(code){
-       where.code = code;
-    }
+    if(code) where.code = code;
 
     try {
 
@@ -59,9 +50,8 @@ function *index() {
         this.throw(err.message, err.status || 500);
     }
 
-    if(!beacons || beacons.length < 1){
-        this.throw('Not Found', 404);
-    }
+    if(!beacons || beacons.length < 1) this.throw('Not Found', 404);
+
 
     this.status = 200;
 
@@ -85,9 +75,7 @@ function *show() {
         this.throw(err.message, err.status || 500);
     }
 
-    if(!beacon) {
-        this.throw('Not Found', 404);
-    }
+    if(!beacon) this.throw('Not Found', 404);
 
     this.status = 200;
 
@@ -99,27 +87,27 @@ function *show() {
  * Payload: code
  */
 function *create(){
-    var beacon = this.request.body.fields,
+    var payload = this.request.body.fields,
         result,
         Beacon = this.models['Beacon'];
 
-    if(!beacon){
-        this.throw('Bad Request', 400);
-    }
+    if(!payload || !payload.code) this.throw('Invalid Payload', 400);
 
     try {
         result = yield this.sequelize.transaction(function(t) {
-            return Beacon.create(beacon, {transaction : t});
+            return Beacon.create(payload, {transaction : t});
         });
     } catch(err) {
-        this.throw(err.message, err.status || 500);
+        if(typeof err ==='ValidationError'){
+            this.throw('Invalid Payload', 400);
+        } else {
+            this.throw(err.message, err.status || 500);
+        }
     }
 
-    if(!result) {
-        this.throw('Not Found', 404);
-    }
+    if(!result) this.throw('Not Found', 404);
 
-    this.status = 200;
+    this.status = 201;
 
 }
 
@@ -129,30 +117,31 @@ function *create(){
  * Payload: code
  */
 function *edit(){
-    var beacon = this.request.body.fields,
+    var payload = this.request.body.fields,
         result,
         id = this.params.id,
         Beacon = this.models['Beacon'];
 
-    if(!beacon) {
-        this.throw('Bad Request', 400);
-    }
+    if(!payload) this.throw('Invalid Payload', 400);
+
 
     try {
         result = yield this.sequelize.transaction(function (t) {
-            return Beacon.update(beacon, {
+            return Beacon.update(payload, {
                 where : {
                     id : id
                 }
             }, {transaction : t});
         });
     } catch(err) {
-        this.throw(err.message, err.status || 500);
+        if(typeof err ==='ValidationError'){
+            this.throw('Invalid Payload', 400);
+        } else {
+            this.throw(err.message, err.status || 500);
+        }
     }
 
-    if(!result) {
-        this.throw('Not Found', 404);
-    }
+    if(!result) this.throw('Not Found', 404);
 
     this.status = 200;
 }
@@ -178,9 +167,8 @@ function *destroy() {
         this.throw(err.message, err.status || 500);
     }
 
-    if(!result) {
-        this.throw('Not Found', 404);
-    }
+    if(!result) this.throw('Not Found', 404);
+
 
     this.status = 200;
 }

@@ -16,7 +16,7 @@ module.exports = function(){
         .get('/archive/:id', loadModels, show)
         .post('/archive', koaBody, loadModels, adminAuth, create)
         .put('/archive/:id', koaBody, loadModels, adminAuth, edit)
-        .delete('/archive/:id', loadModels, adminAuth, destroy);
+        .delete('/archive/:id', loadModels, destroy);
 
     return archiveController.routes();
 }
@@ -39,9 +39,7 @@ function *index() {
         this.throw(err.message, err.status || 500);
     }
 
-    if(!archives || archives.length < 1){
-        this.throw('Not Found', 404);
-    }
+    if(!archives || archives.length < 1) this.throw('Not Found', 404);
 
     this.status = 200;
 
@@ -54,11 +52,7 @@ function *index() {
  */
 function *show() {
     var archive,
-        id = parseInt(this.params.id);
-
-    if(isNaN(id)){
-        this.throw('Invalid Parameters', 400);
-    }
+        id = this.params.id;
 
     try {
         archive = yield this.models['Text'].find({
@@ -70,9 +64,7 @@ function *show() {
         this.throw(err.message, err.status || 500);
     }
 
-    if(!archive){
-        this.throw('Not Found', 404);
-    }
+    if(!archive) this.throw('Not Found', 404);
 
     this.status = 200;
 
@@ -84,18 +76,17 @@ function *show() {
  * Payload: title, description, link, ArtifactId
  */
 function *create(){
-    var archive = this.request.body.fields,
+    var payload = this.request.body.fields,
         Archive = this.models['Text'],
         ArtifactArchive = this.models['ArtifactText'],
         archiveId;
 
-    if(!archive) {
-        this.throw('Bad Request', 400);
-    }
+    if(!payload) this.throw('Invalid Payload', 400);
+
 
     try {
         yield this.sequelize.transaction(function(t) {
-            return Archive.create(archive, {transaction : t}).then(function(archive){
+            return Archive.create(payload, {transaction : t}).then(function(archive){
                 archiveId = archive.id;
             });
         });
@@ -103,12 +94,16 @@ function *create(){
         yield this.sequelize.transaction(function(t) {
             return ArtifactArchive.create({
                 TextId : archiveId,
-                ArtifactId : archive.ArtifactId
+                ArtifactId : payload.ArtifactId
             }, {transaction : t});
         });
 
     } catch (err){
-        this.throw(err.message, err.status || 500);
+        if(typeof err ==='ValidationError'){
+            this.throw('Invalid Payload', 400);
+        } else {
+            this.throw(err.message, err.status || 500);
+        }
     }
 
     this.status = 200;
@@ -120,30 +115,30 @@ function *create(){
  * Note: Only attributes included in the Payload will be updated.
  */
 function *edit(){
-    var archive = this.request.body.fields,
+    var payload = this.request.body.fields,
         id = this.params.id,
         result,
         Archive = this.models['Text'];
 
-    if(!archive) {
-        this.throw('Bad Request', 400);
-    }
+    if(!payload) this.throw('Invalid Payload', 400);
 
     try {
         result = yield this.sequelize.transaction(function (t){
-            return Archive.update(archive, {
+            return Archive.update(payload, {
                 where : {
                     id  : id
                 }
             }, {transaction : t});
         });
     } catch(err) {
-        this.throw(err.message. err.status || 500);
+        if(typeof err ==='ValidationError'){
+            this.throw('Invalid Payload', 400);
+        } else {
+            this.throw(err.message, err.status || 500);
+        }
     }
 
-    if(!result){
-        this.throw('Not Found', 404);
-    }
+    if(!result) this.throw('Not Found', 404);
 
     this.status = 200;
 }
@@ -169,9 +164,7 @@ function *destroy(){
         this.throw(err.message, err.status || 500);
     }
 
-    if(!result) {
-        this.throw('Not Found', 404);
-    }
+    if(!result) this.throw('Not Found', 404);
 
     this.status = 200;
 }

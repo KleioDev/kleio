@@ -35,9 +35,7 @@ function *index(){
         this.throw(err.message, err.status || 500);
     }
 
-    if(!exhibitionBeacons || exhibitionBeacons.length < 1){
-        this.throw('Not Found', 404);
-    }
+    if(!exhibitionBeacons || exhibitionBeacons.length < 1) this.throw('Not Found', 404);
 
     this.status = 200;
 
@@ -62,9 +60,7 @@ function *show(){
         this.throw(err.message, err.status || 500);
     }
 
-    if(!exhibitionBeacon){
-        this.throw('Not Found', 404);
-    }
+    if(!exhibitionBeacon) this.throw('Not Found', 404);
 
     this.status = 200;
 
@@ -73,12 +69,13 @@ function *show(){
 
 /**
  * Create an association between an Exhibition and an iBeacon
+ * Payload : ExhibitionId, BeaconId
  */
 function *create(){
     var payload = this.request.body.fields,
         ExhibitionBeacon = this.models['ExhibitionBeacon'];
 
-    if(!payload || !payload.ExhibitionId || !payload.BeaconId) this.throw('Bad Request: Invalid Payload Parameters');
+    if(!payload || !payload.ExhibitionId || !payload.BeaconId) this.throw('Invalid Payload', 400);
 
     try{
         yield this.sequelize.transaction( function (t) {
@@ -88,11 +85,14 @@ function *create(){
             }, { transaction : t});
         });
     } catch(err) {
-        this.throw(err.message, err.status || 500);
+        if(typeof err ==='ValidationError'){
+            this.throw('Invalid Payload', 400);
+        } else {
+            this.throw(err.message, err.status || 500);
+        }
     }
 
-    this.status = 200;
-
+    this.status = 201;
 }
 
 /**
@@ -101,12 +101,13 @@ function *create(){
 function *edit(){
     var payload = this.request.body.fields,
         id = this.params.id,
-        ExhibitionBeacon = this.models['ExhibitionBeacon'];
+        ExhibitionBeacon = this.models['ExhibitionBeacon'],
+        result;
 
-    if(!payload) this.throw('Bad Request: Invalid Payload Parameters', 400);
+    if(!payload) this.throw('Invalid Payload', 400);
 
     try {
-        yield this.sequelize.transaction( function (t) {
+        result = yield this.sequelize.transaction( function (t) {
             return ExhibitionBeacon.update(payload, {
                 where : {
                     id : id
@@ -114,8 +115,14 @@ function *edit(){
             }, { transaction : t});
         });
     } catch(err) {
-        this.throw(err.message, err.status || 500);
+        if(typeof err ==='ValidationError'){
+            this.throw('Invalid Payload', 400);
+        } else {
+            this.throw(err.message, err.status || 500);
+        }
     }
+
+    if(!result) this.throw('Not Found', 404);
 
     this.status = 200;
 }
@@ -125,15 +132,18 @@ function *edit(){
  */
 function *destroy(){
     var id = this.params.id,
-        ExhibitionBeacon = this.models['ExhibitionBeacon'];
+        ExhibitionBeacon = this.models['ExhibitionBeacon'],
+        result;
 
     try {
-        yield this.sequelize.transaction( function (t) {
+        result = yield this.sequelize.transaction( function (t) {
             return ExhibitionBeacon.destroy({ where : { id : id }}, { transaction : t});
         });
     } catch(err) {
         this.throw(err.message, err.status || 500);
     }
+
+    if(!result) this.throw('Not Found', 404);
 
     this.status = 200;
 }

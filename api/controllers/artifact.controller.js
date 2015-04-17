@@ -27,46 +27,43 @@ module.exports = function(){
 /**
  * Get a list of all artifacts
  * The list will be limited to 10 at a time.
- * Query Parameters: Offset, indicates page that is being requests, if omitted will default
+ * Query Parameters: page, per_page, title, exhibition_id, artist
  */
 function *index(){
     var artifacts,
-        offset = this.request.query.offset,
-        limit = this.request.query.limit,
+        offset = this.request.query.page,
+        limit = this.request.query.per_page,
         artist = this.query.artist,
+        exhibition = this.query.exhibition_id,
+        title = this.query.title,
         where = {};
 
-    if(!offset || offset < 1){
-        offset = 0;
-    }
+    if(!offset) offset = 0;
 
-    if(!limit || limit < 1){
-        limit = 25;
-    }
+    if(!limit) limit = 25;
 
-    if(this.query.description){
-        where.description = description;
-    }
+    if(title) where.title = title;
 
-    if(this.query.title){
-        where.title = this.query.title;
-    }
+    if(exhibition) where.ExhibitionId = exhibition;
 
-    if(this.query.artist){
+
+    if(artist){
+        var res;
+
         try {
-            artist = yield this.models['Artist'].find({
-                where : { name : this.query.artist},
+            res = yield this.models['Artist'].find({
+                where : { name : artist},
                 limit : 1
             });
         } catch(err){
             this.throw(err.message, err.status || 500);
         }
 
-        if(!artist){
-            this.throw('Artist Not Found', 404)
+        if(!res){
+            this.throw('Not Found', 404)
         }
 
-        where.ArtistId = artist.id;
+        where.ArtistId = res.id;
     }
 
 
@@ -81,9 +78,8 @@ function *index(){
         this.throw(err.message, err.status || 500);
     }
 
-    if(!artifacts || artifacts.length < 1){
-        this.throw('Not Found', 404);
-    }
+    if(!artifacts || artifacts.length < 1) this.throw('Not Found', 404);
+
 
     this.status = 200;
 
@@ -97,12 +93,7 @@ function *index(){
  */
 function *show(){
     var artifact,
-        id = parseInt(this.params.id);
-
-
-    if(isNaN(id)){
-        this.throw('Bad Request', 404);
-    }
+        id = this.params.id;
 
     try {
         var Artifact = this.models['Artifact'],
@@ -124,9 +115,8 @@ function *show(){
         this.throw(err.message, err.status || 500);
     }
 
-    if(!artifact){
-        this.throw('Not Found', 404);
-    }
+    if(!artifact) this.throw('Not Found', 404);
+
 
     this.status = 200;
 
@@ -135,58 +125,57 @@ function *show(){
 
 /**
  * Create an instance of Artifacts
- * Payload:
+ * Payload: title, description, medium, classification, attribution, type, dimensions, dated, period,
+ * culture, department, objectNumber, image, ArtistId, ExhibitionId, and qrcode
  */
 function *create(){
-    var artifact = this.request.body.fields,
-        Artifact = this.models['Artifact'],
-        result;
+    var payload = this.request.body.fields,
+        Artifact = this.models['Artifact'];
 
-    if(!artifact){
-        this.throw('Bad Request', 400);
-    }
+    if(!payload) this.throw('Invalid Payload', 400);
+
 
     try {
-        result = yield this.sequelize.transaction( function (t) {
-            return Artifact.create(artifact, {transaction : t});
+        yield this.sequelize.transaction( function (t) {
+            return Artifact.create(payload, {transaction : t});
         });
     } catch(err) {
-        this.throw(err.message, err.status || 500);
+        if(typeof err ==='ValidationError'){
+            this.throw('Invalid Payload', 400);
+        } else {
+            this.throw(err.message, err.status || 500);
+        }
     }
 
-    if(!result) {
-        this.throw('Not Found', 404);
-    }
-
-    this.status = 200;
+    this.status = 201;
 }
 
 /**
  * Update an instance of Artifact
- * Payload:
- * Note: Will only update the available payload attributes
  */
 function *edit(){
-    var artifact = this.request.body.fields,
+    var payload = this.request.body.fields,
         Artifact = this.models['Artifact'],
         id = this.params.id,
         result;
 
-    if(!artifact){
-        this.throw('Bad Request', 400);
-    }
+    if(!payload) this.throw('Invalid Payload', 400);
+
 
     try {
         result = yield this.sequelize.transaction( function (t) {
-            return Artifact.update(artifact, { where : { id : id } }, {transaction : t});
+            return Artifact.update(payload, { where : { id : id } }, {transaction : t});
         });
     } catch(err) {
-        this.throw(err.message, err.status || 500);
+        if(typeof err ==='ValidationError'){
+            this.throw('Invalid Payload', 400);
+        } else {
+            this.throw(err.message, err.status || 500);
+        }
     }
 
-    if(!result) {
-        this.throw('Not Found', 404);
-    }
+    if(!result) this.throw('Not Found', 404);
+
 
     this.status = 200;
 }
@@ -201,16 +190,15 @@ function *destroy(){
         result;
 
     try {
-        result = yield this.sequelize.transaction( function (t) {
+        yield this.sequelize.transaction( function (t) {
             return Artifact.destroy({ where : { id : id}}, { transaction : t});
         })
     } catch(err) {
         this.throw(err.message, err.status || 500);
     }
 
-    if(!result) {
-        this.throw('Not Found', 404);
-    }
+    if(!result) this.throw('Not Found', 404);
+
 
     this.status = 200;
 }

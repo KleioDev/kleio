@@ -34,7 +34,7 @@ app.use(function *(next){
         if (err.status == 401){
             this.status = 401;
 
-            this.body = 'Protected resource, use Authorization to get access\n';
+            this.body = 'Protected Resource';
         } else {
             throw err;
         }

@@ -29,29 +29,30 @@ module.exports = function(){
 
 /**
  * Get a list of administrators for the Museum
- * Parameters: {
- *  limit : amount of administrators to fetch in a single try.
- *  page : the number of the page to fetch
- *  }
+ * Query Parameters: page, per_page, email, first_name
+ * Response: List of administrators
  */
 function *index(){
-    var offset = this.request.query.page,
-        limit = this.request.query.limit,
-        administrators;
+    var offset = this.query.page,
+        limit = this.query.per_page,
+        email = this.query.email,
+        firstName = this.query.first_name,
+        administrators, where = {};
 
-    if(!offset) { //Set default offset
-        offset = 0;
-    }
+    if(!offset) offset = 0;
 
-    if(!limit) { //Set default limit
-        limit = 10
-    }
+    if(!limit) limit = 25;
+
+    if(email) where.email = email;
+
+    if(firstName) where.firstName = firstName;
 
     try {
         administrators = yield this.models['Administrator'].findAll({
             limit : limit,
             offset : offset,
-            attributes : ['id', 'firstName', 'lastName', 'email', 'phone']
+            attributes : ['id', 'firstName', 'lastName', 'email', 'phone'],
+            where : where
         });
     } catch (err) {
         this.throw(err.message, err.status || 500);
@@ -66,6 +67,9 @@ function *index(){
     this.body = { administrators : administrators}
 }
 
+/**
+ * Get a single administrator instance
+ */
 function *show(){
     var id = this.params.id,
     administrator;
@@ -96,41 +100,41 @@ function *show(){
  * Note: Will only update the parameters present, no other parameter will be affected.
  */
 function *edit() {
-    var administrator = this.request.body.fields,
+    var payload = this.request.body.fields,
         id = this.params.id,
         result,
         Administrator = this.models['Administrator'];
 
-        //TODO: Add transaction to this.
+    if(!payload) this.throw('Invalid Payload', 400);
 
-        if(!administrator){
-            this.throw('Bad Request', 400);
-        }
 
-        if(administrator.password){
+        if(payload.password){
             //Hash password before updating
             var salt = bcrypt.genSaltSync(10);
 
-            var hash = bcrypt.hashSync(administrator.password, salt);
+            var hash = bcrypt.hashSync(payload.password, salt);
 
-            administrator.password = hash;
+            payload.password = hash;
         }
 
         try {
             result = yield this.sequelize.transaction(function(t) {
-                return Administrator.update(administrator, {
+                return Administrator.update(payload, {
                     where : {
                         id : id
                     }
                 }, {transaction : t})
             });
         } catch(err) {
-            this.throw(err.message, err.status || 500);
+            if(typeof err ==='ValidationError'){
+                this.throw('Invalid Payload', 400);
+            } else {
+                this.throw(err.message, err.status || 500);
+            }
         }
 
-        if(!result) {
-            this.throw('Not Found', 404);
-        }
+        if(!result) this.throw('Not Found', 404);
+
 
         this.status = 200;
 
@@ -142,32 +146,31 @@ function *edit() {
  * Payload: Name, email, phone and a password.
  */
 function *create(){
-    var administrator = this.request.body.fields,
+    var payload = this.request.body.fields,
         Administrator = this.models['Administrator'];
 
-    if(!administrator){
-        this.throw('Bad Request', 400);
+    if(!payload || !payload.email || !payload.password){
+        this.throw('Invalid Payload', 400);
     }
 
-    //TODO: Make async later
     var salt = bcrypt.genSaltSync(10);
-    var hash = bcrypt.hashSync(administrator.password, salt);
+    var hash = bcrypt.hashSync(payload.password, salt);
 
-    administrator.password = hash;
+    payload.password = hash;
 
     try {
         yield this.sequelize.transaction(function(t){
-            return Administrator.create(administrator, { transaction : t});
+            return Administrator.create(payload, { transaction : t});
         })
     } catch(err) {
         if(typeof err ==='ValidationError'){
-            this.throw('Invalid Parameters', 400);
+            this.throw('Invalid Payload', 400);
         } else {
             this.throw(err.message, err.status || 500);
         }
     }
 
-    this.status = 200;
+    this.status = 201;
 }
 
 /**
@@ -177,8 +180,6 @@ function *destroy() {
     var id = this.params.id,
         Administrator = this.models['Administrator'],
         result;
-
-    //TODO: add deleteAt timestamps, don't actually delete the instances
 
     try {
         result = yield this.sequelize.transaction(function(t) {
@@ -192,9 +193,8 @@ function *destroy() {
         this.throw(err.message, err.status || 500);
     }
 
-    if(!result) {
-        this.throw('Not Found', 404);
-    }
+    if(!result) this.throw('Not Found', 404);
+
 
     this.status = 200;
 }
@@ -203,9 +203,8 @@ function *login(){
     var payload = this.request.body.fields,
         admin;
 
-    if(!payload) {
-        this.throw('Bad Request', 400);
-    }
+    if(!payload) this.throw('Invalid Payload', 400);
+
 
     try {
         admin = yield this.models['Administrator'].find({
@@ -218,7 +217,7 @@ function *login(){
     }
 
     if(!bcrypt.compareSync(payload.password, admin.password)) {
-        this.throw('Unauthorized', 401);
+        this.throw('Unauthorized', 403);
     }
 
     //Success!!
@@ -226,5 +225,6 @@ function *login(){
 
     this.body = token;
 
-    this.status = 200;
+    //No Content
+    this.status = 204;
 }

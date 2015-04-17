@@ -54,9 +54,7 @@ function *index(){
         this.throw(err.message, err.status || 500);
     }
 
-    if(!clue) {
-        this.throw('Not Found', 404);
-    }
+    if(!clue) this.throw('Not Found', 404);
 
     this.status = 200;
 

@@ -35,9 +35,7 @@ function *index(){
         this.throw(err.message, err.status || 500);
     }
 
-    if(!museum || museum.length < 1){
-        this.throw('Not Found', 404);
-    }
+    if(!museum || museum.length < 1) this.throw('Not Found', 404);
 
     this.status = 200;
 
@@ -68,12 +66,14 @@ function *edit(){
                 }, { transaction : t});
             });
         } catch(err) {
-            this.throw(err.message, err.status || 500);
+            if(typeof err ==='ValidationError'){
+                this.throw('Invalid Payload', 400);
+            } else {
+                this.throw(err.message, err.status || 500);
+            }
         }
 
-        if(!result) {
-            this.throw('Not Found', 404);
-        }
+        if(!result) this.throw('Not Found', 404);
 
         this.status = 200;
 }

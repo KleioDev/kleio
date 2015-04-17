@@ -29,28 +29,26 @@ module.exports = function(){
 
 /**
  * Get a list of Museum Events, limited to 25 at a given time.
- * Query Parameters: page -> The page number that wants to fetched
+ * Query Parameters: page, per_page, title
  */
 function *index() {
     var events,
-        query = this.query,
+        offset = this.query.page,
+        limit = this.query.per_page,
+        title = this.query.title,
         where = {};
 
-    if(!query.offset || query.offset < 1) {
-        offset = 0;
-    }
+    if(!offset) offset = 0;
 
-    if(!query.limit){ query.limit = 25; }
+    if(!limit) limit = 25;
 
-    if(query.title){ where.title = query.title; }
-
-    if(query.description){ where.description = query.description ;}
+    if(title) where.title = title;
 
     try {
 
         events = yield this.models['Event'].findAll({
             order : '"eventDate" DESC',
-            limit : query.limit,
+            limit : limit,
             offset : offset,
             where : where
         });
@@ -58,9 +56,7 @@ function *index() {
         this.throw(err.message, err.status || 500);
     }
 
-    if(!events || events.length < 1){
-        this.throw('Not Found', 404);
-    }
+    if(!events || events.length < 1) this.throw('Not Found', 404);
 
     this.status = 200;
 
@@ -75,7 +71,6 @@ function *show() {
     var event,
         id = this.params.id;
 
-
     try {
         event = yield this.models['Event'].find({
             where : { id : id}
@@ -84,9 +79,7 @@ function *show() {
         this.throw(err.message, err.status || 500);
     }
 
-    if(!event) {
-        this.throw('Not Found', 404);
-    }
+    if(!event) this.throw('Not Found', 404);
 
     this.status = 200;
 
@@ -98,28 +91,27 @@ function *show() {
  * Payload: title, description, eventDate, image, location and author
  */
 function *create(){
-    var event = this.request.body.fields,
-    result,
-    Event = this.models['Event'];
+    var payload = this.request.body.fields,
+        result,
+        Event = this.models['Event'];
 
-    if(!event){
-        this.throw('Bad Request', 400);
-    }
+    if(!payload) this.throw('Invalid Payload', 400);
 
     try {
         result = this.sequelize.transaction(function(t) {
-            return Event.create(event, {transaction : t});
+            return Event.create(payload, {transaction : t});
         });
     } catch(err) {
-        this.throw(err.message, err.status || 500);
+        if(typeof err ==='ValidationError'){
+            this.throw('Invalid Payload', 400);
+        } else {
+            this.throw(err.message, err.status || 500);
+        }
     }
 
-    if(!result) {
-        this.throw('Not Found', 404);
-    }
+    if(!result) this.throw('Not Found', 404);
 
-    this.status = 200;
-
+    this.status = 201;
 }
 
 /**
@@ -128,30 +120,31 @@ function *create(){
  * Payload: title, description, eventDate, image, location and author
  */
 function *edit(){
-    var event = this.request.body.fields,
+    var payload = this.request.body.fields,
         result,
         id = this.params.id,
         Event = this.models['Event'];
 
-        if(!event) {
-            this.throw('Bad Request', 400);
-        }
+        if(!payload) this.throw('Invalid Payload', 400);
+
 
         try {
             result = yield this.sequelize.transaction(function (t) {
-                return Event.update(event, {
+                return Event.update(payload, {
                     where : {
                         id : id
                     }
                 }, {transaction : t});
             });
         } catch(err) {
-            this.throw(err.message, err.status || 500);
+            if(typeof err ==='ValidationError'){
+                this.throw('Invalid Payload', 400);
+            } else {
+                this.throw(err.message, err.status || 500);
+            }
         }
 
-        if(!result) {
-            this.throw('Not Found', 404);
-        }
+        if(!result) this.throw('Not Found', 404);
 
         this.status = 200;
 }
@@ -177,9 +170,8 @@ function *destroy() {
             this.throw(err.message, err.status || 500);
         }
 
-        if(!result) {
-            this.throw('Not Found', 404);
-        }
+        if(!result) this.throw('Not Found', 404);
+
 
         this.status = 200;
 }

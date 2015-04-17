@@ -23,28 +23,25 @@ module.exports = function(){
 
 /**
  * Get a list of all rooms in the Museum
- * Query Parameters: limit, offset, name, and description
+ * Query Parameters: limit, offset, and name
  */
 function *index(){
     var rooms,
-        queryString = this.query,
+        offset = this.query.page,
+        limit = this.query.per_page,
+        name = this.query.name,
         where = {}, Beacon = this.models['Beacon'];
 
-    if(!queryString.offset) queryString.offset = 0;
+    if(!offset) offset = 0;
 
+    if(!limit) limit = 25
 
-    if(!queryString.limit) queryString.limit = 25
-
-
-    if(queryString.name) where.name = queryString.name;
-
-    if(queryString.description) where.description = queryString.description;
-
+    if(name) where.name = name;
 
     try {
         rooms = yield this.models['Room'].findAll({
-            limit : queryString.limit,
-            offset : queryString.offset,
+            limit : limit,
+            offset : offset,
             where : where,
             include : [Beacon]
         });
@@ -52,9 +49,7 @@ function *index(){
         this.throw(err.message, err.status || 500);
     }
 
-    if(!rooms || rooms.length < 1){
-        this.throw('Not Found', 404);
-    }
+    if(!rooms || rooms.length < 1) this.throw('Not Found', 404);
 
     this.status = 200;
 
@@ -80,9 +75,7 @@ function *show(){
         this.throw(err.message, err.status || 500);
     }
 
-    if(!room){
-        this.throw('Not Found', 404);
-    }
+    if(!room) this.throw('Not Found', 404);
 
     this.status = 200;
 
@@ -96,24 +89,25 @@ function *show(){
  */
 function *create(){
     var payload = this.request.body.fields,
-        result,
         Room = this.models['Room'];
 
-    if(!payload || !payload.name || !payload.description || payload.createdAt || payload.updatedAt){
-        this.throw('Bad Request: Invalid Payload Parameters', 400);
+    if(!payload || !payload.name || !payload.description){
+        this.throw('Invalid Payload', 400);
     }
 
     try {
-        result = this.sequelize.transaction( function(t) {
+        this.sequelize.transaction( function(t) {
             return Room.create(payload, { transaction : t});
         })
     } catch(err) {
-        this.throw(err.message, err.status || 500);
+        if(typeof err ==='ValidationError'){
+            this.throw('Invalid Payload', 400);
+        } else {
+            this.throw(err.message, err.status || 500);
+        }
     }
 
-    if(!result) this.throw('Internal Server Error', 500);
-
-    this.status = 200;
+    this.status = 201;
 }
 
 /**
@@ -126,8 +120,8 @@ function *edit(){
         id = this.params.id,
         Room = this.models['Room'];
 
-    if(!payload || payload.createdAt || payload.updatedAt){
-        this.throw('Bad Request: Invalid Payload Parameters', 400);
+    if(!payload){
+        this.throw('Invalid Payload', 400);
     }
 
     try {
@@ -135,10 +129,14 @@ function *edit(){
             return Room.update(payload, { where : { id : id }}, { transaction : t});
         })
     } catch(err) {
-        this.throw(err.message, err.status || 500);
+        if(typeof err ==='ValidationError'){
+            this.throw('Invalid Payload', 400);
+        } else {
+            this.throw(err.message, err.status || 500);
+        }
     }
 
-    if(!result) this.throw('Internal Server Error', 500);
+    if(!result) this.throw('Not Found', 404);
 
     this.status = 200;
 }
@@ -148,17 +146,18 @@ function *edit(){
  */
  function *destroy(){
     var id = this.params.id,
-        result;
+        result,
+        Room = this.models['Room'];
 
     try {
         result = this.sequelize.transaction( function (t) {
-            return Room.destroy({ where : { id : id}}, {transaction : t});
+            return Room.destroy({ where : { id : id}, transaction : t});
         });
     } catch(err) {
         this.throw(err.message, err.status || 500);
     }
 
-    if(!result) this.throw('Internal Server Error', 500);
+    if(!result) this.throw('Not Found', 404);
 
     this.status = 200;
  }

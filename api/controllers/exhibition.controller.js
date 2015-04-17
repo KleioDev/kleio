@@ -11,8 +11,6 @@ var middleware  = require('../middleware'),
  */
 module.exports = function(){
 
-    //TODO: Implement master collection
-
     var loadModels = middleware.loadModel(),
         adminAuth = middleware.adminAuth;
 
@@ -30,33 +28,21 @@ module.exports = function(){
 
 /**
  * Get a list of al exhibitions, limited to 25 at a time.
- * Query Parameter: page -> The page number that wants to fetched
+ * Query parameters : page, per_page, title
  */
 function *index() {
     var exhibitions,
         offset = this.query.page,
         title = this.query.title,
-        description = this.query.description,
-        limit = this.query.limit;
+        limit = this.query.per_page,
+        where = {active : true};
 
-    if(!offset || offset < 1){
-        offset = 0;
-    }
-    var where = {active : true};
+    if(!offset) offset = 0;
 
-    if(title) {
-        where.title = title;
-    }
+    if(title) where.title = title;
 
-    if(description) {
-        where.description = description;
-    }
+    if(!limit) limit = 25;
 
-    if(!limit) {
-        limit = 25;
-    }
-
-    //TODO: Show(return) number of objects in an exhibition
     try {
         exhibitions = yield this.models['Exhibition'].findAll({
             order : '"createdAt" DESC',
@@ -64,13 +50,12 @@ function *index() {
             offset : offset,
             where : where
         });
+
     } catch(err) {
         this.throw(err.message, err.status || 500);
     }
 
-    if(!exhibitions || exhibitions.length < 1){
-        this.throw('Not Found', 404);
-    }
+    if(!exhibitions || exhibitions.length < 1) this.throw('Not Found', 404);
 
     this.status = 200;
 
@@ -84,13 +69,8 @@ function *index() {
  */
 function *show(){
     var exhibition,
-        id = this.params.id;
-
-    if(!id || id < 1){
-        this.throw('Bad Request', 400);
-    }
-
-    var Artifact = this.models['Artifact'];
+        id = this.params.id,
+        Artifact = this.models['Artifact'];
 
     try {
         exhibition = yield this.models['Exhibition'].find({
@@ -101,9 +81,7 @@ function *show(){
         this.throw(err.message, err.status || 500);
     }
 
-    if(!exhibition){
-        this.throw('Not Found', 404);
-    }
+    if(!exhibition) this.throw('Not Found', 404);
 
     this.status = 200;
 
@@ -142,9 +120,7 @@ function *near(){
         this.throw(err.message, err.status || 500);
     }
 
-    if(!exhibitions || exhibitions.length < 1){
-        this.throw('Not Found', 404);
-    }
+    if(!exhibitions || exhibitions.length < 1) this.throw('Not Found', 404);
 
     this.status = 200;
 
@@ -156,25 +132,25 @@ function *near(){
  * Payload: title, description, active, image, museumId
  */
 function *create(){
-    var exhibition = this.request.body.fields,
+    var payload = this.request.body.fields,
         Exhibition = this.models['Exhibition'],
         result;
 
-        if(!exhibition){
-            this.throw('Bad Request', 400);
-        }
+        if(!payload) this.throw('Invalid Payload', 400);
 
         try {
             result = yield this.sequelize.transaction( function (t) {
-                return Exhibition.create(exhibition, {transaction : t});
+                return Exhibition.create(payload, {transaction : t});
             });
         } catch(err) {
-            this.throw(err.message, err.status || 500);
+            if(typeof err ==='ValidationError'){
+                this.throw('Invalid Payload', 400);
+            } else {
+                this.throw(err.message, err.status || 500);
+            }
         }
 
-        if(!result) {
-            this.throw('Not Found', 404);
-        }
+        if(!result) this.throw('Not Found', 404);
 
         this.status = 200;
 }
@@ -185,26 +161,27 @@ function *create(){
  * Note: Will only update the available payload attributes
  */
 function *edit(){
-    var exhibition = this.request.body.fields,
+    var payload = this.request.body.fields,
         Exhibition = this.models['Exhibition'],
         id = this.params.id,
         result;
 
-    if(!exhibition){
-        this.throw('Bad Request', 400);
-    }
+    if(!payload) this.throw('Invalid Payload', 400);
+
 
     try {
         result = yield this.sequelize.transaction( function (t) {
-            return Exhibition.update(exhibition, { where : { id : id } }, {transaction : t});
+            return Exhibition.update(payload, { where : { id : id } }, {transaction : t});
         });
     } catch(err) {
-        this.throw(err.message, err.status || 500);
+        if(typeof err ==='ValidationError'){
+            this.throw('Invalid Payload', 400);
+        } else {
+            this.throw(err.message, err.status || 500);
+        }
     }
 
-    if(!result) {
-        this.throw('Not Found', 404);
-    }
+    if(!result) this.throw('Not Found', 404);
 
     this.status = 200;
 }
@@ -226,9 +203,7 @@ function *destroy(){
             this.throw(err.message, err.status || 500);
         }
 
-        if(!result) {
-            this.throw('Not Found', 404);
-        }
+        if(!result) this.throw('Not Found', 404);
 
         this.status = 200;
 }

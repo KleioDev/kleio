@@ -27,15 +27,13 @@ module.exports = function() {
 /**
  * Get a list of audible content related to a given Artifact
  * Parameters: id -> ArtifactId
- * Query Parameters: page -> The page number that wants to fetched
  */
 function *index() {
     var audibles,
-        id = parseInt(this.params.id);
+        id = this.params.id;
 
-    if(isNaN(id)){
-        this.throw('Invalid Parameters', 400);
-    }
+    if(isNaN(id)) this.throw('Invalid Parameters', 400);
+
 
     try {
         audibles = yield this.sequelize.query('select * from "Audibles" where "id" in (select "AudibleId" from "ArtifactAudibles" where "ArtifactId" = '+ id +');', {type: this.sequelize.QueryTypes.SELECT})
@@ -43,9 +41,8 @@ function *index() {
         this.throw(err.message, err.status || 500);
     }
 
-    if(!audibles || audibles.length < 1){
-        this.throw('Not Found', 404);
-    }
+    if(!audibles || audibles.length < 1) this.throw('Not Found', 404);
+
 
     this.status = 200;
 
@@ -58,11 +55,8 @@ function *index() {
  */
 function *show(){
     var audible,
-        id = parseInt(this.params.id);
+        id = this.params.id;
 
-    if(isNaN(id)){
-        this.throw('Invalid Parameters', 400);
-    }
 
     try {
         audible = yield this.models['Audible'].find({
@@ -74,9 +68,7 @@ function *show(){
         this.throw(err.message, err.status || 500);
     }
 
-    if(!audible) {
-        this.throw('Not Found', 404);
-    }
+    if(!audible) this.throw('Not Found', 404);
 
     this.status = 200;
 
@@ -85,26 +77,19 @@ function *show(){
 
 /**
  * Create an instance of Audible content, will also add this resource to an artifact
- * Payload = {
- *  title :  audible title,
- *  description :  audbile description,
- *  link : link to the audible resource,
- *  ArtifactId : Artifact to which this belongs to
- *  }
+ * Payload : title, description, link, ArtifactId
  */
 function *create(){
-    var audible = this.request.body.fields,
+    var payload = this.request.body.fields,
         Audible = this.models['Audible'],
         ArtifactAudible = this.models['ArtifactAudible'],
         audibleId;
 
-    if(!audible) {
-        this.throw('Bad Request', 400);
-    }
+    if(!payload) this.throw('Invalid Payload', 400);
 
     try {
         yield this.sequelize.transaction(function(t) {
-            return Audible.create(audible, {transaction : t}).then(function(audio){
+            return Audible.create(payload, {transaction : t}).then(function(audio){
                 audibleId = audio.id;
             });
         });
@@ -112,73 +97,75 @@ function *create(){
         yield this.sequelize.transaction(function(t) {
             return ArtifactAudible.create({
                 AudibleId : audibleId,
-                ArtifactId : audible.ArtifactId
+                ArtifactId : payload.ArtifactId
             }, {transaction : t});
         });
 
     } catch (err){
-        this.throw(err.message, err.status || 500);
+        if(typeof err ==='ValidationError'){
+            this.throw('Invalid Payload', 400);
+        } else {
+            this.throw(err.message, err.status || 500);
+        }
     }
 
-    this.status = 200;
+    this.status = 201;
 
 }
 /**
  * Edit an Audible resource
  * Parameter: id --> AudibleId
- * Payload: title, description, link
- * Note: Will update which ever payload attribute is included.
  */
 function *edit(){
-    var audible = this.request.body.fields,
+    var payload = this.request.body.fields,
         id = this.params.id,
         result,
         Audible = this.models['Audible'];
 
-        if(!audible) {
-            this.throw('Bad Request', 400);
-        }
+    if(!payload) this.throw('Invalid Payload', 400);
 
-        try {
-            result = yield this.sequelize.transaction(function (t){
-                return Audible.update(audible, {
-                    where : {
-                        id  : id
-                    }
-                }, {transaction : t});
-            });
-        } catch(err) {
-            this.throw(err.message. err.status || 500);
+    try {
+        result = yield this.sequelize.transaction(function (t){
+            return Audible.update(payload, {
+                where : {
+                    id  : id
+                }
+            }, {transaction : t});
+        });
+    } catch(err) {
+        if(typeof err ==='ValidationError'){
+            this.throw('Invalid Payload', 400);
+        } else {
+            this.throw(err.message, err.status || 500);
         }
+    }
 
-        if(!result){
-            this.throw('Not Found', 404);
-        }
+    if(!result) this.throw('Not Found', 404);
 
-        this.status = 200;
+    this.status = 200;
 }
 
+/**
+ * Destroy an Audible instance
+ */
 function *destroy() {
     var id = this.params.id,
         Audible = this.models['Audible'],
         result;
 
-        try {
-            yield this.sequelize.transaction(function(t) {
-                return Audible.destroy({
-                    where : {
-                        id : id
-                    }
-                }, { transaction : t});
-            });
-        } catch(err) {
-            this.throw(err.message, err.status || 500);
-        }
+    try {
+        yield this.sequelize.transaction(function(t) {
+            return Audible.destroy({
+                where : {
+                    id : id
+                }
+            }, { transaction : t});
+        });
+    } catch(err) {
+        this.throw(err.message, err.status || 500);
+    }
+    if(!result) this.throw('Not Found', 404);
 
-        if(!result) {
-            this.throw('Not Found', 404);
-        }
-
-        this.status = 200;
+    this.status = 200;
 
 }

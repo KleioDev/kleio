@@ -29,33 +29,39 @@ module.exports = function(){
 
 /**
  * Get a list of all feedback
- * Parameter: limit : limit the amount of instances returned, offset : page fetched from the database, based on limit
+ * Query parameters : page, per_page, title, seen, type, resolved
  */
 function *index(){
     var feedbacks,
-        offset = this.request.query.offset,
-        limit = this.request.query.limit;
+        offset = this.query.page,
+        limit = this.query.per_page,
+        title = this.query.title,
+        seen = this.query.seen,
+        type = this.query.type,
+        where = {};
 
-        if(!offset) {
-            offset = 0;
-        }
+    if(!offset) offset = 0;
 
-        if(!limit) {
-            limit = 25;
-        }
+    if(!limit) limit = 25;
+
+    if(title) where.title = title;
+
+    if(seen) where.seen = true;
+
+    if(type) where.type = type;
+
 
     try {
         feedbacks = yield this.models['Feedback'].findAll({
             limit : limit,
-            offset : offset
+            offset : offset,
+            where : where
         });
     } catch(err) {
         this.throw(err.message, err.status || 500);
     }
 
-    if(!feedbacks || feedbacks.length < 1) {
-        this.throw('Not Found', 404);
-    }
+    if(!feedbacks || feedbacks.length < 1) this.throw('Not Found', 404);
 
     this.status = 200;
 
@@ -80,9 +86,7 @@ function *show(){
         this.throw(err.message, err.status || 500);
     }
 
-    if(!feedback) {
-        this.throw('Not Found', 404);
-    }
+    if(!feedback) this.throw('Not Found', 404);
 
     this.status = 200;
 
@@ -95,63 +99,56 @@ function *show(){
  * Payload: title, message, type, MuseumId
  */
 function *edit(){
-    var feedback = this.request.body.fields,
+    var payload = this.request.body.fields,
         Feedback = this.models['Feedback'],
         id = this.params.id,
         result;
 
-        if(!feedback){
-            this.throw('Bad Request', 400);
-        }
+        if(!payload) this.throw('Invalid Payload', 400);
+
 
     try {
         result = yield this.sequelize.transaction( function (t) {
-            return Feedback.update(feedback, { where : { id : id } }, {transaction : t});
+            return Feedback.update(payload, { where : { id : id } }, {transaction : t});
         });
     } catch(err) {
-        this.throw(err.message, err.status || 500);
+        if(typeof err ==='ValidationError'){
+            this.throw('Invalid Payload', 400);
+        } else {
+            this.throw(err.message, err.status || 500);
+        }
     }
 
-    if(!result) {
-        this.throw('Not Found', 404);
-    }
+    if(!result) this.throw('Not Found', 404);
 
     this.status = 200;
 }
 
 /**
  * Submit Feedback information
- * Payload : {
- *  title : String with the title
- *  message : String with the feedback message
- *  type : String with the feedback type, could be bug, general or content_issue
- * }
+ * Payload : title, message, type
+ *
  */
 function *create(){
-    //x-www-form-urlencoded
-    var feedback = this.request.body.fields,
+    var payload = this.request.body.fields,
         result;
 
-    if(!feedback){
-        this.throw('Bad Request', 400);
-    }
+    if(!payload) this.throw('Invalid Payload', 400);
+
 
     try {
         result = yield this.models['Feedback'].create(feedback);
     } catch(err) {
         if(typeof err ==='ValidationError'){
-            this.throw('Invalid Parameters', 400);
+            this.throw('Invalid Payload', 400);
         } else {
             this.throw(err.message, err.status || 500);
         }
     }
 
-    if(!result){
-        this.throw('Not Found', 404);
-    }
+    if(!result) this.throw('Not Found', 404);
 
-    this.status = 200;
-
+    this.status = 201;
 }
 
 /**
@@ -171,9 +168,7 @@ function *destroy(){
         this.throw(err.message, err.status || 500);
     }
 
-    if(!result) {
-        this.throw('Not Found', 404);
-    }
+    if(!result) this.throw('Not Found', 404);
 
     this.status = 200;
 }
