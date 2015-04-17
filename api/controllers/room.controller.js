@@ -28,7 +28,7 @@ module.exports = function(){
 function *index(){
     var rooms,
         queryString = this.query,
-        where = {};
+        where = {}, Beacon = this.models['Beacon'];
 
     if(!queryString.offset) queryString.offset = 0;
 
@@ -45,7 +45,8 @@ function *index(){
         rooms = yield this.models['Room'].findAll({
             limit : queryString.limit,
             offset : queryString.offset,
-            where : where
+            where : where,
+            include : [Beacon]
         });
     } catch (err) {
         this.throw(err.message, err.status || 500);
@@ -65,13 +66,15 @@ function *index(){
  */
 function *show(){
     var room,
-        id = this.params.id;
+        id = this.params.id,
+        Beacon = this.models['Beacon'];
 
     try {
         room = yield this.models['Room'].find({
             where : {
                 id : id
-            }
+            },
+            include : [Beacon]
         });
     } catch(err){
         this.throw(err.message, err.status || 500);
