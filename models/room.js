@@ -19,9 +19,6 @@ module.exports = function(sequelize, DataTypes) {
             type : DataTypes.TEXT,
             allowNull : true
         },
-        ibeacons : {
-            type : DataTypes.ARRAY(DataTypes.STRING)
-        },
         createdAt : {
             type : DataTypes.DATE,
             isNull: true
