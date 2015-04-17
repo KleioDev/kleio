@@ -154,7 +154,7 @@ function *edit(){
  */
 function *destroy(){
     var id = this.params.id,
-        Archive = this.models['Archive'],
+        Archive = this.models['Text'],
         result;
 
     try {
