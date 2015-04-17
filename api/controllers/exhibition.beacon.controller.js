@@ -9,15 +9,15 @@ var middleware = require('../middleware'),
 
 module.exports = function(){
     var adminAuth = middleware.adminAuth,
-        loadModels = middleware.loadModel;
+        loadModels = middleware.loadModel();
 
     var exhibitionBeaconController = new Router()
 
-        .get('/exhibition/beacons', loadModels, index)
+        .get('/exhibition/beacon', loadModels, index)
         .get('/exhibition/beacon/:id', loadModels, show)
         .post('/exhibition/beacon', loadModels, koaBody, create)
-        .put('/exhitbition/beacon/:id', loadModels, koaBody, edit)
-        .delete('/exhibition/beacon', loadModels, destroy);
+        .put('/exhibition/beacon/:id', loadModels, koaBody, edit)
+        .delete('/exhibition/beacon/:id', loadModels, destroy);
 
     return exhibitionBeaconController.routes();
 }
@@ -120,6 +120,9 @@ function *edit(){
     this.status = 200;
 }
 
+/**
+ * Dissociate Exhibition from iBeacons
+ */
 function *destroy(){
     var id = this.params.id,
         ExhibitionBeacon = this.models['ExhibitionBeacon'];
