@@ -14,6 +14,9 @@ module.exports = function(sequelize, DataTypes){
         code : {
             type : DataTypes.STRING
         },
+        RoomId : {
+            type : DataTypes.INTEGER
+        },
         createdAt : {
             type : DataTypes.DATE
         },
@@ -21,7 +24,14 @@ module.exports = function(sequelize, DataTypes){
             type : DataTypes.DATE
         }
     }, {
-        timestamps : true
+        timestamps : true,
+        classMethods : {
+            associate: function(models){
+
+                Beacon.belongsTo(models.Room, {foreignKey : 'RoomId'})
+
+            }
+        }
     });
 
     return Beacon;

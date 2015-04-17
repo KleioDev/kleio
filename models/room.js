@@ -28,7 +28,17 @@ module.exports = function(sequelize, DataTypes) {
             isNull : true
         }
     }, {
-        timestamps : true
+        timestamps : true,
+        classMethods : {
+            associate: function(models){
+
+                Room.hasMany(models.Beacon)
+
+                Room.belongsToMany(models.Exhibition, { through: 'ExhibitionRoom' });
+                models.Beacon.belongsToMany(Room, { through: 'ExhibitionRoom' });
+
+            }
+        }
     });
 
     return Room;

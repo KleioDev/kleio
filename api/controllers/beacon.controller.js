@@ -15,8 +15,6 @@ module.exports = function(){
             .get('/beacon', loadModels, index)
             .get('/beacon/:id', loadModels, show)
             .post('/beacon', koaBody, loadModels, adminAuth, create)
-            .post('/beacon/register', koaBody, loadModels, adminAuth, register)
-            .delete('/beacon/unregister/:id', loadModels, adminAuth, unregister)
             .put('/beacon/:id', koaBody, loadModels, adminAuth, edit)
             .delete('/beacon/:id', loadModels, adminAuth, destroy);
 
@@ -25,12 +23,17 @@ module.exports = function(){
 
 /**
  * Get a list of Beacons
- * Query Parameters: page -> The page number that wants to fetched
+ * Query Parameters:
+ * offset -> The page number that wants to fetched
+ * limit -> Number of results to return
+ * code -> iBeacon code, will try to match this code
  */
 function *index() {
     var beacons,
-        offset = this.request.query.offset,
-        limit = this.request.query.limit;
+        offset = this.query.offset,
+        limit = this.query.limit,
+        code = this.query.code,
+        where = {}, Room = this.models['Room'];
 
     if(!offset || offset < 1) {
         offset = 0;
@@ -40,11 +43,17 @@ function *index() {
         limit = 25;
     }
 
+    if(code){
+       where.code = code;
+    }
+
     try {
 
         beacons = yield this.models['Beacon'].findAll({
             limit : limit,
-            offset : offset
+            offset : offset,
+            where : where,
+            include : [Room]
         });
     } catch (err) {
         this.throw(err.message, err.status || 500);
@@ -66,6 +75,7 @@ function *index() {
 function *show() {
     var beacon,
         id = this.params.id;
+
 
     try {
         beacon = yield this.models['Beacon'].find({
@@ -170,54 +180,6 @@ function *destroy() {
 
     if(!result) {
         this.throw('Not Found', 404);
-    }
-
-    this.status = 200;
-}
-
-/**
- * Register an iBeacon to an Exhibition
- */
-function *register(){
-    var payload = this.request.body.fields,
-        ExhibitionBeacon = this.models['ExhibitionBeacon'];
-
-    if(!payload || !payload.ExhibitionId || !payload.BeaconId){
-        this.throw('Bad Request: Payload Error', 400);
-    }
-
-    try {
-        yield this.sequelize.transaction(function (t){
-            return ExhibitionBeacon.create({
-                BeaconId : payload.BeaconId,
-                ExhibitionId : payload.ExhibitionId
-            }, {transaction : t});
-        });
-    } catch(err){
-        this.throw(err.message, err.status || 500)
-    }
-
-    this.status = 200;
-
-}
-
-/**
- * Unregister an iBeacon from an Exhibition
- */
-function *unregister(){
-    var id = this.params.id,
-        ExhibitionBeacon = this.models['ExhibitionBeacon'];
-
-    try {
-        yield this.sequelize.transaction(function (t){
-            return ExhibitionBeacon.delete({
-                where : {
-                    id : id
-                }
-            }, { transaction : t});
-        });
-    } catch(err){
-        this.throw(err.message, err.status || 500)
     }
 
     this.status = 200;

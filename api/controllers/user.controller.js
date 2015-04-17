@@ -7,7 +7,6 @@ var middleware = require('../middleware'),
     Router = require('koa-router'),
     koaBody = require('koa-better-body')(),
     rq = require('co-request'),
-    qs = require('qs'),
     utils = require('../utilities');
 
 /**
@@ -22,6 +21,7 @@ module.exports = function(){
         userController = new Router()
 
         .get('/leaderboard', loadModels, auth, leaderboard)
+        .put('/leaderboard', loadModels, reset)
         .get('/user', loadModels, adminAuth, index)
         .get('/user/:id', loadModels, auth, show)
         .put('/user/:id', koaBody, loadModels, adminAuth, edit)
@@ -253,4 +253,21 @@ function *create() {
 
 }
 
+/**
+ * Reset all User points to 0
+ */
+function *reset(){
+
+    var User = this.models['User'];
+
+    try{
+        yield this.sequelize.transaction( function (t) {
+            return User.update({ points : 0}, {where : {}}, { transaction : t});
+        });
+    } catch(err){
+        this.throw(err.message, err.status || 500);
+    }
+
+    this.status = 200;
+}
 
