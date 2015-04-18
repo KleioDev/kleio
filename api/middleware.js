@@ -65,6 +65,8 @@ function *authenticate(next) {
 function *adminAuth(next){
     var response;
 
+    yield next;
+
     if(this.user){
 
         try {

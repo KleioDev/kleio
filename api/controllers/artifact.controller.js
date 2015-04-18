@@ -187,18 +187,33 @@ function *edit(){
 function *destroy(){
     var id = this.params.id,
         Artifact = this.models['Artifact'],
+        ArtifactAudible = this.models['ArtifactAudible'],
+        ArtifactArchive = this.models['ArtifactText'],
+        ArtifactImage = this.models['ArtifactImage'],
+        ArtifactVideo = this.models['ArtifactVideo'],
         result;
 
     try {
-        yield this.sequelize.transaction( function (t) {
-            return Artifact.destroy({ where : { id : id}}, { transaction : t});
+        result = yield this.sequelize.transaction( function (t) {
+            return ArtifactAudible.destroy({where : {ArtifactId : id}}, {transaction : t})
+            .then(function () {
+                return ArtifactArchive.destroy({ where : { ArtifactId : id}}, { transaction : t})
+                .then(function(){
+                    return ArtifactImage.destroy({ where : { ArtifactId : id}}, { transaction : t})
+                    .then(function(){
+                        return ArtifactVideo.destroy({where : { ArtifactId : id}}, { transaction : t})
+                        .then(function(){
+                            return Artifact.destroy({ where : { id : id }}, { transaction : t});
+                        })
+                    })
+                })
+            })
         })
     } catch(err) {
         this.throw(err.message, err.status || 500);
     }
 
     if(!result) this.throw('Not Found', 404);
-
 
     this.status = 200;
 }
