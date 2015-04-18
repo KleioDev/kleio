@@ -145,20 +145,20 @@ function *edit(){
 
 /**
  * Destroy an instance of Archive
- * Parameter: id --> Archive Id
+ *
  */
 function *destroy(){
     var id = this.params.id,
         Archive = this.models['Text'],
+        ArtifactArchive = this.models['ArtifactText'],
         result;
 
     try {
-        yield this.sequelize.transaction(function(t) {
-            return Archive.destroy({
-                where : {
-                    id : id
-                }
-            }, { transaction : t});
+        result = yield this.sequelize.transaction(function(t) {
+            return ArtifactArchive.destroy({ where : { TextId : id}}, { transaction : t})
+            .then( function() {
+                return Archive.destroy({ where : { id : id}}, { transaction : t});
+            })
         });
     } catch(err) {
         this.throw(err.message, err.status || 500);

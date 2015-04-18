@@ -155,15 +155,15 @@ function *edit(){
 function *destroy(){
     var id = this.params.id,
         Image = this.models['Image'],
+        ArtifactImage = this.models['ArtifactImage'],
         result;
 
     try {
-        yield this.sequelize.transaction(function(t) {
-            return Image.destroy({
-                where : {
-                    id : id
-                }
-            }, { transaction : t});
+       result =  yield this.sequelize.transaction(function(t) {
+            return ArtifactImage.destroy({ where : { ImageId : id}}, { transaction : t})
+            .then( function () {
+                return Image.destroy({ where : {id : id}}, {transaction : t});
+            })
         });
     } catch(err) {
         this.throw(err.message, err.status || 500);

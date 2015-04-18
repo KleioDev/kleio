@@ -151,15 +151,15 @@ function *edit(){
 function *destroy() {
     var id = this.params.id,
         Audible = this.models['Audible'],
+        ArtifactAudible = this.models['ArtifactAudible'],
         result;
 
     try {
-        yield this.sequelize.transaction(function(t) {
-            return Audible.destroy({
-                where : {
-                    id : id
-                }
-            }, { transaction : t});
+        result = yield this.sequelize.transaction(function(t) {
+            return ArtifactAudible.destroy({ where : { AudibleId : id}}, { transaction : t})
+            .then( function (){
+                return Audible.destroy({ where : { id : id}}, {transaction : t});
+            });
         });
     } catch(err) {
         this.throw(err.message, err.status || 500);

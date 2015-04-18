@@ -148,15 +148,15 @@ function *edit(){
 function *destroy() {
     var id = this.params.id,
         Video = this.models['Video'],
+        ArtifactVideo = this.models['ArtifactVideos'],
         result;
 
     try {
-        yield this.sequelize.transaction(function (t) {
-            return Video.destroy({
-                where: {
-                    id: id
-                }
-            }, {transaction: t});
+        result = yield this.sequelize.transaction(function(t) {
+            return ArtifactVideo.destroy({ where : { VideoId : id}}, { transaction : t})
+                .then( function() {
+                    return Video.destroy({ where : { id : id}}, { transaction : t});
+                })
         });
     } catch (err) {
         this.throw(err.message, err.status || 500);
