@@ -21,7 +21,7 @@ module.exports = function(){
         .get('/administrator/:id', loadModels, adminAuth, show)
         .post('/administrator', koaBody, loadModels, adminAuth, create)
         .put('/administrator/:id', koaBody, loadModels, adminAuth, edit)
-        .delete('/administrator/:id', loadModels, adminAuth, destroy)
+        .delete('/administrator/:id', loadModels,  destroy)
         .post('/authenticate', koaBody, loadModels, login);
 
     return administratorController.routes();
@@ -179,22 +179,32 @@ function *create(){
 function *destroy() {
     var id = this.params.id,
         Administrator = this.models['Administrator'],
+        Events = this.models['Event'],
+        News = this.models['News'],
         result;
 
     try {
         result = yield this.sequelize.transaction(function(t) {
-            return Administrator.destroy({
+            return Events.update({
+                author : null}, {
                 where : {
-                    id : id
+                    author : id
                 }
-            }, {transaction : t})
+            }, {transaction : t}).then(function(event){
+                return News.update({AdministratorId : null},
+                    {where : {
+                        AdministratorId: id
+                    }
+                }, {transaction : t}).then(function(news){
+                    return Administrator.destroy({ where : {id : id}}, {transaction : t});
+                });
+            });
         });
     } catch(err) {
         this.throw(err.message, err.status || 500);
     }
 
     if(!result) this.throw('Not Found', 404);
-
 
     this.status = 200;
 }
