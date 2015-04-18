@@ -19,258 +19,102 @@
     </section>
 
     <section class="main-content">
-      <h1>
-<a id="musa-api" class="anchor" href="#musa-api" aria-hidden="true"><span class="octicon octicon-link"></span></a>MuSA API</h1>
-
-<h3>
-<a id="overview" class="anchor" href="#overview" aria-hidden="true"><span class="octicon octicon-link"></span></a>Overview</h3>
-
-<ul>
-<li><a href="#version">Current Version</a></li>
-<li><a href="#schema">Schema</a></li>
-<li><a href="#parameters">Parameters</a></li>
-<li><a href="#errors">Errors</a></li>
-<li><a href="#tests">Authentication</a></li>
-<li><a href="#models">Models</a></li>
-<li><a href="#museum">Museum</a></li>
-<li><a href="#exhibitions">Exhibitions</a></li>
-<li>
-<a href="#artifacts">Artifacts</a> </li>
-<li>
-<a href="#media">Media Content</a>
-
-<ul>
-<li><a href="#audible">Audible</a></li>
-<li><a href="#video">Video</a></li>
-<li><a href="#image">Image</a></li>
-<li><a href="#archive">Archive</a></li>
-</ul>
-</li>
-<li><a href="#events">Events</a></li>
-<li><a href="#news">News</a></li>
-<li><a href="#feedback">Feedback</a></li>
-<li><a href="#match">Match Hunt</a></li>
-<li><a href="#user">User</a></li>
-<li><a href="#beacon">iBeacons</a></li>
-<li><a href="#administrator">Administrator</a></li>
-</ul>
-
-<h3>
-<a id="current-version-" class="anchor" href="#current-version-" aria-hidden="true"><span class="octicon octicon-link"></span></a>Current Version <a id="version"></a>
-</h3>
-
-<p>The purpose of this API is fascilitating information to the MuSA mobile applications. The Museum of the University of Puerto Rico, Mayagüez Campus (MuSA) will allow students to browse all the collections of the museum from the comfort of their smartphone. A few extras are provided for users that make use of the application while inside of the Museum. This API is currently in it's <strong><em>Beta</em></strong> version, bugs or complains are more than welcomed.</p>
-
-<h3>
-<a id="schema-" class="anchor" href="#schema-" aria-hidden="true"><span class="octicon octicon-link"></span></a>Schema <a id="schema"></a>
-</h3>
-
-<p>As of the current version, the base URL for this API is <code>http://136.145.116.229:4567/</code>, this base API is subject to change do to early development. All communication to and from the API will be managed using <em>JSON</em> documents.</p>
-
-<h3>
-<a id="parameters-" class="anchor" href="#parameters-" aria-hidden="true"><span class="octicon octicon-link"></span></a>Parameters <a id="parameters"></a>
-</h3>
-
-<p>Support for query parameters exists on a per-route basis, this is described further below under each API Entity. The parameters supported by this API as of this version are:</p>
-
-<table>
-<thead>
-<tr>
-<th>Parameter</th>
-<th>Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>page</td>
-<td>For pagination purposes, select the page number, defaults to 0.</td>
-</tr>
-<tr>
-<td>per_page</td>
-<td>For pagination purposes, select the amount of items per page, defaults to 25</td>
-</tr>
-<tr>
-<td>beacon_code</td>
-<td>An iBeacon code</td>
-</tr>
-<tr>
-<td>title</td>
-<td>Represent's the title attribute of a resource</td>
-</tr>
-<tr>
-<td>exhibition_id</td>
-<td>An integer representing an Exhibition id</td>
-</tr>
-<tr>
-<td>artist</td>
-<td>Represent's the name attribute of an Artist resource</td>
-</tr>
-<tr>
-<td>email</td>
-<td>Represent's the email attribute of a resource</td>
-</tr>
-<tr>
-<td>first_name</td>
-<td>Represent's the first_name attribute of a resource</td>
-</tr>
-<tr>
-<td>seen</td>
-<td>Represent's the seen attribute of a resource</td>
-</tr>
-<tr>
-<td>type</td>
-<td>Represents the type attribute of a resource</td>
-</tr>
-<tr>
-<td>resolved</td>
-<td>Represents the resolved attribute of a resource</td>
-</tr>
-<tr>
-<td>name</td>
-<td>Represents the name attribute of a resource</td>
-</tr>
-</tbody>
-</table>
-
-<h3>
-<a id="errors-" class="anchor" href="#errors-" aria-hidden="true"><span class="octicon octicon-link"></span></a>Errors <a id="errors"></a>
-</h3>
-
-<p>When an error is encountered, the API will respond with an appropiate status code and a message in the Body explaining the error. Possible errors are as follows:</p>
-
-<table>
-<thead>
-<tr>
-<th>Error</th>
-<th>Description</th>
-<th>Status Code</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>Not Found</td>
-<td>The resource resource was not found</td>
-<td>404</td>
-</tr>
-<tr>
-<td>Protected Resource</td>
-<td>The resource that is trying to be accessed is protected, use proper Authorization header</td>
-<td>401</td>
-</tr>
-<tr>
-<td>Invalid Payload</td>
-<td>Problems with the current payload. Payload may be unabelable or some attributes may be missing</td>
-<td>400</td>
-</tr>
-<tr>
-<td>Unauthorized</td>
-<td>The request source does not have access to this route</td>
-<td>403</td>
-</tr>
-<tr>
-<td>Invalid Parameters</td>
-<td>The provided uri paramters are not acceptable</td>
-<td>400</td>
-</tr>
-<tr>
-<td>Internal Server Error</td>
-<td>Oh noes, something went horribly wrong, case by case basis</td>
-<td>500</td>
-</tr>
-</tbody>
-</table>
-
-<h3>
-<a id="authentication-" class="anchor" href="#authentication-" aria-hidden="true"><span class="octicon octicon-link"></span></a>Authentication <a id="authentication"></a>
-</h3>
-
-<p>Some routes will respond with a 401: Protected Resource error. This means that authentication is needed in order to access this information. The authentication process is as follows:</p>
-
-<ol>
-<li>'POST /authenticate' with valid parameters</li>
-<li>Upon successful authentification, the server will respond with a Token, store this token for further requests</li>
-</ol>
-
-<p>Each request to a protected route will need to contain the Authorization header, providing the token.</p>
-
-<h3>
-<a id="models-" class="anchor" href="#models-" aria-hidden="true"><span class="octicon octicon-link"></span></a>Models <a id="models"></a>
-</h3>
-
-<p>Information on the model schema for this project is provided <a href="">here</a></p>
-
-<h3>
-<a id="museum-" class="anchor" href="#museum-" aria-hidden="true"><span class="octicon octicon-link"></span></a>Museum <a id="museum"></a>
-</h3>
-
-<p>Information reagarding the museum will be handles under the museum URL structure:</p>
-
-<pre><code>GET /museum
-</code></pre>
-
-<p>This will return the Museum's general information, as a JSON object, including:</p>
-
-<pre><code>{
-  "name": "Museo de Arte De La Universidad de Puerto Rico en Mayagüez",
-  "description": "El Colegio de Mayagüez se enorgulleze en presentar el Museo de Arte de la universidad de Puerto Rico",
-  "hoursOfOperation": "Lunes a Viernes de 8:00AM a 10:00PM",
-  "email": "musa@upr.edu",
-  "phone": "787878787",
-  "image": "http://i.imgur.com/KN4vh.jpg",
-  "location": "http://i.imgur.com/KN4vh.jpg",
-  "terms": "No bregues mal",
-  "about": "Establecido en Junio 2015"
-}
-</code></pre>
-
-<h3>
+      <h3>
 <a id="exhibitions-" class="anchor" href="#exhibitions-" aria-hidden="true"><span class="octicon octicon-link"></span></a>Exhibitions <a id="exhibitions"></a>
 </h3>
 
-<p>Requests regarding museum exhibitions. An exhibition is a <em>related</em> collection of artifacts.</p>
+<p>Exhibitions are, in essence, a collection of Artifacts. These collections, however, have different attributes, which merit the creation of their own module.</p>
 
-<pre><code>GET /exhibition?page=page_number
+<p><strong>Authentication</strong></p>
+
+<p>Administrator authentication is required to access routes for creating, updating and deleting exhibitions, read Authentication section for mode reference.</p>
+
+<p><strong>List of Exhibitions</strong></p>
+
+<pre><code>GET /exhibition
 </code></pre>
 
-<p>Will return a list of 25 exhibitions, sorted in a descending fashion by <strong>most recently updated</strong>. The <strong>page</strong> query parameter is used as an offset to receive a certain page. Each Exhibition entity within the list will contain title, image and description attributes.</p>
+<p><strong>Parameters</strong></p>
+
+<p>Available parameters are: <strong><em>page, per_page, and title</em></strong></p>
+
+<p><strong>Response</strong></p>
 
 <pre><code>{
   "exhibitions": [
     {
-      "image": "http://i.imgur.com/KN4vh.jpg",
+      "id": 2,
+      "title": "iPhone Ultimate Exhibition",
+      "description": "An Exhibition about iPhones",
+      "image": "http://uritoarandomimage.com/4521",
+      "active": true,
+      "MuseumId": 1,
+      "createdAt": "2015-04-08T03:44:15.201Z",
+      "updatedAt": "2015-04-08T03:44:58.793Z",
+      "deletedAt": null
+    },
+    {
+      "id": 1,
       "title": "Vader",
-      "description": "An exhibition showing Cesarangelos best Vader portraits"
+      "description": "An exhibition showing Cesarangelos best Vader portraits",
+      "image": "http://uritoarandomimage.com/4523",
+      "active": true,
+      "MuseumId": 1,
+      "createdAt": "2015-03-31T18:58:08.046Z",
+      "updatedAt": "2015-03-31T18:58:08.046Z",
+      "deletedAt": null
     }
   ]
 }
 </code></pre>
 
-<h4>
-<a id="exhibition---artifacts-view" class="anchor" href="#exhibition---artifacts-view" aria-hidden="true"><span class="octicon octicon-link"></span></a>Exhibition - Artifacts View</h4>
-
-<p>View all the artifacts for a single exhibitions</p>
+<p><strong>Single Exhibition</strong></p>
 
 <pre><code>GET /exhibition/:id
 </code></pre>
 
-<p>An exhibition is selected based on it's <strong>id</strong> parameter.</p>
+<p>A single Exhibition instance is returned, including Artifacts which belong to this exhibtion, if any.</p>
+
+<p><strong>Response</strong></p>
 
 <pre><code>{
-  "id": 1,
-  "title": "Vader",
-  "description": "An exhibition showing Cesarangelos best Vader portraits",
-  "image": "http://i.imgur.com/KN4vh.jpg",
+  "id": 2,
+  "title": "iPhone Ultimate Exhibition",
+  "description": "An Exhibition about iPhones",
+  "image": "http://uritoarandomimage.com/4521",
   "active": true,
   "MuseumId": 1,
-  "createdAt": "2015-03-31T18:58:08.046Z",
-  "updatedAt": "2015-03-31T18:58:08.046Z"
+  "createdAt": "2015-04-08T03:44:15.201Z",
+  "updatedAt": "2015-04-08T03:44:58.793Z",
+  "deletedAt": null,
+  "Artifacts": [
+    {
+      "id": 2,
+      "title": "Hope Vader",
+      "description": "Darth Vader posing as the famous 2008 Obama hope poster",
+      "medium": "Oil base",
+      "classification": "Modern",
+      "attribution": null,
+      "type": "Painting",
+      "dimensions": "8x11.5",
+      "dated": "2013",
+      "period": "Modern",
+      "culture": "Puertorican",
+      "department": null,
+      "objectNumber": "0927450934875097345-984530980954303980245",
+      "image": "https://arandomimage.com",
+      "ArtistId": 1,
+      "qrcode": "https://arandomqrcode.com",
+      "ExhibitionId": 2,
+      "createdAt": "2015-03-31T19:02:43.088Z",
+      "updatedAt": "2015-04-17T04:16:16.151Z",
+      "deletedAt": null
+    }
+  ]
 }
 </code></pre>
 
-<h4>
-<a id="exhibitions---near-me" class="anchor" href="#exhibitions---near-me" aria-hidden="true"><span class="octicon octicon-link"></span></a>Exhibitions - Near Me</h4>
-
-<p>Find all exhibitions which can be found near the user's physicall location. This is done using iBeacons.</p>
+<p>** Get Exhibition near me, using iBeacon code**</p>
 
 <pre><code>GET /exhibition/near/me?beaconX=beacon_code
 </code></pre>
@@ -285,7 +129,9 @@
 <pre><code>GET /exhibitions/near/me?beacon1=B558CBDA-4472-4211-A350-FF1196FFE8C8&amp;beacon2=BCC8CBDA-88AA-4211-A350-FF1196FFE8C8
 </code></pre>
 
-<p>Essentially concatinating ibeacon codes as needed. The result should be:</p>
+<p>Essentially concatinating ibeacon codes as needed.</p>
+
+<p><strong>Response</strong></p>
 
 <pre><code>{
   "exhibitions": [
@@ -293,7 +139,7 @@
       "id": 1,
       "title": "Vader",
       "description": "An exhibition showing Cesarangelos best Vader portraits",
-      "image": "http://i.imgur.com/KN4vh.jpg",
+      "image": "http://uritoarandomimage.com/4521",
       "active": true,
       "MuseumId": 1,
       "createdAt": "2015-03-31T18:58:08.046Z",
@@ -310,456 +156,9 @@
 }
 </code></pre>
 
-<h3>
-<a id="artifacts-" class="anchor" href="#artifacts-" aria-hidden="true"><span class="octicon octicon-link"></span></a>Artifacts <a id="artifacts"></a>
-</h3>
+<p><strong>Create an Exhibition</strong></p>
 
-<p>An artifact is essentially any art piece within the Museum. </p>
-
-<p>Request URL:</p>
-
-<pre><code>GET /artifact?page=page_number
-</code></pre>
-
-<p>Response:</p>
-
-<p>A list of artifacts. Pagination is used so only 25 artifacts are receieved at a given time. The page request query parameter can be used to fetch a different page:</p>
-
-<pre><code>{
-  "artifacts": [
-    {
-      "image": "https://scontent-atl.xx.fbcdn.net/hphotos-xfa1/v/l/t1.0-9/399196_1405515439661511_227192283_n.jpg?oh=e9ecb5131e950c53bb2ae70c3e42a58e&amp;oe=55B5F870",
-      "title": "Hope Vader",
-      "description": "Darth Vader posing as the famous 2008 Obama hope poster",
-      "id": 2
-    }
-  ]
-}
-</code></pre>
-
-<h4>
-<a id="artifacts---single-artifact" class="anchor" href="#artifacts---single-artifact" aria-hidden="true"><span class="octicon octicon-link"></span></a>Artifacts - Single Artifact</h4>
-
-<p>Get a single artifact using and id.</p>
-
-<p><strong>Request:</strong></p>
-
-<pre><code>GET /artifact/:id
-</code></pre>
-
-<p><strong>Response:</strong></p>
-
-<p>The response will include all the information for a given artifact and also include lists of all it's related content, separated by content type.</p>
-
-<pre><code>{
-  "id": 2,
-  "title": "Hope Vader",
-  "description": "Darth Vader posing as the famous 2008 Obama hope poster",
-  "medium": "Oil base",
-  "classification": "Modern",
-  "attribution": null,
-  "type": "Painting",
-  "dimensions": "8x11.5",
-  "dated": "2013",
-  "period": "Modern",
-  "culture": "Puertorican",
-  "department": null,
-  "objectNumber": "0927450934875097345-984530980954303980245",
-  "image": "https://scontent-atl.xx.fbcdn.net/hphotos-xfa1/v/l/t1.0-9/399196_1405515439661511_227192283_n.jpg?oh=e9ecb5131e950c53bb2ae70c3e42a58e&amp;oe=55B5F870",
-  "ArtistId": 1,
-  "qrcode": "https://scontent-atl.xx.fbcdn.net/hphotos-xfa1/v/l/t1.0-9/399196_1405515439661511_227192283_n.jpg?oh=e9ecb5131e950c53bb2ae70c3e42a58e&amp;oe=55B5F870",
-  "createdAt": "2015-03-31T19:02:43.088Z",
-  "updatedAt": "2015-03-31T19:02:43.088Z",
-  "Videos": [
-    {
-      "id": 1,
-      "title": "Volkswagon Vader Commercial",
-      "description": "Vader Commercial",
-      "link": "https://www.youtube.com/watch?v=R55e-uHQna0",
-      "createdAt": "2015-03-31T18:58:08.051Z",
-      "updatedAt": "2015-03-31T18:58:08.051Z",
-      "ArtifactVideo": {
-        "id": 1,
-        "ArtifactId": 2,
-        "VideoId": 1,
-        "createdAt": "2015-03-31T21:22:54.701Z",
-        "updatedAt": "2015-03-31T21:22:54.701Z"
-      }
-    }
-  ],
-  "Audibles": [
-    {
-      "id": 1,
-      "title": "Emperial March",
-      "description": "When you hear this, you know the emperor is comming",
-      "link": "https://soundcloud.com/roy-vader/the-imperial-march-darth",
-      "createdAt": "2015-03-31T18:58:08.042Z",
-      "updatedAt": "2015-03-31T18:58:08.042Z",
-      "ArtifactAudible": {
-        "id": 1,
-        "ArtifactId": 2,
-        "AudibleId": 1,
-        "createdAt": "2015-03-31T21:22:54.689Z",
-        "updatedAt": "2015-03-31T21:22:54.689Z"
-      }
-    }
-  ],
-  "Images": [
-    {
-      "id": 1,
-      "title": "Who is Vader?",
-      "description": "A picture depicting who is this vader whos existance we are celebrating",
-      "link": "http://wersm.com/wp-content/uploads/2013/12/3474964-darth-vader.jpg",
-      "createdAt": "2015-03-31T18:58:08.047Z",
-      "updatedAt": "2015-03-31T18:58:08.047Z",
-      "ArtifactImage": {
-        "id": 1,
-        "ArtifactId": 2,
-        "ImageId": 1,
-        "createdAt": "2015-03-31T21:22:54.704Z",
-        "updatedAt": "2015-03-31T21:22:54.704Z"
-      }
-    }
-  ],
-  "Texts": [
-    {
-      "id": 1,
-      "title": "Memoirs of Vader",
-      "description": "A journey into the life and death of Darth Vader",
-      "link": "http://www.starwars.com/databank/darth-vader",
-      "createdAt": "2015-03-31T18:58:08.050Z",
-      "updatedAt": "2015-03-31T18:58:08.050Z",
-      "ArtifactText": {
-        "id": 2,
-        "ArtifactId": 2,
-        "TextId": 1,
-        "createdAt": "2015-03-31T21:24:44.015Z",
-        "updatedAt": "2015-03-31T21:24:44.015Z"
-      }
-    }
-  ]
-}
-</code></pre>
-
-<h3>
-<a id="media-content-" class="anchor" href="#media-content-" aria-hidden="true"><span class="octicon octicon-link"></span></a>Media Content <a id="media"></a>
-</h3>
-
-<p>Media Content are pieces of information in the form of <em>images, audibles, videos or archives</em> that are related somehow to an artifact and as so, are presented alongside the artifact. As was previously mentioned, the media content is delieved once a single artifact is retrieved. </p>
-
-<h3>
-<a id="audible-" class="anchor" href="#audible-" aria-hidden="true"><span class="octicon octicon-link"></span></a>Audible <a id="audible"></a>
-</h3>
-
-<p>This refers to contant that is distributed by means of audio files. For now, this content can only be delived by means of a URL that locates the actual content. As of this version, only content related to an existing artifact can be shown.</p>
-
-<p><strong>Request</strong></p>
-
-<pre><code>GET /artifact/audible/:id?page=page_number
-</code></pre>
-
-<p>In this case, the <em>id</em> parameter refers to the id parameter of an <em>artifact</em></p>
-
-<p><strong>Response</strong></p>
-
-<p>A list of all the audibles for a given artifact.</p>
-
-<pre><code>{
-  "audibles": [
-    {
-      "id": 1,
-      "title": "Emperial March",
-      "description": "When you hear this, you know the emperor is comming",
-      "link": "https://soundcloud.com/roy-vader/the-imperial-march-darth",
-      "createdAt": "2015-03-31T18:58:08.042Z",
-      "updatedAt": "2015-03-31T18:58:08.042Z"
-    }
-  ]
-}
-</code></pre>
-
-<h4>
-<a id="audible---single-audible" class="anchor" href="#audible---single-audible" aria-hidden="true"><span class="octicon octicon-link"></span></a>Audible - Single Audible</h4>
-
-<p>Get a single audible content, based on it's id attribute.</p>
-
-<p><strong>Request</strong></p>
-
-<pre><code>GET /audible/:id
-</code></pre>
-
-<p><strong>Response</strong></p>
-
-<pre><code>{
-  "id": 1,
-  "title": "Emperial March",
-  "description": "When you hear this, you know the emperor is comming",
-  "link": "https://soundcloud.com/roy-vader/the-imperial-march-darth",
-  "createdAt": "2015-03-31T18:58:08.042Z",
-  "updatedAt": "2015-03-31T18:58:08.042Z"
-}
-</code></pre>
-
-<h3>
-<a id="video-" class="anchor" href="#video-" aria-hidden="true"><span class="octicon octicon-link"></span></a>Video <a id="video"></a>
-</h3>
-
-<p>Video content in the form of a URL that points to a video resource.</p>
-
-<p><strong>Request</strong></p>
-
-<pre><code>GET /artifact/video/:id?page=page_number
-</code></pre>
-
-<p><strong>Response</strong></p>
-
-<pre><code>{
-  "videos": [
-    {
-      "id": 1,
-      "title": "Volkswagon Vader Commercial",
-      "description": "Vader Commercial",
-      "link": "https://www.youtube.com/watch?v=R55e-uHQna0",
-      "createdAt": "2015-03-31T18:58:08.051Z",
-      "updatedAt": "2015-03-31T18:58:08.051Z"
-    }
-  ]
-}
-</code></pre>
-
-<h4>
-<a id="video---single-video" class="anchor" href="#video---single-video" aria-hidden="true"><span class="octicon octicon-link"></span></a>Video - Single Video</h4>
-
-<p>Get a single video content, based on it's id attribute.</p>
-
-<p><strong>Request</strong></p>
-
-<pre><code>GET /video/:id
-</code></pre>
-
-<p><strong>Response</strong></p>
-
-<pre><code>{
-  "id": 1,
-  "title": "Volkswagon Vader Commercial",
-  "description": "Vader Commercial",
-  "link": "https://www.youtube.com/watch?v=R55e-uHQna0",
-  "createdAt": "2015-03-31T18:58:08.051Z",
-  "updatedAt": "2015-03-31T18:58:08.051Z"
-}
-</code></pre>
-
-<h3>
-<a id="image-" class="anchor" href="#image-" aria-hidden="true"><span class="octicon octicon-link"></span></a>Image <a id="image"></a>
-</h3>
-
-<p>Image content in the form of a URL that points to a image resource.</p>
-
-<p><strong>Request</strong></p>
-
-<pre><code>GET /artifact/image/:id?page=page_number
-</code></pre>
-
-<p><strong>Response</strong></p>
-
-<pre><code>{
-  "images": [
-    {
-      "id": 1,
-      "title": "Who is Vader?",
-      "description": "A picture depicting who is this vader whos existance we are celebrating",
-      "link": "http://wersm.com/wp-content/uploads/2013/12/3474964-darth-vader.jpg",
-      "createdAt": "2015-03-31T18:58:08.047Z",
-      "updatedAt": "2015-03-31T18:58:08.047Z"
-    }
-  ]
-}
-</code></pre>
-
-<h4>
-<a id="image---single-image" class="anchor" href="#image---single-image" aria-hidden="true"><span class="octicon octicon-link"></span></a>Image - Single Image</h4>
-
-<p>Get a single image content, based on it's id attribute.</p>
-
-<p><strong>Request</strong></p>
-
-<pre><code>GET /image/:id
-</code></pre>
-
-<p><strong>Response</strong></p>
-
-<pre><code>{
-  "id": 1,
-  "title": "Who is Vader?",
-  "description": "A picture depicting who is this vader whos existance we are celebrating",
-  "link": "http://wersm.com/wp-content/uploads/2013/12/3474964-darth-vader.jpg",
-  "createdAt": "2015-03-31T18:58:08.047Z",
-  "updatedAt": "2015-03-31T18:58:08.047Z"
-}
-</code></pre>
-
-<h3>
-<a id="archive-" class="anchor" href="#archive-" aria-hidden="true"><span class="octicon octicon-link"></span></a>Archive <a id="archive"></a>
-</h3>
-
-<p>Archive content in the form of a URL that points to a archive resource.</p>
-
-<p><strong>Request</strong></p>
-
-<pre><code>GET /artifact/archive/:id?page=page_number
-</code></pre>
-
-<p><strong>Response</strong></p>
-
-<pre><code>{
-  "archives": [
-    {
-      "id": 1,
-      "title": "Memoirs of Vader",
-      "description": "A journey into the life and death of Darth Vader",
-      "link": "http://www.starwars.com/databank/darth-vader",
-      "createdAt": "2015-03-31T18:58:08.050Z",
-      "updatedAt": "2015-03-31T18:58:08.050Z"
-    }
-  ]
-}
-</code></pre>
-
-<h4>
-<a id="archive---single-archive" class="anchor" href="#archive---single-archive" aria-hidden="true"><span class="octicon octicon-link"></span></a>Archive - Single Archive</h4>
-
-<p>Get a single archive content, based on it's id attribute.</p>
-
-<p><strong>Request</strong></p>
-
-<pre><code>GET /archive/:id
-</code></pre>
-
-<p><strong>Response</strong></p>
-
-<pre><code>{
-  "id": 1,
-  "title": "Memoirs of Vader",
-  "description": "A journey into the life and death of Darth Vader",
-  "link": "http://www.starwars.com/databank/darth-vader",
-  "createdAt": "2015-03-31T18:58:08.050Z",
-  "updatedAt": "2015-03-31T18:58:08.050Z"
-}
-</code></pre>
-
-<h3>
-<a id="events-" class="anchor" href="#events-" aria-hidden="true"><span class="octicon octicon-link"></span></a>Events <a id="events"></a>
-</h3>
-
-<p>Get a list of Museum events, sorted by the most recently created.</p>
-
-<p><strong>Request</strong></p>
-
-<pre><code>GET /events?page=page_number
-</code></pre>
-
-<p><strong>Response</strong></p>
-
-<pre><code>{
-  "events": [
-    {
-      "id": 2,
-      "title": "Vader Exhibition",
-      "description": "An exhibition showing Cesarangelos best Vader portraits",
-      "eventDate": "2015-05-02T07:24:00.000Z",
-      "image": "http://adsoftheworld.com/sites/default/files/styles/media_retina/public/images/sta-002_portfolio_darthv_ang_lr_1.jpg?itok=98Knqo57",
-      "location": "http://adsoftheworld.com/sites/default/files/styles/media_retina/public/images/sta-002_portfolio_darthv_ang_lr_1.jpg?itok=98Knqo57",
-      "author": 1,
-      "createdAt": "2015-03-31T19:02:43.100Z",
-      "updatedAt": "2015-03-31T19:02:43.100Z"
-    }
-  ]
-}
-</code></pre>
-
-<h4>
-<a id="event---single-event" class="anchor" href="#event---single-event" aria-hidden="true"><span class="octicon octicon-link"></span></a>Event - Single Event</h4>
-
-<p><strong>Request</strong></p>
-
-<pre><code>GET /events/:id
-</code></pre>
-
-<p><strong>Response</strong></p>
-
-<pre><code>{
-  "id": 2,
-  "title": "Vader Exhibition",
-  "description": "An exhibition showing Cesarangelos best Vader portraits",
-  "eventDate": "2015-05-02T07:24:00.000Z",
-  "image": "http://adsoftheworld.com/sites/default/files/styles/media_retina/public/images/sta-002_portfolio_darthv_ang_lr_1.jpg?itok=98Knqo57",
-  "location": "http://adsoftheworld.com/sites/default/files/styles/media_retina/public/images/sta-002_portfolio_darthv_ang_lr_1.jpg?itok=98Knqo57",
-  "author": 1,
-  "createdAt": "2015-03-31T19:02:43.100Z",
-  "updatedAt": "2015-03-31T19:02:43.100Z"
-}
-</code></pre>
-
-<h3>
-<a id="news-" class="anchor" href="#news-" aria-hidden="true"><span class="octicon octicon-link"></span></a>News <a id="news"></a>
-</h3>
-
-<p>Get a list of all the news for the museum, sorted by date and time.</p>
-
-<p><strong>Request</strong></p>
-
-<pre><code>GET /news?page=page_number
-</code></pre>
-
-<p><strong>Response</strong></p>
-
-<pre><code>{
-  "news": [
-    {
-      "id": 1,
-      "title": "MuSA Café",
-      "description": "Museum of Art from the University of Puerto Rico Mayagüez Campus is proud to invite you to the MuSA Café Openning",
-      "image": "http://media.zenfs.com/en-US/video/video.pd2upload.com/video.yahoofinance.com@0c15ac80-566c-3267-897f-982c3aaddf98_FULL.jpg",
-      "AdministratorId": 1,
-      "createdAt": "2015-03-31T18:58:08.048Z",
-      "updatedAt": "2015-03-31T18:58:08.048Z"
-    }
-  ]
-}
-</code></pre>
-
-<h4>
-<a id="news---single-news" class="anchor" href="#news---single-news" aria-hidden="true"><span class="octicon octicon-link"></span></a>News - Single News</h4>
-
-<p>Get a single news article</p>
-
-<p><strong>Request</strong></p>
-
-<pre><code>GET /news/:id
-</code></pre>
-
-<p><strong>Response</strong></p>
-
-<pre><code>{
-  "id": 1,
-  "title": "MuSA Café",
-  "description": "Museum of Art from the University of Puerto Rico Mayagüez Campus is proud to invite you to the MuSA Café Openning",
-  "image": "http://media.zenfs.com/en-US/video/video.pd2upload.com/video.yahoofinance.com@0c15ac80-566c-3267-897f-982c3aaddf98_FULL.jpg",
-  "AdministratorId": 1,
-  "createdAt": "2015-03-31T18:58:08.048Z",
-  "updatedAt": "2015-03-31T18:58:08.048Z"
-}
-</code></pre>
-
-<h3>
-<a id="feedback-" class="anchor" href="#feedback-" aria-hidden="true"><span class="octicon octicon-link"></span></a>Feedback <a id="feedback"></a>
-</h3>
-
-<p>A way for users to submit feedback to the museum</p>
-
-<p><strong>Request</strong></p>
-
-<pre><code>POST /feedback
+<pre><code>POST /exhibition
 </code></pre>
 
 <p><strong>Payload</strong></p>
@@ -767,129 +166,78 @@
 <table>
 <thead>
 <tr>
-<th>key</th>
-<th>value</th>
+<th>Key</th>
+<th>Value</th>
 </tr>
 </thead>
 <tbody>
 <tr>
 <td>title</td>
-<td>A String with the title of the provided feedback</td>
+<td>Exhibition title</td>
 </tr>
 <tr>
-<td>message</td>
-<td>A String with the feedback content</td>
+<td>description</td>
+<td>A brief description for the Exhibition</td>
 </tr>
 <tr>
-<td>type</td>
-<td>A String representing the type of feedback, can be one of three; bug, general or content_problem</td>
+<td>image</td>
+<td>URL to an Exhibition cover image</td>
 </tr>
 </tbody>
 </table>
 
-<h3>
-<a id="match-hunt-" class="anchor" href="#match-hunt-" aria-hidden="true"><span class="octicon octicon-link"></span></a>Match Hunt <a id="match"></a>
-</h3>
-
-<p>Match hunt is a game that provides the User with a Clue, the user then tries to match this clue and is then rewarded with points.</p>
-
-<h4>
-<a id="getting-a-clue" class="anchor" href="#getting-a-clue" aria-hidden="true"><span class="octicon octicon-link"></span></a>Getting a Clue</h4>
-
-<p><strong>Request</strong></p>
-
-<pre><code>GET /match/:id
-</code></pre>
-
-<p>This id attribute is provided to get either a particular Clue, or a Random Clue. If a <em>id == 0</em> a random Clue will be returned, else a Clue with the given <em>id</em> will be located.</p>
-
 <p><strong>Response</strong></p>
 
-<pre><code>{
-  "id": 1,
-  "image": "https://pbs.twimg.com/profile_images/3103894633/e0d179fc5739a20308331b432e4f3a51_400x400.jpeg",
-  "pointsValue": 15,
-  "createdAt": "2015-03-31T18:58:08.044Z",
-  "updatedAt": "2015-03-31T18:58:08.043Z"
-}
+<p>Respond with a status code of 201 if the creation of the Exhibition was successful.</p>
+
+<p><strong>Edit an Exhibition</strong></p>
+
+<pre><code>PUT /exhibition/:id
 </code></pre>
 
-<h4>
-<a id="attempting-a-match" class="anchor" href="#attempting-a-match" aria-hidden="true"><span class="octicon octicon-link"></span></a>Attempting a Match</h4>
-
-<p>A match is attempted using a POST request, this will try to match a given clue to an artifact. </p>
-
-<p><strong>Request</strong></p>
-
-<pre><code>POST /match
-</code></pre>
+<p>The <em>id</em> parameter will  be used to match the appropiate Exhibition row.</p>
 
 <p><strong>Payload</strong></p>
+
+<p><em>Only attributes included in the payload will be updated, the rest will remain unchanged.</em></p>
 
 <table>
 <thead>
 <tr>
-<th>key</th>
-<th>value</th>
+<th>Key</th>
+<th>Value</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>UserId</td>
-<td>An Integer with the User's Id</td>
+<td>title</td>
+<td>Exhibition title</td>
 </tr>
 <tr>
-<td>ClueId</td>
-<td>An Integer pertaining to the current Clue Id</td>
+<td>description</td>
+<td>A brief description for the Exhibition</td>
 </tr>
 <tr>
-<td>qrcode</td>
-<td>The scanned qrcode as a String</td>
+<td>image</td>
+<td>URL to an Exhibition cover image</td>
 </tr>
 </tbody>
 </table>
 
-<h3>
-<a id="user-" class="anchor" href="#user-" aria-hidden="true"><span class="octicon octicon-link"></span></a>User <a id="user"></a>
-</h3>
+<p><strong>Response</strong></p>
 
-<p>Get the leaderboard for the Museum, will give a sorted list of users based on their points total.</p>
+<p>Respond with a status code of 200 if the row was updared succesfully.</p>
 
-<p><strong>Request</strong></p>
+<p><strong>Delete an Exhibition</strong></p>
 
-<pre><code>GET /leaderboard
+<pre><code>DELETE /exhibition/:id
 </code></pre>
+
+<p>The <em>id</em> parameter identifies the resource to be deleted.</p>
 
 <p><strong>Response</strong></p>
 
-<pre><code>{
-  "leaderboard": [
-    {
-      "firstName": "Luis",
-      "lastName": "Medina",
-      "points": "500"
-    },
-    {
-      "firstName": "Cesar",
-      "lastName": "Cruz",
-      "points": "200"
-    },
-    {
-      "firstName": "Jose",
-      "lastName": "Martinez",
-      "points": "150"
-    }
-  ]
-}
-</code></pre>
-
-<h3>
-<a id="ibeacons-" class="anchor" href="#ibeacons-" aria-hidden="true"><span class="octicon octicon-link"></span></a>iBeacons <a id="beacon"></a>
-</h3>
-
-<h3>
-<a id="administrator-" class="anchor" href="#administrator-" aria-hidden="true"><span class="octicon octicon-link"></span></a>Administrator <a id="administrator"></a>
-</h3>
+<p>A status code of 200 if the row was deleted.</p>
 
       <footer class="site-footer">
         <span class="site-footer-owner"><a href="https://github.com/KleioDev/musa">Musa</a> is maintained by <a href="https://github.com/KleioDev">KleioDev</a>.</span>
