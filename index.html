@@ -20,224 +20,37 @@
 
     <section class="main-content">
       <h3>
-<a id="exhibitions-" class="anchor" href="#exhibitions-" aria-hidden="true"><span class="octicon octicon-link"></span></a>Exhibitions <a id="exhibitions"></a>
+<a id="museum-" class="anchor" href="#museum-" aria-hidden="true"><span class="octicon octicon-link"></span></a>Museum <a id="museum"></a>
 </h3>
 
-<p>Exhibitions are, in essence, a collection of Artifacts. These collections, however, have different attributes, which merit the creation of their own module.</p>
+<p>Handle all information regarding the Museum Model</p>
 
-<p><strong>Authentication</strong></p>
+<p><strong>Get the most recent Museum instance</strong></p>
 
-<p>Administrator authentication is required to access routes for creating, updating and deleting exhibitions, read Authentication section for mode reference.</p>
-
-<p><strong>List of Exhibitions</strong></p>
-
-<pre><code>GET /exhibition
+<pre><code>GET /museum
 </code></pre>
-
-<p><strong>Parameters</strong></p>
-
-<p>Available parameters are: <strong><em>page, per_page, and title</em></strong></p>
 
 <p><strong>Response</strong></p>
 
 <pre><code>{
-  "exhibitions": [
-    {
-      "id": 2,
-      "title": "iPhone Ultimate Exhibition",
-      "description": "An Exhibition about iPhones",
-      "image": "http://uritoarandomimage.com/4521",
-      "active": true,
-      "MuseumId": 1,
-      "createdAt": "2015-04-08T03:44:15.201Z",
-      "updatedAt": "2015-04-08T03:44:58.793Z",
-      "deletedAt": null
-    },
-    {
-      "id": 1,
-      "title": "Vader",
-      "description": "An exhibition showing Cesarangelos best Vader portraits",
-      "image": "http://uritoarandomimage.com/4523",
-      "active": true,
-      "MuseumId": 1,
-      "createdAt": "2015-03-31T18:58:08.046Z",
-      "updatedAt": "2015-03-31T18:58:08.046Z",
-      "deletedAt": null
-    }
-  ]
+  "name": "Museo de Arte De La Universidad de Puerto Rico en Mayagüez",
+  "description": "El Colegio de Mayagüez se enorgulleze en presentar el Museo de Arte de la universidad de Puerto Rico",
+  "hoursOfOperation": "Lunes a Viernes de 8:00AM a 10:00PM",
+  "email": "musa@upr.edu",
+  "phone": "787878787",
+  "image": "http://randomimage.jpg",
+  "location": "arandomlocation.com",
+  "terms": "No bregues mal",
+  "about": "Establecido en Junio 2015"
 }
 </code></pre>
 
-<p><strong>Single Exhibition</strong></p>
+<p><strong>Update Museum</strong></p>
 
-<pre><code>GET /exhibition/:id
+<pre><code>PUT /museum
 </code></pre>
 
-<p>A single Exhibition instance is returned, including Artifacts which belong to this exhibtion, if any.</p>
-
-<p><strong>Response</strong></p>
-
-<pre><code>{
-  "id": 2,
-  "title": "iPhone Ultimate Exhibition",
-  "description": "An Exhibition about iPhones",
-  "image": "http://uritoarandomimage.com/4521",
-  "active": true,
-  "MuseumId": 1,
-  "createdAt": "2015-04-08T03:44:15.201Z",
-  "updatedAt": "2015-04-08T03:44:58.793Z",
-  "deletedAt": null,
-  "Artifacts": [
-    {
-      "id": 2,
-      "title": "Hope Vader",
-      "description": "Darth Vader posing as the famous 2008 Obama hope poster",
-      "medium": "Oil base",
-      "classification": "Modern",
-      "attribution": null,
-      "type": "Painting",
-      "dimensions": "8x11.5",
-      "dated": "2013",
-      "period": "Modern",
-      "culture": "Puertorican",
-      "department": null,
-      "objectNumber": "0927450934875097345-984530980954303980245",
-      "image": "https://arandomimage.com",
-      "ArtistId": 1,
-      "qrcode": "https://arandomqrcode.com",
-      "ExhibitionId": 2,
-      "createdAt": "2015-03-31T19:02:43.088Z",
-      "updatedAt": "2015-04-17T04:16:16.151Z",
-      "deletedAt": null
-    }
-  ]
-}
-</code></pre>
-
-<p>** Get Exhibition near me, using iBeacon code**</p>
-
-<pre><code>GET /exhibition/near/me?beaconX=beacon_code
-</code></pre>
-
-<p>The beacon code is provided by means of the beaconX request query parameter. If I were to pass a single iBeacon code, the query would be as follows:</p>
-
-<pre><code>GET /exhibition/near/me?beacon1=B558CBDA-4472-4211-A350-FF1196FFE8C8
-</code></pre>
-
-<p>If I were to send two iBeacon codes:</p>
-
-<pre><code>GET /exhibitions/near/me?beacon1=B558CBDA-4472-4211-A350-FF1196FFE8C8&amp;beacon2=BCC8CBDA-88AA-4211-A350-FF1196FFE8C8
-</code></pre>
-
-<p>Essentially concatinating ibeacon codes as needed.</p>
-
-<p><strong>Response</strong></p>
-
-<pre><code>{
-  "exhibitions": [
-    {
-      "id": 1,
-      "title": "Vader",
-      "description": "An exhibition showing Cesarangelos best Vader portraits",
-      "image": "http://uritoarandomimage.com/4521",
-      "active": true,
-      "MuseumId": 1,
-      "createdAt": "2015-03-31T18:58:08.046Z",
-      "updatedAt": "2015-03-31T18:58:08.046Z",
-      "ExhibitionBeacon": {
-        "id": 1,
-        "ExhibitionId": 1,
-        "BeaconId": 1,
-        "createdAt": "2015-04-01T03:25:28.787Z",
-        "updatedAt": "2015-04-01T03:25:28.787Z"
-      }
-    }
-  ]
-}
-</code></pre>
-
-<p><strong>Create an Exhibition</strong></p>
-
-<pre><code>POST /exhibition
-</code></pre>
-
-<p><strong>Payload</strong></p>
-
-<table>
-<thead>
-<tr>
-<th>Key</th>
-<th>Value</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>title</td>
-<td>Exhibition title</td>
-</tr>
-<tr>
-<td>description</td>
-<td>A brief description for the Exhibition</td>
-</tr>
-<tr>
-<td>image</td>
-<td>URL to an Exhibition cover image</td>
-</tr>
-</tbody>
-</table>
-
-<p><strong>Response</strong></p>
-
-<p>Respond with a status code of 201 if the creation of the Exhibition was successful.</p>
-
-<p><strong>Edit an Exhibition</strong></p>
-
-<pre><code>PUT /exhibition/:id
-</code></pre>
-
-<p>The <em>id</em> parameter will  be used to match the appropiate Exhibition row.</p>
-
-<p><strong>Payload</strong></p>
-
-<p><em>Only attributes included in the payload will be updated, the rest will remain unchanged.</em></p>
-
-<table>
-<thead>
-<tr>
-<th>Key</th>
-<th>Value</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>title</td>
-<td>Exhibition title</td>
-</tr>
-<tr>
-<td>description</td>
-<td>A brief description for the Exhibition</td>
-</tr>
-<tr>
-<td>image</td>
-<td>URL to an Exhibition cover image</td>
-</tr>
-</tbody>
-</table>
-
-<p><strong>Response</strong></p>
-
-<p>Respond with a status code of 200 if the row was updared succesfully.</p>
-
-<p><strong>Delete an Exhibition</strong></p>
-
-<pre><code>DELETE /exhibition/:id
-</code></pre>
-
-<p>The <em>id</em> parameter identifies the resource to be deleted.</p>
-
-<p><strong>Response</strong></p>
-
-<p>A status code of 200 if the row was deleted.</p>
+<p>The museum model is unusual since only one instance is expected to ever be created. Any time a Museum instance is modified, changes will be made to the most recent instance of Museum.</p>
 
       <footer class="site-footer">
         <span class="site-footer-owner"><a href="https://github.com/KleioDev/musa">Musa</a> is maintained by <a href="https://github.com/KleioDev">KleioDev</a>.</span>
