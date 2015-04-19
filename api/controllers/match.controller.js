@@ -73,7 +73,8 @@ function *index(){
 function *create(){
     var match,
         artifact,
-        attempt = this.request.body.fields;
+        attempt = this.request.body.fields,
+        result;
 
     try {
         //Check to see if the user has tried this before.
@@ -116,11 +117,13 @@ function *create(){
             if(match.correct){
                this.throw('Clue already solved', 403);
             }
-            match.save();
+            result = match.save();
         }
     } catch(err) {
         this.throw(err.message, err.status || 500);
     }
 
     this.status = 200;
+
+    this.body = result;
 }
