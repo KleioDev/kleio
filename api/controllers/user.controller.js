@@ -128,10 +128,14 @@ function *edit(){
 function *destroy(){
     var id = this.params.id,
         User = this.models['User'],
+        Match = this.models['Match'],
         result;
     try {
         result = yield this.sequelize.transaction( function (t) {
-            return User.destroy({ where : { id : id }, transaction : t});
+            return Match.destroy({ where : { UserId : id}}, { transaction : t})
+            .then( function () {
+                return User.destroy({ where : { id : id}}, { transaction : t});
+            })
         });
     } catch(err) {
         this.throw(err.message, err.status || 500);
