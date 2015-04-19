@@ -40,6 +40,7 @@ function *index(){
 
     try {
         rooms = yield this.models['Room'].findAll({
+            order : '"id" DESC',
             limit : limit,
             offset : offset,
             where : where,
