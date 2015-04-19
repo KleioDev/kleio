@@ -193,11 +193,23 @@ function *edit(){
 function *destroy(){
     var id = this.params.id,
         Exhibition = this.models['Exhibition'],
+        Artifact = this.models['Artifact'],
+        ExhibitionRoom = this.models['ExhibitionRoom'],
+        ExhibitionBeacon = this.models['ExhibitionBeacon'],
         result;
 
         try {
             result = yield this.sequelize.transaction( function (t) {
-                return Exhibition.destroy({ where : { id : id}}, { transaction : t});
+                return Artifact.update({ ExhibitionId : null}, {where : { ExhibitionId : id}}, { transaction : t})
+                .then(function(){
+                    return ExhibitionRoom.destroy({ where : { ExhibitionId : id}}, { transaction : t})
+                    .then( function () {
+                        return ExhibitionBeacon.destroy({ where : {ExhibitionId : id}}, { transaction : t})
+                        .then( function () {
+                            return Exhibition.destroy({ where : { id : id}}, { transaction : t});
+                        })
+                    })
+                })
             })
         } catch(err) {
             this.throw(err.message, err.status || 500);

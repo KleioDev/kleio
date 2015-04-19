@@ -153,15 +153,15 @@ function *edit(){
 function *destroy() {
     var id = this.params.id,
         Beacon = this.models['Beacon'],
+        ExhibitionBeacon = this.models['ExhibitionBeacon'],
         result;
 
     try {
         result = yield this.sequelize.transaction(function (t) {
-            return Beacon.destroy({
-                where : {
-                    id : id
-                }
-            });
+            return ExhibitionBeacon.destroy({ where : { BeaconId : id}}, { transaction : t})
+            .then( function (t) {
+                return Beacon.destroy({ where : { id : id}}, { transaction : t});
+            })
         });
     } catch(err) {
         this.throw(err.message, err.status || 500);
