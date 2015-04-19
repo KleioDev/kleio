@@ -147,11 +147,19 @@ function *edit(){
  function *destroy(){
     var id = this.params.id,
         result,
-        Room = this.models['Room'];
+        Room = this.models['Room'],
+        ExhibitionRoom = this.models['ExhibitionRoom'],
+        Beacon = this.models['Beacon'];
 
     try {
         result = this.sequelize.transaction( function (t) {
-            return Room.destroy({ where : { id : id}, transaction : t});
+            return ExhibitionRoom.destroy({ where : { RoomId : id}}, { transaction : t})
+            .then(function() {
+                return Beacon.update({ RoomId : null},{ where : { RoomId : id }}, { transaction : t})
+                .then(function() {
+                    return Room.destroy({ where : { id : id}}, { transaction : id});
+                })
+            })
         });
     } catch(err) {
         this.throw(err.message, err.status || 500);
