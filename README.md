@@ -1261,6 +1261,7 @@ Available query parameters are: *page, per_page, first_name, and email.*
 
 *Response*
 
+```
 {
     "users": [
         {
@@ -1295,7 +1296,7 @@ Available query parameters are: *page, per_page, first_name, and email.*
         }
     ]
 }
-
+```
 **Single User**
 
 ```
