@@ -296,7 +296,7 @@ DELETE /exhibition/:id
 
 A status code of 200 if delete was successful.
 
-##### Exhibitions and Beacons
+### Exhibitions and iBeacons
 
 **Show beacons for all Exhibitions**
 
