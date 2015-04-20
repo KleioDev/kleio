@@ -98,7 +98,7 @@ Handle all information regarding the Museum Model
 GET /museum
 ```
 
-**Response**
+*Response*
 
 ```
 {
@@ -136,11 +136,11 @@ Administrator authentication is required to access routes for creating, updating
 ```
 GET /exhibition
 ```
-**Parameters**
+*Parameters*
 
 Available parameters are: ***page, per_page, and title***
 
-**Response**
+*Response*
 
 ```
 {
@@ -177,7 +177,7 @@ GET /exhibition/:id
 ```
 A single Exhibition instance is returned, including Artifacts which belong to this exhibtion, if any.
 
-**Response**
+*Response*
 
 ```
 {
@@ -236,7 +236,7 @@ GET /exhibitions/near/me?beacon1=B558CBDA-4472-4211-A350-FF1196FFE8C8&beacon2=BC
 ```
 Essentially concatinating ibeacon codes as needed.
 
-**Response**
+*Response*
 
 ```
 {
@@ -267,13 +267,13 @@ Essentially concatinating ibeacon codes as needed.
 POST /exhibition
 ```
 
-**Payload**
+*Payload*
 
 Required: title, MuseumId
 Optional: description, image, active
 
 
-**Response**
+*Response*
 
 Status code of 201 if creation was successful.
 
@@ -283,7 +283,7 @@ Status code of 201 if creation was successful.
 PUT /exhibition/:id
 ```
 
-**Response**
+*Response*
 
 Status code of 200 if update was successful.
 
@@ -292,7 +292,7 @@ Status code of 200 if update was successful.
 ```
 DELETE /exhibition/:id
 ```
-**Response**
+*Response*
 
 A status code of 200 if delete was successful.
 
@@ -304,7 +304,7 @@ A status code of 200 if delete was successful.
 GET /exhibition/beacon
 ```
 
-**Response**
+*Response*
 
 ```
 {
@@ -333,7 +333,7 @@ GET /exhibition/beacon
 GET /exhibition/beacon/:id
 ```
 
-**Response**
+*Response*
 
 ```
 {
@@ -351,7 +351,7 @@ GET /exhibition/beacon/:id
 PUT /exhibition/beacon/:id
 ```
 
-**Response**
+*Response*
 
 Status code of 200 if update was successful.
 
@@ -363,7 +363,7 @@ This route de-associates Exhibitions and iBeacons
 DELETE /exhibition/beacon/:id
 ```
 
-**Response**
+*Response*
 
 Status code of 200 if delete was successful.
 
@@ -380,11 +380,11 @@ Access to create, edit or delete Artifacts is restricted to administrator users.
 GET /artifact
 ```
 
-**Parameters**
+*Parameters*
 
 Available parameters are: ***page, per_page, artist, title, exhibition_id
 
-**Response**
+*Response*
 
 ```
 {
@@ -421,7 +421,7 @@ Available parameters are: ***page, per_page, artist, title, exhibition_id
 GET /Artifact/:id
 ```
 
-**Response**
+*Response*
 
 ```
 {
@@ -547,12 +547,12 @@ Create an instance of Artifact, requires authentification
 POST /artifact
 ```
 
-**Payload**
+*Payload*
 
 Required: title, image
 Optional: description, medium, classification, attribution, type, dated, period, culture, department, objectNumber, ArtistId, qrcode, ExhibitionId
 
-**Response**
+*Response*
 
 Status code 201 if created successfully.
 
@@ -562,7 +562,7 @@ Status code 201 if created successfully.
 PUT /artifact/:id
 ```
 
-**Response**
+*Response*
 
 Status code of 200 if successful.
 
@@ -572,7 +572,7 @@ Status code of 200 if successful.
 DELETE /administrator/:id
 ```
 
-**Response**
+*Response*
 
 Status code of 200 if successful.
 
@@ -591,7 +591,7 @@ GET /artifact/audible/:id
 ```
 In this case, the *id* parameter refers to the id parameter of an *artifact*
 
-**Response**
+*Response*
 
 ```
 {
@@ -613,7 +613,7 @@ In this case, the *id* parameter refers to the id parameter of an *artifact*
 ```
 GET /audible/:id
 ```
-**Response**
+*Response*
 
 ```
 {
@@ -632,12 +632,12 @@ GET /audible/:id
 POST /audible
 ```
 
-**Payload**
+*Payload*
 
 Required: title, link
 Optional: description
 
-**Response**
+*Response*
 
 Status code 201 if Audible was created successfully.
 
@@ -647,7 +647,7 @@ Status code 201 if Audible was created successfully.
 PUT /audible/:id
 ```
 
-**Response**
+*Response*
 
 Status code of 200 if update was successful.
 
@@ -657,7 +657,7 @@ Status code of 200 if update was successful.
 DELETE /audible/:id
 ```
 
-**Response**
+*Response*
 
 Status code 200 if delete was successful.
 
@@ -672,7 +672,7 @@ GET /artifact/video/:id
 ```
 In this case, the *id* parameter refers to the id parameter of an *artifact*
 
-**Response**
+*Response*
 
 ```
 {
@@ -694,7 +694,7 @@ In this case, the *id* parameter refers to the id parameter of an *artifact*
 ```
 GET /video/:id
 ```
-**Response**
+*Response*
 
 ```
 {
@@ -713,12 +713,12 @@ GET /video/:id
 POST /video
 ```
 
-**Payload**
+*Payload*
 
 Required: title, link
 Optional: description
 
-**Response**
+*Response*
 
 Status code 201 if Video was created successfully.
 
@@ -728,7 +728,7 @@ Status code 201 if Video was created successfully.
 PUT /video/:id
 ```
 
-**Response**
+*Response*
 
 Status code of 200 if update was successful.
 
@@ -738,7 +738,7 @@ Status code of 200 if update was successful.
 DELETE /video/:id
 ```
 
-**Response**
+*Response*
 
 Status code 200 if delete was successful.
 
@@ -754,7 +754,7 @@ GET /artifact/image/:id
 ```
 In this case, the *id* parameter refers to the id parameter of an *artifact*
 
-**Response**
+*Response*
 
 ```
 {
@@ -776,7 +776,7 @@ In this case, the *id* parameter refers to the id parameter of an *artifact*
 ```
 GET /image/:id
 ```
-**Response**
+*Response*
 
 ```
 {
@@ -795,12 +795,12 @@ GET /image/:id
 POST /image
 ```
 
-**Payload**
+*Payload*
 
 Required: title, link
 Optional: description
 
-**Response**
+*Response*
 
 Status code 201 if Image was created successfully.
 
@@ -810,7 +810,7 @@ Status code 201 if Image was created successfully.
 PUT /image/:id
 ```
 
-**Response**
+*Response*
 
 Status code of 200 if update was successful.
 
@@ -820,7 +820,7 @@ Status code of 200 if update was successful.
 DELETE /image/:id
 ```
 
-**Response**
+*Response*
 
 Status code 200 if delete was successful.
 
@@ -833,7 +833,7 @@ GET /artifact/archive/:id
 ```
 In this case, the *id* parameter refers to the id parameter of an *artifact*
 
-**Response**
+*Response*
 
 ```
 {
@@ -855,7 +855,7 @@ In this case, the *id* parameter refers to the id parameter of an *artifact*
 ```
 GET /archive/:id
 ```
-**Response**
+*Response*
 
 ```
 {
@@ -874,12 +874,12 @@ GET /archive/:id
 POST /archive
 ```
 
-**Payload**
+*Payload*
 
 Required: title, link
 Optional: description
 
-**Response**
+*Response*
 
 Status code 201 if Archive was created successfully.
 
@@ -889,7 +889,7 @@ Status code 201 if Archive was created successfully.
 PUT /archive/:id
 ```
 
-**Response**
+*Response*
 
 Status code of 200 if update was successful.
 
@@ -899,7 +899,7 @@ Status code of 200 if update was successful.
 DELETE /archive/:id
 ```
 
-**Response**
+*Response*
 
 Status code 200 if delete was successful.
 
@@ -917,11 +917,11 @@ Events can only be created, edited or deleted by an Administrator user, requires
 GET /events
 ```
 
-**Parameters**
+*Parameters*
 
 Available parameters are: *page, per_page, title*
 
-**Response**
+*Response*
 
 ```
 {
@@ -947,7 +947,7 @@ Available parameters are: *page, per_page, title*
 GET /events/:id
 ```
 
-**Response**
+*Response*
 
 
 
@@ -957,7 +957,7 @@ GET /events/:id
 GET /events/:id
 ```
 
-**Response**
+*Response*
 
 ```
 {
@@ -979,12 +979,12 @@ GET /events/:id
 POST /events
 ```
 
-**Payload**
+*Payload*
 
 Required: title, description, eventDate
 Optional: image, location, author
 
-**Response**
+*Response*
 
 Status code of 201 is entity created successfully.
 
@@ -994,7 +994,7 @@ Status code of 201 is entity created successfully.
 PUT /events/:id
 ```
 
-**Response**
+*Response*
 
 Status code of 200 if entity updated successfully.
 
@@ -1004,7 +1004,7 @@ Status code of 200 if entity updated successfully.
 DELETE /events/:id
 ```
 
-**Response**
+*Response*
 
 Status code of 200 is delete was successful.
 
@@ -1022,11 +1022,11 @@ News can only be created, edited or deleted by an Administrator user, requires a
 GET /news
 ```
 
-**Parameters**
+*Parameters*
 
 Available parameters are: *page, per_page, title*
 
-**Response**
+*Response*
 
 ```
 {
@@ -1059,7 +1059,7 @@ Available parameters are: *page, per_page, title*
 GET /news/:id
 ```
 
-**Response**
+*Response*
 
 {
     "id": 1,
@@ -1077,12 +1077,12 @@ GET /news/:id
 POST /news
 ```
 
-**Payload**
+*Payload*
 
 Required: title, description, image
 Optional: AdministratorId
 
-**Response**
+*Response*
 
 Status code of 201 is entity created successfully.
 
@@ -1092,7 +1092,7 @@ Status code of 201 is entity created successfully.
 PUT /news/:id
 ```
 
-**Response**
+*Response*
 
 Status code of 200 if entity updated successfully.
 
@@ -1102,7 +1102,7 @@ Status code of 200 if entity updated successfully.
 DELETE /news/:id
 ```
 
-**Response**
+*Response*
 
 Status code of 200 if delete was successful.
 
@@ -1120,11 +1120,11 @@ Any user can create feedback content, to view, edit or destroy a feedback instan
 GET /feedback
 ```
 
-**Parameters**
+*Parameters*
 
 Available query parameters are: ***page, per_page, title, seen, type, resolved***
 
-**Response**
+*Response*
 
 ```
 {
@@ -1150,7 +1150,7 @@ Available query parameters are: ***page, per_page, title, seen, type, resolved**
 GET /feedback/:id
 ```
 
-**Response**
+*Response*
 
 ```
 {
@@ -1176,12 +1176,12 @@ GET /feedback/:id
 POST /feedback
 ```
 
-**Payload**
+*Payload*
 
 Required: title, message, type, MuseumId
 Optional: resolved, seen
 
-**Response**
+*Response*
 
 Status code of 201 if Feedback created successfully.
 
@@ -1191,7 +1191,7 @@ Status code of 201 if Feedback created successfully.
 PUT /feedback/:id
 ```
 
-**Response**
+*Response*
 
 Status code of 200 if update was successful.
 
@@ -1201,7 +1201,7 @@ Status code of 200 if update was successful.
 DELETE /feedback/:id
 ```
 
-**Response**
+*Response*
 
 Status code of 200 if delete was successful.
 
@@ -1217,7 +1217,7 @@ GET /match/:id
 
 This id attribute is provided to get either a particular Clue, or a Random Clue. If a *id == 0* a random Clue will be returned, else a Clue with the given *id* will be located.
 
-**Response**
+*Response*
 
 ```
 {
@@ -1237,11 +1237,11 @@ A match is attempted using a POST request, this will try to match a given clue t
 POST /match
 ```
 
-**Payload**
+*Payload*
 
 Required: UserId, ClueId, qrcode
 
-**Response**
+*Response*
 
 If the clue is solved with the provided answer, a status code of 200 will be returned. When the clue is already solved for a given user, a status code of 403 is returned.
 
@@ -1259,7 +1259,7 @@ GET /user
 
 Available query parameters are: *page, per_page, first_name, and email.*
 
-**Response**
+*Response*
 
 {
     "users": [
@@ -1302,7 +1302,7 @@ Available query parameters are: *page, per_page, first_name, and email.*
 GET /user/:id
 ```
 
-**Response**
+*Response*
 
 ```
 {
@@ -1326,11 +1326,11 @@ GET /user/:id
 
 Users are created using an Facebook Access Token.
 
-**Payload**
+*Payload*
 
 Required: accessToken and userID (both acquired from facebook)
 
-**Response**
+*Response*
 
 After a user is successfully created, a status code of 200 is returned as well as a JWT token used to validate each request from the client. This token needs to be sent using the Authorization header in order to access the API
 
@@ -1342,7 +1342,7 @@ Update information on a given user
 PUT /user/:id
 ```
 
-**Response**
+*Response*
 
 Status code 200 if update was successful.
 
@@ -1352,7 +1352,7 @@ Status code 200 if update was successful.
 DELETE /user/:id
 ```
 
-**Response**
+*Response*
 
 Status code of 200 is delete was successful.
 
@@ -1364,11 +1364,11 @@ Leaderboard is a list of users sorted based on their points total.
 GET /leaderboard
 ```
 
-**Parameters**
+*Parameters*
 
 Available query parameters are; *page, per_page*
 
-**Response**
+*Response*
 
 ```
 {
@@ -1400,7 +1400,7 @@ The reset leaderboards route allows admins to set all user points to 0, a clean 
 PUT /leaderboard
 ```
 
-**Response**
+*Response*
 
 Status code of 200 if reset was successful.
 
@@ -1418,11 +1418,11 @@ To add, edit or delete iBeacons, administrator priviledges are needed.
 GET /beacon
 ```
 
-**Parameters**
+*Parameters*
 
 Available query parameters are: *page, per_page, beacon_code*
 
-**Response**
+*Response*
 
 ```
 {
@@ -1465,7 +1465,7 @@ Available query parameters are: *page, per_page, beacon_code*
 GET /beacon/:id
 ```
 
-**Response**
+*Response*
 ```
 {
     "id": 1,
@@ -1482,12 +1482,12 @@ GET /beacon/:id
 POST /beacon
 ```
 
-**Payload**
+*Payload*
 
 required: code
 optional: RoomId
 
-**Response**
+*Response*
 
 Status code of 201 if iBeacon was successfully created.
 
@@ -1497,7 +1497,7 @@ Status code of 201 if iBeacon was successfully created.
 PUT /beacon/:id
 ```
 
-**Response**
+*Response*
 
 Status code of 200 if successfully updated.
 
@@ -1507,7 +1507,7 @@ Status code of 200 if successfully updated.
 DELETE /beacon/:id
 ```
 
-**Response**
+*Response*
 
 Status code of 200 if iBeacons succeesfully deleted.
 
@@ -1525,11 +1525,11 @@ Administrator routes require de use of Administrator authentification, read Auth
 GET /administrator
 ```
 
-**Parameters**
+*Parameters*
 
 Available parameters are: ***page, per_page, first_name, and email***
 
-**Response**
+*Response*
 ```
 {
     "administrators": [
@@ -1571,7 +1571,7 @@ Available parameters are: ***page, per_page, first_name, and email***
 GET /administrator/:id
 ```
 
-**Response**
+*Response*
 
 ```
 {
@@ -1591,12 +1591,12 @@ Create an instance of administrator, requires authentication
 POST /administrator
 ```
 
-**Payload**
+*Payload*
 
 Required: email, password
 Optional (recomended): firstName, lastName, phone
 
-**Response**
+*Response*
 
 Server will respond with a status code of 201 if successful. 
 
@@ -1608,11 +1608,11 @@ Edit values for a given administrator, using id.
 PUT /administrator/:id
 ```
 
-**Payload**
+*Payload*
 
 Updates to the administrator will be based on values provided, payload may include: email, password, firstName, lastName or phone. Which ever attribute is provided in the payload, that and only that attribute will be updated.
 
-**Response**
+*Response*
 
 Status code 200 if successful.
 
@@ -1622,7 +1622,7 @@ Status code 200 if successful.
 DELETE /administrator/:id
 ```
 
-**Response**
+*Response*
 
 Status code of 200 if successful.
 
@@ -1640,11 +1640,11 @@ Artists can only be created, edited or deleted by administrator users.
 GET /artists
 ```
 
-**Parameters**
+*Parameters*
 
 Available query parameters are: *page, per_page, and name*
 
-**Response**
+*Response*
 
 ```
 {
@@ -1667,7 +1667,7 @@ Available query parameters are: *page, per_page, and name*
 GET /artists/:id
 ```
 
-**Response**
+*Response*
 
 ```
 {
@@ -1686,12 +1686,12 @@ GET /artists/:id
 POST /artists
 ```
 
-**Payload**
+*Payload*
 
 Required: name
 Optional: biography, and birthDay
 
-**Response**
+*Response*
 
 Status code of 201 if Artist created successfully.
 
@@ -1701,7 +1701,7 @@ Status code of 201 if Artist created successfully.
 PUT /artist/:id
 ```
 
-**Response**
+*Response*
 
 Status code of 200 if update was successful.
 
@@ -1711,7 +1711,7 @@ Status code of 200 if update was successful.
 DELETE /artist/:id
 ```
 
-**Response**
+*Response*
 
 Status code of 200 if delete was successful.
 
