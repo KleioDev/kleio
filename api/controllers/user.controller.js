@@ -246,7 +246,7 @@ function *create() {
 
     this.status = 200;
 
-    this.body = token;
+    this.body = { token : token , userId : fbuser.id };
 
 }
 

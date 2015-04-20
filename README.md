@@ -1333,7 +1333,7 @@ Required: accessToken and userID (both acquired from facebook)
 
 *Response*
 
-After a user is successfully created, a status code of 200 is returned as well as a JWT token used to validate each request from the client. This token needs to be sent using the Authorization header in order to access the API
+After a user is successfully created, a status code of 200 is returned as well as a JWT token used to validate each request from the client as well as a userId. This token needs to be sent using the Authorization header in order to access the API
 
 **Edit User**
 
