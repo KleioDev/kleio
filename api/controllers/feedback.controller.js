@@ -38,6 +38,7 @@ function *index(){
         title = this.query.title,
         seen = this.query.seen,
         type = this.query.type,
+        resolved = this.query.resolved,
         where = {};
 
     if(!offset) offset = 0;
@@ -49,6 +50,8 @@ function *index(){
     if(seen) where.seen = true;
 
     if(type) where.type = type;
+
+    if(resolved) where.resolved = true;
 
 
     try {

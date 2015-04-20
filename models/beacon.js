@@ -12,7 +12,8 @@ module.exports = function(sequelize, DataTypes){
             autoIncrement : true
         },
         code : {
-            type : DataTypes.STRING
+            type : DataTypes.STRING,
+            allowNull : false
         },
         RoomId : {
             type : DataTypes.INTEGER

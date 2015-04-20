@@ -38,8 +38,8 @@ module.exports = function(){
  */
 function *index(){
     var users,
-        offset = this.query.offset,
-        limit = this.query.limit,
+        offset = this.query.page,
+        limit = this.query.per_page,
         first_name = this.query.first_name,
         email = this.query.email,
         where = {};
