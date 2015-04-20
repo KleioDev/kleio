@@ -18,7 +18,7 @@ module.exports = function(){
         .put('/artists/:id', loadModels, koaBody, adminAuth, edit)
         .delete('/artists/:id', loadModels, koaBody, adminAuth, destroy);
 
-        return artistController;
+        return artistController.routes();
 }
 
 /**
