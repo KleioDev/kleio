@@ -186,7 +186,7 @@ function *create() {
         User = this.models['User'];
 
 
-    if(!body) this.throw('Invalid Payload', 400);
+    if(!payload) this.throw('Invalid Payload', 400);
 
 
     try {
@@ -244,7 +244,7 @@ function *create() {
 
     token = utils.generateToken(existingUser || fbuser);
 
-    this.status = 201;
+    this.status = 200;
 
     this.body = token;
 
