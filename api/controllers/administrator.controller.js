@@ -147,10 +147,26 @@ function *edit() {
  */
 function *create(){
     var payload = this.request.body.fields,
-        Administrator = this.models['Administrator'];
+        Administrator = this.models['Administrator'],
+        result;
 
     if(!payload || !payload.email || !payload.password){
         this.throw('Invalid Payload', 400);
+    }
+
+    //Check that the email is not already in use before creating instance
+    try {
+        result = yield Administrator.find({
+            where : {
+                email : payload.email
+            }
+        });
+    } catch(err) {
+        this.throw(err.message, err.status || 500);
+    }
+
+    if(result){
+        this.throw('Email already in use', 409);
     }
 
     var salt = bcrypt.genSaltSync(10);
@@ -238,6 +254,5 @@ function *login(){
 
     this.body = token;
 
-    //No Content
     this.status = 200;
 }
