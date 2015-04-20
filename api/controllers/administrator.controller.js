@@ -239,5 +239,5 @@ function *login(){
     this.body = token;
 
     //No Content
-    this.status = 204;
+    this.status = 200;
 }
