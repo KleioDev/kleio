@@ -224,7 +224,7 @@ function *create() {
             lastName : response.body.last_name,
             gender : response.body.gender,
             facebook_id : response.body.id,
-            accessToken : body.accessToken
+            accessToken : payload.accessToken
         }
 
         try {
