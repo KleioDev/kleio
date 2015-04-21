@@ -71,12 +71,13 @@ function *index() {
 function *show(){
     var exhibition,
         id = this.params.id,
-        Artifact = this.models['Artifact'];
+        Artifact = this.models['Artifact'],
+        Beacons = this.models['Beacon'];
 
     try {
         exhibition = yield this.models['Exhibition'].find({
             where : { id : id},
-            include : [Artifact]
+            include : [Artifact, Beacons]
         });
     } catch(err) {
         this.throw(err.message, err.status || 500);
