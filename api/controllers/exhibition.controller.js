@@ -48,7 +48,7 @@ function *index() {
         exhibitions = yield this.models['Exhibition'].findAll({
             order : '"createdAt" DESC',
             limit : limit,
-            offset : offset,
+            offset : offset * limit,
             where : where
         });
 

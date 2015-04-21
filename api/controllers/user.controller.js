@@ -54,7 +54,7 @@ function *index(){
 
     try {
         users = yield this.models['User'].findAll({
-            offset : offset,
+            offset : offset * limit,
             limit : limit,
             where : where
         });

@@ -42,7 +42,7 @@ function *index() {
 
         beacons = yield this.models['Beacon'].findAll({
             limit : limit,
-            offset : offset,
+            offset : offset * limit,
             where : where,
             include : [Room]
         });

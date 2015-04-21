@@ -50,7 +50,7 @@ function *index(){
     try {
         administrators = yield this.models['Administrator'].findAll({
             limit : limit,
-            offset : offset,
+            offset : offset * limit,
             attributes : ['id', 'firstName', 'lastName', 'email', 'phone'],
             where : where
         });

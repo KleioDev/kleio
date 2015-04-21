@@ -49,7 +49,7 @@ function *index() {
         events = yield this.models['Event'].findAll({
             order : '"eventDate" DESC',
             limit : limit,
-            offset : offset,
+            offset : offset * limit,
             where : where
         });
     } catch (err) {

@@ -42,7 +42,7 @@ function *index(){
         rooms = yield this.models['Room'].findAll({
             order : '"id" ASC',
             limit : limit,
-            offset : offset,
+            offset : offset * limit,
             where : where,
             include : [Beacon]
         });

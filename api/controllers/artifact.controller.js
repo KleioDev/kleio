@@ -71,7 +71,7 @@ function *index(){
         artifacts = yield this.models['Artifact'].findAll({
             order : '"createdAt" DESC',
             limit : limit,
-            offset : offset,
+            offset : offset * limit,
             where : where
         });
     } catch(err){

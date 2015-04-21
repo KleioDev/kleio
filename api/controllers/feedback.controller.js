@@ -57,7 +57,7 @@ function *index(){
     try {
         feedbacks = yield this.models['Feedback'].findAll({
             limit : limit,
-            offset : offset,
+            offset : offset * limit,
             where : where
         });
     } catch(err) {

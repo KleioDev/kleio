@@ -40,7 +40,7 @@ function *index() {
 
     try {
         artists = yield this.models['Artist'].findAll({
-            offset : offset,
+            offset : offset * limit,
             limit : limit,
             where : where
         });
