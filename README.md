@@ -1061,6 +1061,7 @@ GET /news/:id
 
 *Response*
 
+```
 {
     "id": 1,
     "title": "MuSA Café",
@@ -1070,7 +1071,7 @@ GET /news/:id
     "createdAt": "2015-03-31T18:58:08.048Z",
     "updatedAt": "2015-04-18T16:16:42.856Z"
 }
-
+```
 **Create News**
 
 ```
