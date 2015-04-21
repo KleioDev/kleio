@@ -214,7 +214,7 @@
 <pre><code>GET /museum
 </code></pre>
 
-<p><strong>Response</strong></p>
+<p><em>Response</em></p>
 
 <pre><code>{
   "name": "Museo de Arte De La Universidad de Puerto Rico en Mayagüez",
@@ -251,11 +251,11 @@
 <pre><code>GET /exhibition
 </code></pre>
 
-<p><strong>Parameters</strong></p>
+<p><em>Parameters</em></p>
 
 <p>Available parameters are: <strong><em>page, per_page, and title</em></strong></p>
 
-<p><strong>Response</strong></p>
+<p><em>Response</em></p>
 
 <pre><code>{
   "exhibitions": [
@@ -292,7 +292,7 @@
 
 <p>A single Exhibition instance is returned, including Artifacts which belong to this exhibtion, if any.</p>
 
-<p><strong>Response</strong></p>
+<p><em>Response</em></p>
 
 <pre><code>{
   "id": 2,
@@ -348,7 +348,7 @@
 
 <p>Essentially concatinating ibeacon codes as needed.</p>
 
-<p><strong>Response</strong></p>
+<p><em>Response</em></p>
 
 <pre><code>{
   "exhibitions": [
@@ -378,12 +378,12 @@
 <pre><code>POST /exhibition
 </code></pre>
 
-<p><strong>Payload</strong></p>
+<p><em>Payload</em></p>
 
 <p>Required: title, MuseumId
 Optional: description, image, active</p>
 
-<p><strong>Response</strong></p>
+<p><em>Response</em></p>
 
 <p>Status code of 201 if creation was successful.</p>
 
@@ -392,7 +392,7 @@ Optional: description, image, active</p>
 <pre><code>PUT /exhibition/:id
 </code></pre>
 
-<p><strong>Response</strong></p>
+<p><em>Response</em></p>
 
 <p>Status code of 200 if update was successful.</p>
 
@@ -401,19 +401,19 @@ Optional: description, image, active</p>
 <pre><code>DELETE /exhibition/:id
 </code></pre>
 
-<p><strong>Response</strong></p>
+<p><em>Response</em></p>
 
 <p>A status code of 200 if delete was successful.</p>
 
-<h5>
-<a id="exhibitions-and-beacons" class="anchor" href="#exhibitions-and-beacons" aria-hidden="true"><span class="octicon octicon-link"></span></a>Exhibitions and Beacons</h5>
+<h3>
+<a id="exhibitions-and-ibeacons" class="anchor" href="#exhibitions-and-ibeacons" aria-hidden="true"><span class="octicon octicon-link"></span></a>Exhibitions and iBeacons</h3>
 
 <p><strong>Show beacons for all Exhibitions</strong></p>
 
 <pre><code>GET /exhibition/beacon
 </code></pre>
 
-<p><strong>Response</strong></p>
+<p><em>Response</em></p>
 
 <pre><code>{
     "exhibitionBeacons": [
@@ -440,7 +440,7 @@ Optional: description, image, active</p>
 <pre><code>GET /exhibition/beacon/:id
 </code></pre>
 
-<p><strong>Response</strong></p>
+<p><em>Response</em></p>
 
 <pre><code>{
     "id": 1,
@@ -456,7 +456,7 @@ Optional: description, image, active</p>
 <pre><code>PUT /exhibition/beacon/:id
 </code></pre>
 
-<p><strong>Response</strong></p>
+<p><em>Response</em></p>
 
 <p>Status code of 200 if update was successful.</p>
 
@@ -467,7 +467,7 @@ Optional: description, image, active</p>
 <pre><code>DELETE /exhibition/beacon/:id
 </code></pre>
 
-<p><strong>Response</strong></p>
+<p><em>Response</em></p>
 
 <p>Status code of 200 if delete was successful.</p>
 
@@ -485,11 +485,11 @@ Access to create, edit or delete Artifacts is restricted to administrator users.
 <pre><code>GET /artifact
 </code></pre>
 
-<p><strong>Parameters</strong></p>
+<p><em>Parameters</em></p>
 
 <p>Available parameters are: ***page, per_page, artist, title, exhibition_id</p>
 
-<p><strong>Response</strong></p>
+<p><em>Response</em></p>
 
 <pre><code>{
     "artifacts": [
@@ -524,7 +524,7 @@ Access to create, edit or delete Artifacts is restricted to administrator users.
 <pre><code>GET /Artifact/:id
 </code></pre>
 
-<p><strong>Response</strong></p>
+<p><em>Response</em></p>
 
 <pre><code>{
     "id": 2,
@@ -648,12 +648,12 @@ Access to create, edit or delete Artifacts is restricted to administrator users.
 <pre><code>POST /artifact
 </code></pre>
 
-<p><strong>Payload</strong></p>
+<p><em>Payload</em></p>
 
 <p>Required: title, image
 Optional: description, medium, classification, attribution, type, dated, period, culture, department, objectNumber, ArtistId, qrcode, ExhibitionId</p>
 
-<p><strong>Response</strong></p>
+<p><em>Response</em></p>
 
 <p>Status code 201 if created successfully.</p>
 
@@ -662,7 +662,7 @@ Optional: description, medium, classification, attribution, type, dated, period,
 <pre><code>PUT /artifact/:id
 </code></pre>
 
-<p><strong>Response</strong></p>
+<p><em>Response</em></p>
 
 <p>Status code of 200 if successful.</p>
 
@@ -671,7 +671,7 @@ Optional: description, medium, classification, attribution, type, dated, period,
 <pre><code>DELETE /administrator/:id
 </code></pre>
 
-<p><strong>Response</strong></p>
+<p><em>Response</em></p>
 
 <p>Status code of 200 if successful.</p>
 
@@ -694,7 +694,7 @@ Optional: description, medium, classification, attribution, type, dated, period,
 
 <p>In this case, the <em>id</em> parameter refers to the id parameter of an <em>artifact</em></p>
 
-<p><strong>Response</strong></p>
+<p><em>Response</em></p>
 
 <pre><code>{
   "audibles": [
@@ -715,7 +715,7 @@ Optional: description, medium, classification, attribution, type, dated, period,
 <pre><code>GET /audible/:id
 </code></pre>
 
-<p><strong>Response</strong></p>
+<p><em>Response</em></p>
 
 <pre><code>{
   "id": 1,
@@ -732,12 +732,12 @@ Optional: description, medium, classification, attribution, type, dated, period,
 <pre><code>POST /audible
 </code></pre>
 
-<p><strong>Payload</strong></p>
+<p><em>Payload</em></p>
 
 <p>Required: title, link
 Optional: description</p>
 
-<p><strong>Response</strong></p>
+<p><em>Response</em></p>
 
 <p>Status code 201 if Audible was created successfully.</p>
 
@@ -746,7 +746,7 @@ Optional: description</p>
 <pre><code>PUT /audible/:id
 </code></pre>
 
-<p><strong>Response</strong></p>
+<p><em>Response</em></p>
 
 <p>Status code of 200 if update was successful.</p>
 
@@ -755,7 +755,7 @@ Optional: description</p>
 <pre><code>DELETE /audible/:id
 </code></pre>
 
-<p><strong>Response</strong></p>
+<p><em>Response</em></p>
 
 <p>Status code 200 if delete was successful.</p>
 
@@ -772,7 +772,7 @@ Optional: description</p>
 
 <p>In this case, the <em>id</em> parameter refers to the id parameter of an <em>artifact</em></p>
 
-<p><strong>Response</strong></p>
+<p><em>Response</em></p>
 
 <pre><code>{
     "videos": [
@@ -793,7 +793,7 @@ Optional: description</p>
 <pre><code>GET /video/:id
 </code></pre>
 
-<p><strong>Response</strong></p>
+<p><em>Response</em></p>
 
 <pre><code>{
     "id": 1,
@@ -810,12 +810,12 @@ Optional: description</p>
 <pre><code>POST /video
 </code></pre>
 
-<p><strong>Payload</strong></p>
+<p><em>Payload</em></p>
 
 <p>Required: title, link
 Optional: description</p>
 
-<p><strong>Response</strong></p>
+<p><em>Response</em></p>
 
 <p>Status code 201 if Video was created successfully.</p>
 
@@ -824,7 +824,7 @@ Optional: description</p>
 <pre><code>PUT /video/:id
 </code></pre>
 
-<p><strong>Response</strong></p>
+<p><em>Response</em></p>
 
 <p>Status code of 200 if update was successful.</p>
 
@@ -833,7 +833,7 @@ Optional: description</p>
 <pre><code>DELETE /video/:id
 </code></pre>
 
-<p><strong>Response</strong></p>
+<p><em>Response</em></p>
 
 <p>Status code 200 if delete was successful.</p>
 
@@ -850,7 +850,7 @@ Optional: description</p>
 
 <p>In this case, the <em>id</em> parameter refers to the id parameter of an <em>artifact</em></p>
 
-<p><strong>Response</strong></p>
+<p><em>Response</em></p>
 
 <pre><code>{
     "images": [
@@ -871,7 +871,7 @@ Optional: description</p>
 <pre><code>GET /image/:id
 </code></pre>
 
-<p><strong>Response</strong></p>
+<p><em>Response</em></p>
 
 <pre><code>{
     "id": 1,
@@ -888,12 +888,12 @@ Optional: description</p>
 <pre><code>POST /image
 </code></pre>
 
-<p><strong>Payload</strong></p>
+<p><em>Payload</em></p>
 
 <p>Required: title, link
 Optional: description</p>
 
-<p><strong>Response</strong></p>
+<p><em>Response</em></p>
 
 <p>Status code 201 if Image was created successfully.</p>
 
@@ -902,7 +902,7 @@ Optional: description</p>
 <pre><code>PUT /image/:id
 </code></pre>
 
-<p><strong>Response</strong></p>
+<p><em>Response</em></p>
 
 <p>Status code of 200 if update was successful.</p>
 
@@ -911,7 +911,7 @@ Optional: description</p>
 <pre><code>DELETE /image/:id
 </code></pre>
 
-<p><strong>Response</strong></p>
+<p><em>Response</em></p>
 
 <p>Status code 200 if delete was successful.</p>
 
@@ -926,7 +926,7 @@ Optional: description</p>
 
 <p>In this case, the <em>id</em> parameter refers to the id parameter of an <em>artifact</em></p>
 
-<p><strong>Response</strong></p>
+<p><em>Response</em></p>
 
 <pre><code>{
     "archives": [
@@ -947,7 +947,7 @@ Optional: description</p>
 <pre><code>GET /archive/:id
 </code></pre>
 
-<p><strong>Response</strong></p>
+<p><em>Response</em></p>
 
 <pre><code>{
     "id": 1,
@@ -964,12 +964,12 @@ Optional: description</p>
 <pre><code>POST /archive
 </code></pre>
 
-<p><strong>Payload</strong></p>
+<p><em>Payload</em></p>
 
 <p>Required: title, link
 Optional: description</p>
 
-<p><strong>Response</strong></p>
+<p><em>Response</em></p>
 
 <p>Status code 201 if Archive was created successfully.</p>
 
@@ -978,7 +978,7 @@ Optional: description</p>
 <pre><code>PUT /archive/:id
 </code></pre>
 
-<p><strong>Response</strong></p>
+<p><em>Response</em></p>
 
 <p>Status code of 200 if update was successful.</p>
 
@@ -987,7 +987,7 @@ Optional: description</p>
 <pre><code>DELETE /archive/:id
 </code></pre>
 
-<p><strong>Response</strong></p>
+<p><em>Response</em></p>
 
 <p>Status code 200 if delete was successful.</p>
 
@@ -1006,11 +1006,11 @@ Optional: description</p>
 <pre><code>GET /events
 </code></pre>
 
-<p><strong>Parameters</strong></p>
+<p><em>Parameters</em></p>
 
 <p>Available parameters are: <em>page, per_page, title</em></p>
 
-<p><strong>Response</strong></p>
+<p><em>Response</em></p>
 
 <pre><code>{
   "events": [
@@ -1034,14 +1034,14 @@ Optional: description</p>
 <pre><code>GET /events/:id
 </code></pre>
 
-<p><strong>Response</strong></p>
+<p><em>Response</em></p>
 
 <p><strong>Request</strong></p>
 
 <pre><code>GET /events/:id
 </code></pre>
 
-<p><strong>Response</strong></p>
+<p><em>Response</em></p>
 
 <pre><code>{
   "id": 2,
@@ -1061,12 +1061,12 @@ Optional: description</p>
 <pre><code>POST /events
 </code></pre>
 
-<p><strong>Payload</strong></p>
+<p><em>Payload</em></p>
 
 <p>Required: title, description, eventDate
 Optional: image, location, author</p>
 
-<p><strong>Response</strong></p>
+<p><em>Response</em></p>
 
 <p>Status code of 201 is entity created successfully.</p>
 
@@ -1075,7 +1075,7 @@ Optional: image, location, author</p>
 <pre><code>PUT /events/:id
 </code></pre>
 
-<p><strong>Response</strong></p>
+<p><em>Response</em></p>
 
 <p>Status code of 200 if entity updated successfully.</p>
 
@@ -1084,7 +1084,7 @@ Optional: image, location, author</p>
 <pre><code>DELETE /events/:id
 </code></pre>
 
-<p><strong>Response</strong></p>
+<p><em>Response</em></p>
 
 <p>Status code of 200 is delete was successful.</p>
 
@@ -1103,11 +1103,11 @@ Optional: image, location, author</p>
 <pre><code>GET /news
 </code></pre>
 
-<p><strong>Parameters</strong></p>
+<p><em>Parameters</em></p>
 
 <p>Available parameters are: <em>page, per_page, title</em></p>
 
-<p><strong>Response</strong></p>
+<p><em>Response</em></p>
 
 <pre><code>{
     "news": [
@@ -1138,29 +1138,30 @@ Optional: image, location, author</p>
 <pre><code>GET /news/:id
 </code></pre>
 
-<p><strong>Response</strong></p>
+<p><em>Response</em></p>
 
-<p>{
+<pre><code>{
     "id": 1,
     "title": "MuSA Café",
     "description": "Museum of Art from the University of Puerto Rico Mayagüez Campus is proud to invite you to the MuSA Café Openning",
-    "image": "<a href="http://media.zenfs.com/en-US/video/video.pd2upload.com/video.yahoofinance.com@0c15ac80-566c-3267-897f-982c3aaddf98_FULL.jpg">http://media.zenfs.com/en-US/video/video.pd2upload.com/video.yahoofinance.com@0c15ac80-566c-3267-897f-982c3aaddf98_FULL.jpg</a>",
+    "image": "http://media.zenfs.com/en-US/video/video.pd2upload.com/video.yahoofinance.com@0c15ac80-566c-3267-897f-982c3aaddf98_FULL.jpg",
     "AdministratorId": null,
     "createdAt": "2015-03-31T18:58:08.048Z",
     "updatedAt": "2015-04-18T16:16:42.856Z"
-}</p>
+}
+</code></pre>
 
 <p><strong>Create News</strong></p>
 
 <pre><code>POST /news
 </code></pre>
 
-<p><strong>Payload</strong></p>
+<p><em>Payload</em></p>
 
 <p>Required: title, description, image
 Optional: AdministratorId</p>
 
-<p><strong>Response</strong></p>
+<p><em>Response</em></p>
 
 <p>Status code of 201 is entity created successfully.</p>
 
@@ -1169,7 +1170,7 @@ Optional: AdministratorId</p>
 <pre><code>PUT /news/:id
 </code></pre>
 
-<p><strong>Response</strong></p>
+<p><em>Response</em></p>
 
 <p>Status code of 200 if entity updated successfully.</p>
 
@@ -1178,7 +1179,7 @@ Optional: AdministratorId</p>
 <pre><code>DELETE /news/:id
 </code></pre>
 
-<p><strong>Response</strong></p>
+<p><em>Response</em></p>
 
 <p>Status code of 200 if delete was successful.</p>
 
@@ -1197,11 +1198,11 @@ Optional: AdministratorId</p>
 <pre><code>GET /feedback
 </code></pre>
 
-<p><strong>Parameters</strong></p>
+<p><em>Parameters</em></p>
 
 <p>Available query parameters are: <strong><em>page, per_page, title, seen, type, resolved</em></strong></p>
 
-<p><strong>Response</strong></p>
+<p><em>Response</em></p>
 
 <pre><code>{
     "feedbacks": [
@@ -1225,7 +1226,7 @@ Optional: AdministratorId</p>
 <pre><code>GET /feedback/:id
 </code></pre>
 
-<p><strong>Response</strong></p>
+<p><em>Response</em></p>
 
 <pre><code>{
     "feedbacks": [
@@ -1249,12 +1250,12 @@ Optional: AdministratorId</p>
 <pre><code>POST /feedback
 </code></pre>
 
-<p><strong>Payload</strong></p>
+<p><em>Payload</em></p>
 
 <p>Required: title, message, type, MuseumId
 Optional: resolved, seen</p>
 
-<p><strong>Response</strong></p>
+<p><em>Response</em></p>
 
 <p>Status code of 201 if Feedback created successfully.</p>
 
@@ -1263,7 +1264,7 @@ Optional: resolved, seen</p>
 <pre><code>PUT /feedback/:id
 </code></pre>
 
-<p><strong>Response</strong></p>
+<p><em>Response</em></p>
 
 <p>Status code of 200 if update was successful.</p>
 
@@ -1272,7 +1273,7 @@ Optional: resolved, seen</p>
 <pre><code>DELETE /feedback/:id
 </code></pre>
 
-<p><strong>Response</strong></p>
+<p><em>Response</em></p>
 
 <p>Status code of 200 if delete was successful.</p>
 
@@ -1289,7 +1290,7 @@ Optional: resolved, seen</p>
 
 <p>This id attribute is provided to get either a particular Clue, or a Random Clue. If a <em>id == 0</em> a random Clue will be returned, else a Clue with the given <em>id</em> will be located.</p>
 
-<p><strong>Response</strong></p>
+<p><em>Response</em></p>
 
 <pre><code>{
   "id": 1,
@@ -1307,11 +1308,11 @@ Optional: resolved, seen</p>
 <pre><code>POST /match
 </code></pre>
 
-<p><strong>Payload</strong></p>
+<p><em>Payload</em></p>
 
 <p>Required: UserId, ClueId, qrcode</p>
 
-<p><strong>Response</strong></p>
+<p><em>Response</em></p>
 
 <p>If the clue is solved with the provided answer, a status code of 200 will be returned. When the clue is already solved for a given user, a status code of 403 is returned.</p>
 
@@ -1330,13 +1331,13 @@ Optional: resolved, seen</p>
 
 <p>Available query parameters are: <em>page, per_page, first_name, and email.</em></p>
 
-<p><strong>Response</strong></p>
+<p><em>Response</em></p>
 
-<p>{
+<pre><code>{
     "users": [
         {
             "id": 1,
-            "email": "<a href="mailto:cesarcruz91@gmail.com">cesarcruz91@gmail.com</a>",
+            "email": "cesarcruz91@gmail.com",
             "firstName": "Cesar",
             "lastName": "Cruz",
             "gender": "male",
@@ -1351,7 +1352,7 @@ Optional: resolved, seen</p>
         },
         {
             "id": 2,
-            "email": "<a href="mailto:jose.martinez60@upr.edu">jose.martinez60@upr.edu</a>",
+            "email": "jose.martinez60@upr.edu",
             "firstName": "Jose",
             "lastName": "Martinez",
             "gender": "male",
@@ -1365,14 +1366,15 @@ Optional: resolved, seen</p>
             "updatedAt": "2015-04-17T04:37:15.059Z"
         }
     ]
-}</p>
+}
+</code></pre>
 
 <p><strong>Single User</strong></p>
 
 <pre><code>GET /user/:id
 </code></pre>
 
-<p><strong>Response</strong></p>
+<p><em>Response</em></p>
 
 <pre><code>{
     "id": 1,
@@ -1395,13 +1397,13 @@ Optional: resolved, seen</p>
 
 <p>Users are created using an Facebook Access Token.</p>
 
-<p><strong>Payload</strong></p>
+<p><em>Payload</em></p>
 
 <p>Required: accessToken and userID (both acquired from facebook)</p>
 
-<p><strong>Response</strong></p>
+<p><em>Response</em></p>
 
-<p>After a user is successfully created, a status code of 200 is returned as well as a JWT token used to validate each request from the client. This token needs to be sent using the Authorization header in order to access the API</p>
+<p>After a user is successfully created, a status code of 200 is returned as well as a JWT token used to validate each request from the client as well as a userId. This token needs to be sent using the Authorization header in order to access the API</p>
 
 <p><strong>Edit User</strong></p>
 
@@ -1410,7 +1412,7 @@ Optional: resolved, seen</p>
 <pre><code>PUT /user/:id
 </code></pre>
 
-<p><strong>Response</strong></p>
+<p><em>Response</em></p>
 
 <p>Status code 200 if update was successful.</p>
 
@@ -1419,7 +1421,7 @@ Optional: resolved, seen</p>
 <pre><code>DELETE /user/:id
 </code></pre>
 
-<p><strong>Response</strong></p>
+<p><em>Response</em></p>
 
 <p>Status code of 200 is delete was successful.</p>
 
@@ -1430,11 +1432,11 @@ Optional: resolved, seen</p>
 <pre><code>GET /leaderboard
 </code></pre>
 
-<p><strong>Parameters</strong></p>
+<p><em>Parameters</em></p>
 
 <p>Available query parameters are; <em>page, per_page</em></p>
 
-<p><strong>Response</strong></p>
+<p><em>Response</em></p>
 
 <pre><code>{
     "leaderboard": [
@@ -1464,7 +1466,7 @@ Optional: resolved, seen</p>
 <pre><code>PUT /leaderboard
 </code></pre>
 
-<p><strong>Response</strong></p>
+<p><em>Response</em></p>
 
 <p>Status code of 200 if reset was successful.</p>
 
@@ -1483,11 +1485,11 @@ Optional: resolved, seen</p>
 <pre><code>GET /beacon
 </code></pre>
 
-<p><strong>Parameters</strong></p>
+<p><em>Parameters</em></p>
 
 <p>Available query parameters are: <em>page, per_page, beacon_code</em></p>
 
-<p><strong>Response</strong></p>
+<p><em>Response</em></p>
 
 <pre><code>{
     "beacons": [
@@ -1528,7 +1530,7 @@ Optional: resolved, seen</p>
 <pre><code>GET /beacon/:id
 </code></pre>
 
-<p><strong>Response</strong></p>
+<p><em>Response</em></p>
 
 <pre><code>{
     "id": 1,
@@ -1544,12 +1546,12 @@ Optional: resolved, seen</p>
 <pre><code>POST /beacon
 </code></pre>
 
-<p><strong>Payload</strong></p>
+<p><em>Payload</em></p>
 
 <p>required: code
 optional: RoomId</p>
 
-<p><strong>Response</strong></p>
+<p><em>Response</em></p>
 
 <p>Status code of 201 if iBeacon was successfully created.</p>
 
@@ -1558,7 +1560,7 @@ optional: RoomId</p>
 <pre><code>PUT /beacon/:id
 </code></pre>
 
-<p><strong>Response</strong></p>
+<p><em>Response</em></p>
 
 <p>Status code of 200 if successfully updated.</p>
 
@@ -1567,7 +1569,7 @@ optional: RoomId</p>
 <pre><code>DELETE /beacon/:id
 </code></pre>
 
-<p><strong>Response</strong></p>
+<p><em>Response</em></p>
 
 <p>Status code of 200 if iBeacons succeesfully deleted.</p>
 
@@ -1586,11 +1588,11 @@ optional: RoomId</p>
 <pre><code>GET /administrator
 </code></pre>
 
-<p><strong>Parameters</strong></p>
+<p><em>Parameters</em></p>
 
 <p>Available parameters are: <strong><em>page, per_page, first_name, and email</em></strong></p>
 
-<p><strong>Response</strong></p>
+<p><em>Response</em></p>
 
 <pre><code>{
     "administrators": [
@@ -1631,7 +1633,7 @@ optional: RoomId</p>
 <pre><code>GET /administrator/:id
 </code></pre>
 
-<p><strong>Response</strong></p>
+<p><em>Response</em></p>
 
 <pre><code>{
     "id": 7,
@@ -1649,12 +1651,12 @@ optional: RoomId</p>
 <pre><code>POST /administrator
 </code></pre>
 
-<p><strong>Payload</strong></p>
+<p><em>Payload</em></p>
 
 <p>Required: email, password
 Optional (recomended): firstName, lastName, phone</p>
 
-<p><strong>Response</strong></p>
+<p><em>Response</em></p>
 
 <p>Server will respond with a status code of 201 if successful. </p>
 
@@ -1665,11 +1667,11 @@ Optional (recomended): firstName, lastName, phone</p>
 <pre><code>PUT /administrator/:id
 </code></pre>
 
-<p><strong>Payload</strong></p>
+<p><em>Payload</em></p>
 
 <p>Updates to the administrator will be based on values provided, payload may include: email, password, firstName, lastName or phone. Which ever attribute is provided in the payload, that and only that attribute will be updated.</p>
 
-<p><strong>Response</strong></p>
+<p><em>Response</em></p>
 
 <p>Status code 200 if successful.</p>
 
@@ -1678,7 +1680,7 @@ Optional (recomended): firstName, lastName, phone</p>
 <pre><code>DELETE /administrator/:id
 </code></pre>
 
-<p><strong>Response</strong></p>
+<p><em>Response</em></p>
 
 <p>Status code of 200 if successful.</p>
 
@@ -1697,11 +1699,11 @@ Optional (recomended): firstName, lastName, phone</p>
 <pre><code>GET /artists
 </code></pre>
 
-<p><strong>Parameters</strong></p>
+<p><em>Parameters</em></p>
 
 <p>Available query parameters are: <em>page, per_page, and name</em></p>
 
-<p><strong>Response</strong></p>
+<p><em>Response</em></p>
 
 <pre><code>{
     "artists": [
@@ -1722,7 +1724,7 @@ Optional (recomended): firstName, lastName, phone</p>
 <pre><code>GET /artists/:id
 </code></pre>
 
-<p><strong>Response</strong></p>
+<p><em>Response</em></p>
 
 <pre><code>{
     "id": 1,
@@ -1739,12 +1741,12 @@ Optional (recomended): firstName, lastName, phone</p>
 <pre><code>POST /artists
 </code></pre>
 
-<p><strong>Payload</strong></p>
+<p><em>Payload</em></p>
 
 <p>Required: name
 Optional: biography, and birthDay</p>
 
-<p><strong>Response</strong></p>
+<p><em>Response</em></p>
 
 <p>Status code of 201 if Artist created successfully.</p>
 
@@ -1753,7 +1755,7 @@ Optional: biography, and birthDay</p>
 <pre><code>PUT /artist/:id
 </code></pre>
 
-<p><strong>Response</strong></p>
+<p><em>Response</em></p>
 
 <p>Status code of 200 if update was successful.</p>
 
@@ -1762,7 +1764,7 @@ Optional: biography, and birthDay</p>
 <pre><code>DELETE /artist/:id
 </code></pre>
 
-<p><strong>Response</strong></p>
+<p><em>Response</em></p>
 
 <p>Status code of 200 if delete was successful.</p>
 
