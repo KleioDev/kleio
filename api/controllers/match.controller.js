@@ -16,32 +16,32 @@ module.exports = function(){
         auth = middleware.authentication,
         matchController = new Router()
 
-        .get('/match/:id', loadModels, auth, index)
+        .get('/match/:id', loadModels, index)
         .post('/match', loadModels, koaBody, auth, create);
 
     return matchController.routes();
 }
 
 /**
- * Get a Clue to initiate the match process
- * Parameter: id -> is 0 return a random clue, if > 0, return the appropriate Clue
+ *
  */
 function *index(){
     var clue,
         id = parseInt(this.params.id),
-        count;
+        count, User = this.models['User'];
 
     if(isNaN(id)){
         this.throw('Invalid Parameters', 400);
     }
 
     try {
-        if(id === 0){ //GET a random Clue
+        if(id === 0){
+
+            //GET Clues that the user has not answered.
             count = yield this.models['Clue'].count();
-            clue = yield this.models['Clue'].find({
-                where : {
-                    id : Math.random() * (count - 1) + 1
-                }
+            clue = yield this.models['Clue'].findAll({
+                include : [User],
+                where : { 'User.id' : { $ne : this.state.user.id}}
             });
         } else {
             clue = yield this.models['Clue'].find({

@@ -26,7 +26,15 @@ module.exports = function(sequelize, DataTypes){
             type : DataTypes.DATE
         }
     }, {
-        timestamps : true
+        timestamps : true,
+        classMethods : {
+            associate: function(models){
+
+                Clue.belongsToMany(models.User, { through: 'Match' });
+                models.User.belongsToMany(Clue, { through: 'Match' });
+
+            }
+        }
     });
 
     return Clue;

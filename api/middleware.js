@@ -54,6 +54,8 @@ function *authenticate(next) {
         this.throw('Forbidden', 403);
     }
 
+    this.state.user = loggedUser;
+
     yield next;
 
 }

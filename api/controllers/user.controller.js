@@ -242,11 +242,12 @@ function *create() {
 
     }
 
+
     token = utils.generateToken(existingUser || fbuser);
 
     this.status = 200;
 
-    this.body = { token : token , userId : fbuser.id };
+    this.body = { token : token , userId : fbuser.id || existingUser.facebook_id};
 
 }
 
