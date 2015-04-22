@@ -153,7 +153,8 @@ function *destroy(){
 function *leaderboard(){
     var leaderboard,
         offset = this.request.query.page,
-        limit = this.query.per_page;
+        limit = this.query.per_page,
+        userId;
 
     if(!offset) offset = 0;
 
@@ -247,7 +248,13 @@ function *create() {
 
     this.status = 200;
 
-    this.body = { token : token , userId : fbuser.id || existingUser.facebook_id};
+    if(existingUser){
+        userId = existingUser.facebook_id;
+    } else {
+        userId = fbuser.id
+    }
+
+    this.body = { token : token , userId : userId};
 
 }
 
