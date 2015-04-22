@@ -36,7 +36,7 @@ function *index(){
         artist = this.query.artist,
         exhibition = this.query.exhibition_id,
         title = this.query.title,
-        where = {};
+        where = {}, Artist = this.models['Artist'];
 
     if(!offset) offset = 0;
 
@@ -72,7 +72,8 @@ function *index(){
             order : '"createdAt" DESC',
             limit : limit,
             offset : offset * limit,
-            where : where
+            where : where,
+            include : [Artist]
         });
     } catch(err){
         this.throw(err.message, err.status || 500);
