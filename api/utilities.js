@@ -31,7 +31,7 @@ function generateToken(user, type){
 
 function fbCall(parameters){
     var apiCall = "https://graph.facebook.com/v2.3/",
-        queryParameters = {}, route;
+        queryParameters = {};
 
     if(!parameters || !parameters.accessToken || !parameters.route){
         this.throw(new TypeError('Invalid parameters'));

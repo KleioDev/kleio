@@ -16,7 +16,7 @@ module.exports = function(){
         auth = middleware.authentication,
         matchController = new Router()
 
-        .get('/match/:id', loadModels, index)
+        .get('/match/:id', loadModels, auth, index)
         .post('/match', loadModels, koaBody, auth, create);
 
     return matchController.routes();

@@ -183,7 +183,7 @@ function *leaderboard(){
  */
 function *create() {
     var payload = this.request.body.fields,
-        fbuser, existingUser, token, response,
+        existingUser, token, response,
         User = this.models['User'];
 
 
@@ -229,7 +229,7 @@ function *create() {
         }
 
         try {
-            fbuser = yield this.sequelize.transaction( function (t) {
+            existingUser = yield this.sequelize.transaction( function (t) {
                 return User.create(user, { transaction : t});
             });
         } catch(err) {
@@ -244,17 +244,11 @@ function *create() {
     }
 
 
-    token = utils.generateToken(existingUser || fbuser);
+    token = utils.generateToken(existingUser);
 
     this.status = 200;
 
-    if(existingUser){
-        userId = existingUser.facebook_id;
-    } else {
-        userId = fbuser.id
-    }
-
-    this.body = { token : token , userId : userId};
+    this.body = { token : token , userId : existingUser.id};
 
 }
 
