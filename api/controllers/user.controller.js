@@ -164,7 +164,7 @@ function *leaderboard(){
         leaderboard = yield this.models['User'].findAll({
             order : '"points" DESC',
             limit : limit,
-            attributes : ['firstName', 'lastName', 'points'],
+            attributes : ['firstName', 'lastName', 'points', 'id'],
             offset : offset
         });
     } catch(err) {
