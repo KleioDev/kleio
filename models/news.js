@@ -26,6 +26,9 @@ module.exports = function(sequelize, DataTypes){
         AdministratorId : { //The Author of the Event
             type : DataTypes.INTEGER
         },
+        location : {
+            type : DataTypes.STRING(1000)
+        },
         createdAt : {
             type : DataTypes.DATE
         },
