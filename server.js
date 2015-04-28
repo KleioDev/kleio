@@ -26,17 +26,32 @@ app.keys = ['cesarsalad'];
 
 app.use(session(app));
 
-//Don't expose JWT errors
+//Handle errors
 app.use(function *(next){
     try {
         yield next;
     } catch(err) {
-        if (err.status == 401){
-            this.status = 401;
-
-            this.body = 'Protected Resource';
-        } else {
-            throw err;
+        switch(err.status){
+            case 404:
+                this.status = 404;
+                this.body = err.message;
+                break;
+            case 401:
+                this.status = 401;
+                this.body = err.message;
+                break;
+            case 400:
+                this.status = 400;
+                this.body = err.message;
+                break;
+            case 403:
+                this.status = 403;
+                this.body = err.message;
+                break;
+            case 500:
+                this.status = 500;
+                this.body = err.message;
+                break;
         }
     }
 });
