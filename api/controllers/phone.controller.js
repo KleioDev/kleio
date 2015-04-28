@@ -19,7 +19,7 @@ module.exports = function(){
 
         .get('/phones', loadModels, index)
         .get('/phones/:id', loadModels, show)
-        .post('/phones', koaBody, loadModels, adminAuth, create)
+        .post('/phones', koaBody, loadModels, create)
         .put('/phones/:id', koaBody, loadModels, adminAuth, edit)
         .delete('/phones/:id', loadModels, adminAuth, destroy);
 
