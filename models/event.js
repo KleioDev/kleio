@@ -29,6 +29,10 @@ module.exports = function(sequelize, DataTypes){
         location : {
             type : DataTypes.STRING(1000)
         },
+        notified : {
+            type : DataTypes.BOOLEAN(),
+            defaultValue : false
+        },
         author : { //The Author of the Event
             type : DataTypes.INTEGER
         },

@@ -29,6 +29,10 @@ module.exports = function(sequelize, DataTypes){
         location : {
             type : DataTypes.STRING(1000)
         },
+        notified : {
+            type : DataTypes.BOOLEAN(),
+            defaultValue : false
+        },
         createdAt : {
             type : DataTypes.DATE
         },
