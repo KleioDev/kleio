@@ -155,3 +155,47 @@ var Match = Model.sequelize.models['Match'];
 //    correct : false
 //})
 
+var hoursOfOperation = {
+    "monday" : {
+        "open" : Date.now(),
+        "close" : Date.now(),
+        "closed" : false
+    },
+    "monday" : {
+    "   open" : Date.now(),
+        "close" : Date.now(),
+        "closed" : false
+    },
+    "monday" : {
+        "open" : Date.now(),
+        "close" : Date.now(),
+        "closed" : false
+    },
+    "monday" : {
+        "open" : Date.now(),
+        "close" : Date.now(),
+        "closed" : false
+    },
+    "friday" : {
+        "open" : Date.now(),
+        "close" : Date.now(),
+        "closed" : false
+    },
+    "saturday" : {
+        "open" : Date.now(),
+        "close" : Date.now(),
+        "closed" : false
+    },
+    "sunday" : {
+        "open" : Date.now(),
+        "close" : Date.now(),
+        "closed" : false
+    }
+}
+
+var exp = JSON.stringify(hoursOfOperation);
+
+
+
+console.log(exp);
+
