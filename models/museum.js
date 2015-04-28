@@ -26,7 +26,7 @@ module.exports = function(sequelize, DataTypes) {
             type : DataTypes.TEXT
         },
         hoursOfOperation : {
-            type : DataTypes.STRING,
+            type : DataTypes.STRING(1000),
             allowNull : false
         },
         socialMediaLinks : {
