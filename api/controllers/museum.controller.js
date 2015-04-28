@@ -38,7 +38,14 @@ function *index(){
 
     if(!museum || museum.length < 1) this.throw('Not Found', 404);
 
-    museum[0].hoursOfOperation = JSON.parse(museum[0].hoursOfOperation);
+
+    try{
+        museum[0].hoursOfOperation = JSON.parse(museum[0].hoursOfOperation);
+    } catch(err){
+        if(err instanceof SyntaxError){
+            museum[0].hoursOfOperation = "";
+        }
+    }
 
     this.status = 200;
 
