@@ -19,6 +19,10 @@ module.exports = function(sequelize, DataTypes){
             type : DataTypes.INTEGER,
             defaultValue : 15
         },
+        ArtifactId : {
+            type : DataTypes.INTEGER,
+            allowNull : false
+        },
         createdAt : {
             type : DataTypes.DATE
         },

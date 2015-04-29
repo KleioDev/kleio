@@ -18,10 +18,6 @@ module.exports = function(sequelize, DataTypes){
             type : DataTypes.INTEGER,
             allowNull : false
         },
-        qrcode : {
-            type : DataTypes.STRING(1000),
-            allowNull : false
-        },
         attempts : {
             type : DataTypes.INTEGER
         },
