@@ -87,7 +87,7 @@ function *create(){
 
         artifact = yield this.models['Artifact'].find({
             where : {
-                qrcode : attempt.qrcode
+                id : attempt.qrcode
             }
         });
 
