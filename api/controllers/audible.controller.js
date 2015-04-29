@@ -4,7 +4,8 @@
 
 var middleware = require('../middleware'),
     Router = require('koa-router'),
-    koaBody = require('koa-better-body')();
+    koaBody = require('koa-better-body'),
+    fs = require('fs');
 
 /**
  * Handle requests related to audible media content
@@ -17,8 +18,14 @@ module.exports = function() {
     var audibleController = new Router()
         .get('/artifact/audible/:id', loadModels, index)
         .get('/audible/:id', loadModels, show)
-        .post('/audible', koaBody, loadModels, adminAuth, create)
-        .put('/audible/:id', koaBody, loadModels, adminAuth, edit)
+        .post('/audible', koaBody({
+            multipart: true,
+            formidable: {
+                uploadDir: 'public/audibles/',
+                hash : 'md5'
+            }
+        }), loadModels, adminAuth, create)
+        .put('/audible/:id', koaBody(), loadModels, adminAuth, edit)
         .delete('/audible/:id', loadModels, adminAuth, destroy);
 
     return audibleController.routes();
@@ -80,16 +87,30 @@ function *show(){
  * Payload : title, description, link, ArtifactId
  */
 function *create(){
-    var payload = this.request.body.fields,
+    var payload = this.request.body,
         Audible = this.models['Audible'],
         ArtifactAudible = this.models['ArtifactAudible'],
-        audibleId;
+        audibleId, oldPath, newPath, audible, link;
 
-    if(!payload) this.throw('Invalid Payload', 400);
+
+
+    if(!payload || !payload.files || !payload.files.file) this.throw('Invalid Payload', 400);
+
+    oldPath = payload.files.file.path;
+
+    newPath = oldPath.replace('upload_', '');
+
+    //Remove the upload_ from the filename
+    fs.renameSync(oldPath, newPath);
+
+    link = newPath.replace('public/audibles/', '');
+
+    payload.fields.link = process.env.BASEPATH + '/' + link;
+
 
     try {
         yield this.sequelize.transaction(function(t) {
-            return Audible.create(payload, {transaction : t}).then(function(audio){
+            return Audible.create(payload.fields, {transaction : t}).then(function(audio){
                 audibleId = audio.id;
             });
         });
@@ -97,7 +118,7 @@ function *create(){
         yield this.sequelize.transaction(function(t) {
             return ArtifactAudible.create({
                 AudibleId : audibleId,
-                ArtifactId : payload.ArtifactId
+                ArtifactId : payload.fields.ArtifactId
             }, {transaction : t});
         });
 
