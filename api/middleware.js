@@ -40,10 +40,10 @@ function *authenticate(next) {
 
     try {
 
-        if(this.user.type === 'user'){
-            loggedUser = this.models['User'].find({ where : { id : this.user.id}});
-        } else {
-            loggedUser = this.models['Administrator'].find({ where : { id : this.user.id}});
+        loggedUser = yield this.models['User'].find({ where : { id : this.user.id}});
+
+        if(!loggedUser){
+            loggedUser = yield this.models['Administrator'].find({ where : { id : this.user.id}});
         }
 
     } catch(err) {

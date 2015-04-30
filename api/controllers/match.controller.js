@@ -28,7 +28,7 @@ module.exports = function(){
 function *index(){
     var clue,
         id = parseInt(this.params.id),
-        count, User = this.models['User'];
+        count, Match = this.models['Match'];
 
     if(isNaN(id)){
         this.throw('Invalid Parameters', 400);
@@ -37,17 +37,35 @@ function *index(){
     try {
         if(id === 0){
 
-            //GET Clues that the user has not answered.
-            count = yield this.models['Clue'].count();
-            clue = yield this.models['Clue'].findAll({
-                include : [User],
-                where : { 'User.id' : { $ne : this.state.user.id}}
+            //GET Clues that the user has not answered, nor played.
+            var clues = yield this.models['Clue'].findAll({
+                include : [{
+                    model : Match,
+                    where : {
+                        UserId : { $ne : this.state.user.id},
+                        attempts : 0,
+                        correct : false
+                    },
+                    attributes : ['attempts', 'correct']
+                }],
+                attributes : ['image', 'pointsValue', 'id']
             });
+
+            clue = clues[Math.floor(Math.random() * (clues.length - 1))];
+
         } else {
+
+            //Get a clue that I know of
             clue = yield this.models['Clue'].find({
                 where : {
                     id : id
-                }
+                },
+                include : [{
+                    model : Match,
+                    attributes : ['attempts', 'correct']
+
+                }],
+                attributes : ['image', 'pointsValue', 'id']
             });
         }
     } catch(err) {

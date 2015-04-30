@@ -34,8 +34,11 @@ module.exports = function(sequelize, DataTypes){
         classMethods : {
             associate: function(models){
 
-                Clue.belongsToMany(models.User, { through: 'Match' });
-                models.User.belongsToMany(Clue, { through: 'Match' });
+                Clue.hasMany(models.Match);
+
+                Clue.belongsTo(models.Artifact, {foreignKey : 'ArtifactId'})
+
+
 
             }
         }

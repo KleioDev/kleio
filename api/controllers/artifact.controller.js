@@ -36,7 +36,8 @@ function *index(){
         artist = this.query.artist,
         exhibition = this.query.exhibition_id,
         title = this.query.title,
-        where = {}, Artist = this.models['Artist'];
+        where = {}, Artist = this.models['Artist'],
+        Exhibition = this.models['Exhibition'];
 
     if(!offset) offset = 0;
 
@@ -73,7 +74,7 @@ function *index(){
             limit : limit,
             offset : offset * limit,
             where : where,
-            include : [Artist]
+            include : [Artist, Exhibition]
         });
     } catch(err){
         this.throw(err.message, err.status || 500);
