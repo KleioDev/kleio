@@ -48,7 +48,7 @@ function *index(){
             clue = clues[Math.floor(Math.random() * (clues.length - 1))];
 
             //Create a match
-            var match = this.sequelize.transaction(function(t){
+            var match = yield this.sequelize.transaction(function(t){
                 return Match.create({
                     UserId : userId,
                     ClueId : clue.id,

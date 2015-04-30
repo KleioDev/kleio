@@ -215,7 +215,6 @@ function *destroy() {
 
     var count = yield this.models['Administrator'].count();
 
-
     if(count == 1) this.throw('Bad Request', 400);
 
     try {
