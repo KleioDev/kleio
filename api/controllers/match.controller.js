@@ -17,7 +17,8 @@ module.exports = function(){
         matchController = new Router()
 
         .get('/match/:id', loadModels, auth, index)
-        .post('/match', loadModels, koaBody, auth, create);
+        .post('/match', loadModels, koaBody, auth, create)
+        .put('/match/:id', loadModels, koaBody, auth, edit);
 
     return matchController.routes();
 }
@@ -26,32 +27,39 @@ module.exports = function(){
  *
  */
 function *index(){
-    var clue,
+    var clue, clues,
         id = parseInt(this.params.id),
-        count, Match = this.models['Match'];
+        Match = this.models['Match'],
+        userId = this.state.user.id;
 
     if(isNaN(id)){
         this.throw('Invalid Parameters', 400);
     }
 
     try {
-        if(id === 0){
+        if(id == 0){
 
-            //GET Clues that the user has not answered, nor played.
-            var clues = yield this.models['Clue'].findAll({
-                include : [{
-                    model : Match,
-                    where : {
-                        UserId : { $ne : this.state.user.id},
-                        attempts : 0,
-                        correct : false
-                    },
-                    attributes : ['attempts', 'correct']
-                }],
-                attributes : ['image', 'pointsValue', 'id']
+            //Get me all the clues the user hasn't played.
+            clues = yield this.sequelize.query('select id, image, "pointsValue" from "Clues" where id not in (select "ClueId" from "Matches" where "UserId" = '+ userId +');', {type: this.sequelize.QueryTypes.SELECT});
+
+            if(clues.length < 1) this.throw('Not Found', 404); //The user has played all of the clues, so sorry.
+
+            //Get a single, random, clue from all of the available clues.
+            clue = clues[Math.floor(Math.random() * (clues.length - 1))];
+
+            //Create a match
+            var match = this.sequelize.transaction(function(t){
+                return Match.create({
+                    UserId : userId,
+                    ClueId : clue.id,
+                    attempts : 0
+                }, {transaction : t})
             });
 
-            clue = clues[Math.floor(Math.random() * (clues.length - 1))];
+            //Add the attempts to the clue
+            clue.Matches = [{
+                attempts : match.attempts
+            }];
 
         } else {
 
@@ -86,62 +94,71 @@ function *index(){
  * Payload : {
  *  ClueId : An Integer with the id of the Clue,
  *  UserId : An Integer with the id of the User trying to match.
- *  qrcode : A String with the qr code that is being tested
  */
 function *create(){
     var match,
-        artifact,
-        attempt = this.request.body.fields,
-        result;
+        payload = this.request.body.fields,
+        Clue = this.models['Clue'];
+
+    if(!payload || !payload.UserId || !payload.ClueId || !payload.qrcode) this.throw('Invalid Payload', 404);
 
     try {
-        //Check to see if the user has tried this before.
+
         match = yield this.models['Match'].find({
             where : {
-                UserId : attempt.UserId,
-                ClueId : attempt.ClueId
-            }
+                UserId : payload.UserId,
+                ClueId : payload.ClueId
+            },
+            include : [Clue]
         });
 
-        artifact = yield this.models['Artifact'].find({
-            where : {
-                id : attempt.qrcode
-            }
-        });
+        if(!match) this.throw('Not Found', 404);
 
-        if(artifact){
-            attempt['correct'] = true;
+        //Pay up
+        match.attempts = match.attempts + 1;
 
-            if(match){
-                match['correct'] = true;
-            }
-        }
+        console.log(match.Clue.ArtifactId);
 
-        if(!match){
-
-            attempt['attempts'] = 1;
-
-            console.log(attempt);
-
-            yield this.models['Match'].create(attempt);
-
+        if(match.Clue.ArtifactId == payload.qrcode){
+            match.correct = true;
         } else {
-            match.attempts++;
-
-            if(match.attempts > 3){
-                this.throw('Forbidden', 403);
-            }
-
-            if(match.correct){
-               this.throw('Clue already solved', 403);
-            }
-            result = match.save();
+            match.correct = false;
         }
+
+        yield this.sequelize.transaction(function(t){
+            return match.save({transaction : t});
+        });
+
     } catch(err) {
         this.throw(err.message, err.status || 500);
     }
 
-    this.status = 200;
+    this.status = 201;
 
-    this.body = result;
+    this.body = { correct : match.correct, attempts : match.attempts};
+}
+
+function *edit(){
+    var ClueId = this.params.id,
+        result, Match = this.models['Match'],
+        userId = this.state.user.id;
+
+    try{
+        result = yield this.sequelize.transaction(function(t){
+            return Match.update({
+                attempts : 3
+            }, {
+                where: {
+                    ClueId: ClueId,
+                    UserId: userId
+                }
+            }, { transaction : t})
+        });
+    } catch(err){
+        this.throw(err.message, err.status || 500);
+    }
+
+    if(!result) this.throw('Not Found', 404);
+
+    this.status = 200;
 }

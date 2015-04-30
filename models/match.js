@@ -32,7 +32,12 @@ module.exports = function(sequelize, DataTypes){
             type : DataTypes.DATE
         }
     }, {
-        timestamps : true
+        timestamps : true,
+        classMethods : {
+            associate: function(models){
+                Match.belongsTo(models.Clue, {foreignKey : 'ClueId'});
+            }
+        }
     });
 
     return Match;
