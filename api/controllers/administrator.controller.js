@@ -6,7 +6,9 @@ var middleware = require('../middleware'),
     Router = require('koa-router'),
     bcrypt = require('bcrypt'),
     koaBody = require('koa-better-body')(),
-    jwt = require('koa-jwt');
+    jwt = require('koa-jwt'),
+    chance = require('chance').Chance(),
+    Email = require('email').Email;
 
 /**
  * Handle request related to Administrators
@@ -19,10 +21,11 @@ module.exports = function(){
     var administratorController = new Router()
         .get('/administrator', loadModels, adminAuth, index)
         .get('/administrator/:id', loadModels, adminAuth, show)
-        .post('/administrator', koaBody, loadModels, create)
+        .post('/administrator', koaBody, loadModels, adminAuth, create)
         .put('/administrator/:id', koaBody, loadModels, adminAuth, edit)
-        .delete('/administrator/:id', loadModels,  destroy)
-        .post('/authenticate', koaBody, loadModels, login);
+        .delete('/administrator/:id', loadModels,  adminAuth, destroy)
+        .post('/authenticate', koaBody, loadModels, login)
+        .post('/administrator/reset', koaBody, loadModels, reset);
 
     return administratorController.routes();
 }
@@ -272,6 +275,52 @@ function *login(){
     var token = jwt.sign({email : admin.email, type : 'admin', id : admin.id}, process.env.APP_JWT_SECRET , { expiresInMinutes: 60 * 24});
 
     this.body = token;
+
+    this.status = 200;
+}
+
+function *reset(){
+    var payload = this.request.body.fields;
+
+    if(!payload || !payload.email || !payload.phone) this.throw('Invalid Payload', 400);
+
+    try{
+        var admin = yield this.models['Administrator'].find({
+            where : {
+                email : payload.email
+            }
+        });
+
+
+        if(!admin) this.throw('Not Found', 404);
+
+        if(admin.phone !== payload.phone) this.throw('Forbidden', 403);
+
+        //Generate a random password
+        var password = chance.word({ length : 6});
+
+        var salt = bcrypt.genSaltSync(10);
+        var hash = bcrypt.hashSync(password, salt);
+
+        admin.password = hash;
+
+        admin.confirm = false;
+
+        yield this.sequelize.transaction(function(t){
+            return admin.save({ transaction : t});
+        });
+
+        var message = new Email({
+            from: "kleio.team@gmail.com",
+            to: "cesarcruz91@gmail.com", //TODO: Change
+            subject: "Password Recovery",
+            body: "Your temporary password is: " + password + ".Please access yo mama and change your password when prompted."
+        });
+        message.send();
+
+    } catch(err){
+        this.throw(err.message, err.status || 500);
+    }
 
     this.status = 200;
 }
