@@ -4,7 +4,8 @@
 
 var middleware = require('../middleware'),
     Router = require('koa-router'),
-    koaBody = require('koa-better-body')();
+    koaBody = require('koa-better-body'),
+    fs = require('fs');
 
 /**
  * Handle requests related to Images
@@ -18,8 +19,14 @@ module.exports = function(){
     var imageController = new Router()
         .get('/artifact/image/:id', loadModels, index)
         .get('/image/:id', loadModels, show)
-        .post('/image', koaBody, loadModels, adminAuth, create)
-        .put('/image/:id', koaBody, loadModels, adminAuth, edit)
+        .post('/image', koaBody({
+            multipart: true,
+            formidable: {
+                uploadDir: 'public/images/',
+                hash : 'md5'
+            }
+        }), loadModels, adminAuth, create)
+        .put('/image/:id', koaBody(), loadModels, adminAuth, edit)
         .delete('/image/:id', loadModels, adminAuth, destroy);
 
     return imageController.routes();
@@ -81,16 +88,31 @@ function *show() {
  * Payload: title, description, link, ArtifactId
  */
 function *create(){
-    var payload = this.request.body.fields,
+    var payload = this.request.body,
         Image = this.models['Image'],
         ArtifactImage = this.models['ArtifactImage'],
-        imageId;
+        imageId, newPath, oldPath, link;
 
-    if(!payload) this.throw('Invalid Payload', 400);
+        console.log(payload);
+
+    if(!payload || !payload.files || !payload.files.file) this.throw('Invalid Payload', 400);
+
+    oldPath = payload.files.file.path;
+
+    newPath = oldPath.replace('upload_', '');
+
+    //Remove the upload_ from the filename
+    fs.renameSync(oldPath, newPath);
+
+    link = newPath.replace('public/images/', '');
+
+    payload.fields.link = process.env.BASEPATH + '/' + link;
+
+    console.log(payload.fields);
 
     try {
         yield this.sequelize.transaction(function(t) {
-            return Image.create(payload, {transaction : t}).then(function(image){
+            return Image.create(payload.fields, {transaction : t}).then(function(image){
                 imageId = image.id;
             });
         });
@@ -98,7 +120,7 @@ function *create(){
         yield this.sequelize.transaction(function(t) {
             return ArtifactImage.create({
                 ImageId : imageId,
-                ArtifactId : payload.ArtifactId
+                ArtifactId : payload.fields.ArtifactId
             }, {transaction : t});
         });
 
