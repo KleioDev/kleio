@@ -32,6 +32,9 @@ module.exports = function(sequelize, DataTypes){
             type : DataTypes.STRING,
             notEmpty: true
         },
+        confirm : {
+            type : DataTypes.BOOLEAN
+        },
         createdAt : {
             type : DataTypes.DATE
         },
