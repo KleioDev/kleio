@@ -19,7 +19,7 @@ module.exports = function(){
     var administratorController = new Router()
         .get('/administrator', loadModels, adminAuth, index)
         .get('/administrator/:id', loadModels, adminAuth, show)
-        .post('/administrator', koaBody, loadModels, adminAuth, create)
+        .post('/administrator', koaBody, loadModels, create)
         .put('/administrator/:id', koaBody, loadModels, adminAuth, edit)
         .delete('/administrator/:id', loadModels,  destroy)
         .post('/authenticate', koaBody, loadModels, login);
@@ -213,6 +213,11 @@ function *destroy() {
         News = this.models['News'],
         result;
 
+    var count = yield this.models['Administrator'].count();
+
+
+    if(count == 1) this.throw('Bad Request', 400);
+
     try {
         result = yield this.sequelize.transaction(function(t) {
             return Events.update({
@@ -250,6 +255,7 @@ function *login(){
 
 
     try {
+
         admin = yield this.models['Administrator'].find({
             where : {
                 email : payload.email
