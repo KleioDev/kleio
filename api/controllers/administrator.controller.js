@@ -140,8 +140,10 @@ function *edit() {
         if(payload.email && this.state.user.email === payload.email){
             var token = jwt.sign({email : payload.email, type : 'admin', id : id}, process.env.APP_JWT_SECRET , { expiresInMinutes: 60 * 24});
 
-            this.body = token;
+            this.body = { token : token };
         }
+
+        this.body = {};
 
 
         this.status = 200;
