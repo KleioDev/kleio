@@ -83,6 +83,8 @@ function *adminAuth(next){
             this.throw('Forbidden', 403);
         }
 
+        this.state.user = response;
+
         yield next;
     } else {
         this.throw('Unauthorized', 401);
