@@ -139,12 +139,15 @@ function *edit() {
 
         //Success!!
         if(payload.email && this.state.user.id == id){
+
+            console.log('Here');
             var token = jwt.sign({email : payload.email, type : 'admin', id : id}, process.env.APP_JWT_SECRET , { expiresInMinutes: 60 * 24});
 
             this.body = { token : token };
-        }
+        } else {
+            this.body = {};
 
-        this.body = {};
+        }
 
 
         this.status = 200;
