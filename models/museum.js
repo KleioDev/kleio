@@ -14,10 +14,12 @@ module.exports = function(sequelize, DataTypes) {
         },
         name : {
             type : DataTypes.STRING,
-            allowNull : false
+            allowNull : false,
+            notEmpty: true
         },
         description : {
-            type : DataTypes.TEXT
+            type : DataTypes.TEXT,
+            notEmpty: true
         },
         terms : {
             type : DataTypes.TEXT

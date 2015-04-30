@@ -13,21 +13,26 @@ module.exports = function(sequelize, DataTypes){
         },
         title : {
             type : DataTypes.STRING,
-            allowNull : false
+            allowNull : false,
+            notEmpty: true
         },
         description : {
             type : DataTypes.TEXT,
-            allowNull : false
+            allowNull : false,
+            notEmpty: true
         },
         eventDate : {
             type : DataTypes.DATE,
-            allowNull : false
+            allowNull : false,
+            notEmpty: true
         },
         image : {
-            type : DataTypes.STRING(1000)
+            type : DataTypes.STRING(1000),
+            notEmpty: true
         },
         location : {
-            type : DataTypes.STRING(1000)
+            type : DataTypes.STRING(1000),
+            notEmpty: true
         },
         notified : {
             type : DataTypes.BOOLEAN(),

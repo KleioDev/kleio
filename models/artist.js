@@ -13,13 +13,16 @@ module.exports = function(sequelize, DataTypes) {
         },
         name : {
             type: DataTypes.STRING,
-            allowNull : false
+            allowNull : false,
+            notEmpty: true
         },
         biography : {
-            type : DataTypes.STRING
+            type : DataTypes.STRING,
+            notEmpty: true
         },
         birthDay : {
-            type: DataTypes.STRING
+            type: DataTypes.STRING,
+            notEmpty: true
         },
         createdAt : {
             type : DataTypes.DATE

@@ -14,14 +14,17 @@ module.exports = function(sequelize, DataTypes){
         },
         title : {
             type : DataTypes.STRING,
-            allowNull : false
+            allowNull : false,
+            notEmpty: true
         },
         description : {
-            type : DataTypes.TEXT
+            type : DataTypes.TEXT,
+            notEmpty: true
         },
         link : {
             type : DataTypes.STRING(1000),
-            allowNull : false
+            allowNull : false,
+            notEmpty: true
         },
         createdAt : {
             type : DataTypes.DATE

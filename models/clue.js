@@ -13,7 +13,8 @@ module.exports = function(sequelize, DataTypes){
         },
         image : {
             type : DataTypes.STRING(1000),
-            allowNull : false
+            allowNull : false,
+            notEmpty: true
         },
         pointsValue : {
             type : DataTypes.INTEGER,

@@ -16,11 +16,13 @@ module.exports = function(sequelize, DataTypes) {
         },
         title: {
             type: DataTypes.STRING,
-            allowNull: false
+            allowNull: false,
+            notEmpty: true
         },
         message: {
             type: DataTypes.TEXT,
-            allowNull: false
+            allowNull: false,
+            notEmpty: true
         },
         seen: {
             type: DataTypes.BOOLEAN,

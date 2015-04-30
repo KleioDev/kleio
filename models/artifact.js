@@ -14,16 +14,20 @@ module.exports = function(sequelize, DataTypes) {
         },
         title : {
             type : DataTypes.STRING,
-            allowNull : false
+            allowNull : false,
+            notEmpty: true
         },
         description : {
-            type : DataTypes.TEXT
+            type : DataTypes.TEXT,
+            notEmpty: true
         },
         medium : {
-            type : DataTypes.STRING
+            type : DataTypes.STRING,
+            notEmpty: true
         },
         classification : {
-            type : DataTypes.STRING
+            type : DataTypes.STRING,
+            notEmpty: true
         },
         attribution : {
             type : DataTypes.STRING
@@ -32,7 +36,8 @@ module.exports = function(sequelize, DataTypes) {
             type : DataTypes.STRING
         },
         dimensions : {
-            type : DataTypes.STRING
+            type : DataTypes.STRING,
+            notEmpty: true
         },
         dated : {
             type : DataTypes.STRING
@@ -51,7 +56,8 @@ module.exports = function(sequelize, DataTypes) {
         },
         image : {
             type : DataTypes.STRING(1000),
-            allowNull : false
+            allowNull : false,
+            notEmpty: true
         },
         ArtistId : {
             type : DataTypes.INTEGER

@@ -14,14 +14,17 @@ module.exports = function(sequelize, DataTypes) {
         },
         title : {
             type : DataTypes.STRING,
-            allowNull : false
+            allowNull : false,
+            notEmpty: true
         },
         description : {
             type : DataTypes.TEXT,
-            allowNull : true
+            allowNull : true,
+            notEmpty: true
         },
         image : {
-          type : DataTypes.STRING(1000)
+          type : DataTypes.STRING(1000),
+            notEmpty: true
         },
         active : {
             type : DataTypes.BOOLEAN,

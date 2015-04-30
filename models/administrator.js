@@ -17,16 +17,20 @@ module.exports = function(sequelize, DataTypes){
             isEmail: true
         },
         firstName : {
-            type : DataTypes.STRING
+            type : DataTypes.STRING,
+            notEmpty: true
         },
         lastName : {
-            type : DataTypes.STRING
+            type : DataTypes.STRING,
+            notEmpty: true
         },
         password : {
-            type : DataTypes.STRING
+            type : DataTypes.STRING,
+            notEmpty: true
         },
         phone : {
-            type : DataTypes.STRING
+            type : DataTypes.STRING,
+            notEmpty: true
         },
         createdAt : {
             type : DataTypes.DATE

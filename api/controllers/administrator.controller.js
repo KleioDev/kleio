@@ -135,7 +135,6 @@ function *edit() {
 
         if(!result) this.throw('Not Found', 404);
 
-        console.log(result);
 
         //Success!!
         if(payload.email){
