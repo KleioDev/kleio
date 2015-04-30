@@ -274,7 +274,7 @@ function *login(){
     //Success!!
     var token = jwt.sign({email : admin.email, type : 'admin', id : admin.id}, process.env.APP_JWT_SECRET , { expiresInMinutes: 60 * 24});
 
-    this.body = token;
+    this.body = { token : token, confirm : admin.confirm};
 
     this.status = 200;
 }
