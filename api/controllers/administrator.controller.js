@@ -136,8 +136,9 @@ function *edit() {
         if(!result) this.throw('Not Found', 404);
 
 
+
         //Success!!
-        if(payload.email && this.state.user.id === id){
+        if(payload.email && this.state.user.id == id){
             var token = jwt.sign({email : payload.email, type : 'admin', id : id}, process.env.APP_JWT_SECRET , { expiresInMinutes: 60 * 24});
 
             this.body = { token : token };
