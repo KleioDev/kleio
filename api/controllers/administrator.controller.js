@@ -135,6 +135,15 @@ function *edit() {
 
         if(!result) this.throw('Not Found', 404);
 
+        console.log(result);
+
+        //Success!!
+        if(payload.email){
+            var token = jwt.sign({email : payload.email, type : 'admin', id : id}, process.env.APP_JWT_SECRET , { expiresInMinutes: 60 * 24});
+
+            this.body = token;
+        }
+
 
         this.status = 200;
 

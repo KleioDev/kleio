@@ -108,8 +108,6 @@ function *create(){
 
     payload.fields.link = process.env.BASEPATH + '/' + link;
 
-    console.log(payload.fields);
-
     try {
         yield this.sequelize.transaction(function(t) {
             return Image.create(payload.fields, {transaction : t}).then(function(image){
