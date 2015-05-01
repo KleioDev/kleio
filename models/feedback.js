@@ -36,10 +36,6 @@ module.exports = function(sequelize, DataTypes) {
             type : DataTypes.BOOLEAN,
             defaultValue : false
         },
-        MuseumId : {
-            type : DataTypes.INTEGER,
-            allowNull : false
-        },
         createdAt : {
             type : DataTypes.DATE
         },
