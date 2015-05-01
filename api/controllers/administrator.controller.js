@@ -191,6 +191,8 @@ function *create(){
 
     payload.password = hash;
 
+    payload.confirm = false;
+
     try {
         yield this.sequelize.transaction(function(t){
             return Administrator.create(payload, { transaction : t});
@@ -274,7 +276,7 @@ function *login(){
     //Success!!
     var token = jwt.sign({email : admin.email, type : 'admin', id : admin.id}, process.env.APP_JWT_SECRET , { expiresInMinutes: 60 * 24});
 
-    this.body = { token : token, confirm : admin.confirm};
+    this.body = { token : token, confirm : admin.confirm, id : admin.id};
 
     this.status = 200;
 }
