@@ -140,7 +140,7 @@ function *create(){
 
 
     try {
-        result = yield this.models['Feedback'].create(feedback);
+        result = yield this.models['Feedback'].create(payload);
     } catch(err) {
         if(typeof err ==='ValidationError'){
             this.throw('Invalid Payload', 400);
