@@ -253,7 +253,7 @@ function *destroy() {
  */
 function *login(){
     var payload = this.request.body.fields,
-        admin;
+        admin, Administrator = this.models['Administrator'];
 
     if(!payload) this.throw('Invalid Payload', 400);
 
@@ -272,6 +272,11 @@ function *login(){
     if(!bcrypt.compareSync(payload.password, admin.password)) {
         this.throw('Unauthorized', 403);
     }
+
+    //Confirm the administrator
+    yield this.sequelize.transaction(function(t){
+        return Administrator.update({ confirm : true}, { where : { id : admin.id }}, {transaction : t});
+    });
 
     //Success!!
     var token = jwt.sign({email : admin.email, type : 'admin', id : admin.id}, process.env.APP_JWT_SECRET , { expiresInMinutes: 60 * 24});
@@ -314,9 +319,9 @@ function *reset(){
 
         var message = new Email({
             from: "kleio.team@gmail.com",
-            to: "cesarcruz91@gmail.com", //TODO: Change
+            to: "luisfrik@gmail.com", //TODO: Change
             subject: "Password Recovery",
-            body: "Your temporary password is: " + password + ".Please access yo mama and change your password when prompted."
+            body: "Your temporary password is: " + password + ".Please access basepath and change your password when prompted."
         });
         message.send();
 
