@@ -117,10 +117,18 @@ function *create(){
         //Pay up
         match.attempts = match.attempts + 1;
 
-        console.log(match.Clue.ArtifactId);
-
         if(match.Clue.ArtifactId == payload.qrcode){
             match.correct = true;
+            var user = yield this.models['User'].find({ where : { id : payload.UserId}});
+
+            var points = user.points;
+
+            user.points = points + 15; //TODO: Change points to clue points value
+
+            yield this.sequelize.transaction(function(t){
+                return user.save({ transaction : t});
+            });
+
         } else {
             match.correct = false;
         }
