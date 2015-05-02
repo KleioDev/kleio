@@ -41,6 +41,10 @@ module.exports = function(sequelize, DataTypes){
         author : { //The Author of the Event
             type : DataTypes.INTEGER
         },
+        lang : {
+            type : DataTypes.ENUM('eng', 'esp'),
+            defaultValue : 'esp'
+        },
         createdAt : {
             type : DataTypes.DATE
         },

@@ -23,6 +23,10 @@ module.exports = function(sequelize, DataTypes){
             type : DataTypes.STRING(1000),
             allowNull : false
         },
+        lang : {
+            type : DataTypes.ENUM('eng', 'esp'),
+            defaultValue : 'esp'
+        },
         createdAt : {
             type : DataTypes.DATE
         },

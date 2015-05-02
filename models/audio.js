@@ -25,6 +25,10 @@ module.exports = function(sequelize, DataTypes){
             allowNull : false,
             notEmpty: true
         },
+        lang : {
+            type : DataTypes.ENUM('eng', 'esp'),
+            defaultValue : 'esp'
+        },
         createdAt : {
             type : DataTypes.DATE
         },

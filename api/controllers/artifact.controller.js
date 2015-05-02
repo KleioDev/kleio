@@ -97,6 +97,7 @@ function *show(){
     var artifact,
         id = this.params.id;
 
+
     try {
         var Artifact = this.models['Artifact'],
             Video = this.models['Video'],

@@ -33,6 +33,10 @@ module.exports = function(sequelize, DataTypes){
             type : DataTypes.BOOLEAN(),
             defaultValue : false
         },
+        lang : {
+            type : DataTypes.ENUM('eng', 'esp'),
+            defaultValue : 'esp'
+        },
         createdAt : {
             type : DataTypes.DATE
         },
