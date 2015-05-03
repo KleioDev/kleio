@@ -24,6 +24,7 @@
 * [iBeacons](#beacon)
 * [Administrator](#administrator)
 * [Artist](#artist)
+* [Room](#room)
 
 
  
@@ -1716,6 +1717,128 @@ DELETE /artist/:id
 *Response*
 
 Status code of 200 if delete was successful.
+
+### Room <a id="room"></a>
+
+Museum Rooms
+
+**Security**
+
+Rooms can only be created, edited or deleted by administrator users.
+
+**List Rooms**
+
+```
+GET /room
+```
+
+*Parameters*
+
+Available query parameters are: *page, per_page, and name*
+
+*Response*
+
+```
+{
+    "rooms": [
+        {
+            "id": 1,
+            "name": "Agustin Stahl",
+            "description": "In commemoration to the famous cientist, Agustin Stahl",
+            "createdAt": "2015-03-31T18:58:08.049Z",
+            "updatedAt": "2015-03-31T18:58:08.049Z",
+            "Beacons": [
+                {
+                    "id": 3,
+                    "code": "B9407F30-F5F8-466E-AFF9-25556B57FE6D12",
+                    "RoomId": 1,
+                    "createdAt": "2015-04-20T14:14:24.098Z",
+                    "updatedAt": "2015-04-20T14:14:24.098Z"
+                }
+            ]
+        },
+        {
+            "id": 2,
+            "name": "The Room",
+            "description": "The Room with all the stuff",
+            "createdAt": "2015-04-16T16:14:46.761Z",
+            "updatedAt": "2015-04-16T16:14:46.761Z",
+            "Beacons": [
+                {
+                    "id": 1,
+                    "code": "B558CBDA-4472-4211-A350-FF1196FFE8C8",
+                    "RoomId": 2,
+                    "createdAt": "2015-04-01T03:23:59.569Z",
+                    "updatedAt": "2015-04-01T03:23:59.569Z"
+                }
+            ]
+        }
+    ]
+}
+```
+
+**Single Room**
+
+```
+GET /room/:id
+```
+
+*Response*
+
+```
+{
+    "id": 2,
+    "name": "The Room",
+    "description": "The Room with all the stuff",
+    "createdAt": "2015-04-16T16:14:46.761Z",
+    "updatedAt": "2015-04-16T16:14:46.761Z",
+    "Beacons": [
+        {
+            "id": 1,
+            "code": "B558CBDA-4472-4211-A350-FF1196FFE8C8",
+            "RoomId": 2,
+            "createdAt": "2015-04-01T03:23:59.569Z",
+            "updatedAt": "2015-04-01T03:23:59.569Z"
+        }
+    ]
+}
+```
+
+**Creating Room**
+
+```
+POST /room
+```
+
+*Payload*
+
+Required: name, description
+Optional: n/a
+
+*Response*
+
+Status code of 201 if Room created successfully.
+
+**Edit Room**
+
+```
+PUT /room/:id
+```
+
+*Response*
+
+Status code of 200 if update was successful.
+
+**Delete Room**
+
+```
+DELETE /room/:id
+```
+
+*Response*
+
+Status code of 200 if delete was successful.
+
 
 
 

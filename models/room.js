@@ -13,11 +13,11 @@ module.exports = function(sequelize, DataTypes) {
         },
         name : {
             type : DataTypes.STRING,
-            allowNull : true
+            allowNull : false
         },
         description : {
             type : DataTypes.TEXT,
-            allowNull : true
+            allowNull : false
         },
         createdAt : {
             type : DataTypes.DATE,

@@ -30,7 +30,8 @@ module.exports = function(sequelize, DataTypes){
         },
         phone : {
             type : DataTypes.STRING,
-            notEmpty: true
+            notEmpty: true,
+            allowNull : false
         },
         confirm : {
             type : DataTypes.BOOLEAN
