@@ -114,16 +114,14 @@ function *create(){
 
         if(!match) this.throw('Not Found', 404);
 
-        //Pay up
-        match.attempts = match.attempts + 1;
-
         if(match.Clue.ArtifactId == payload.qrcode){
             match.correct = true;
+
             var user = yield this.models['User'].find({ where : { id : payload.UserId}});
 
-            var points = user.points;
+            var points = parseInt(user.points);
 
-            user.points = points + 15; //TODO: Change points to clue points value
+            user.points = points + match.Clue.pointsValue - (5 * match.attempts); //TODO: Change points to clue points value
 
             yield this.sequelize.transaction(function(t){
                 return user.save({ transaction : t});
@@ -132,6 +130,9 @@ function *create(){
         } else {
             match.correct = false;
         }
+
+        //Pay up
+        match.attempts = match.attempts + 1;
 
         yield this.sequelize.transaction(function(t){
             return match.save({transaction : t});
