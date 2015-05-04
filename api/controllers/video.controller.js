@@ -148,7 +148,7 @@ function *edit(){
 function *destroy() {
     var id = this.params.id,
         Video = this.models['Video'],
-        ArtifactVideo = this.models['ArtifactVideos'],
+        ArtifactVideo = this.models['ArtifactVideo'],
         result;
 
     try {
