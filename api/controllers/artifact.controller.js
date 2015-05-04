@@ -132,13 +132,15 @@ function *show(){
 
             var payload = {};
 
-            payload.year = Date.getFullYear();
+            var date = new Date();
 
-            payload.month = Date.getMonth();
+            payload.year = date.getFullYear();
+
+            payload.month = date.getMonth();
 
             payload.interactiveUser = phone;
 
-            yield this.sequelzie.transaction(function(t){
+            yield this.sequelize.transaction(function(t){
                 return InteractiveUser.create(payload, { transaction : t});
             });
         }
