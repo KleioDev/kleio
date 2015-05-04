@@ -319,7 +319,7 @@ function *reset(){
 
         var message = new Email({
             from: "kleio.team@gmail.com",
-            to: "luisfrik@gmail.com", //TODO: Change
+            to: admin.email, //TODO: Change
             subject: "Password Recovery",
             body: "Your temporary password is: " + password + ".Please access basepath and change your password when prompted."
         });
