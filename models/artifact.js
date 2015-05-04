@@ -69,6 +69,10 @@ module.exports = function(sequelize, DataTypes) {
         ExhibitionId : {
             type : DataTypes.INTEGER
         },
+        interactions : {
+            type : DataTypes.INTEGER,
+            defaultValue : 0
+        },
         createdAt : {
             type : DataTypes.DATE
         },

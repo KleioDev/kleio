@@ -3,7 +3,7 @@
  */
 module.exports = function(sequelize, DataTypes) {
 
-    var interactiveUser = sequelize.define('interactiveUser', {
+    var interactiveUser = sequelize.define('InteractiveUser', {
         id : {
             type : DataTypes.INTEGER,
             allowNull : false,

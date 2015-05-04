@@ -1,6 +1,6 @@
 module.exports = function(sequelize, DataTypes) {
 
-    var monthlyActiveUsers = sequelize.define('monthlyActiveUsers', {
+    var monthlyActiveUsers = sequelize.define('MonthlyActiveUser', {
         id : {
             type : DataTypes.INTEGER,
             allowNull : false,

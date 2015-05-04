@@ -26,7 +26,8 @@ module.exports = function(){
         .get('/user/:id', loadModels, auth, show)
         .put('/user/:id', koaBody, loadModels, adminAuth, edit)
         .delete('/user/:id', loadModels, adminAuth, destroy)
-        .post('/user', koaBody, loadModels, create);
+        .post('/user', koaBody, loadModels, create)
+        .post('/user/active/:id', koaBody, loadModels, activeUser);
 
     return userController.routes();
 
@@ -268,5 +269,32 @@ function *reset(){
     }
 
     this.status = 200;
+}
+
+/**
+ * Register a users activities
+ */
+function *activeUser(){
+    var id = this.params.id;
+
+    try{
+        var MonthlyActiveUser = this.models['MonthlyActiveUser'];
+
+        var payload = {};
+
+        payload.year = Date.getFullYear();
+
+        payload.month = Date.getMonth();
+
+        payload.activeUser = id;
+
+        yield this.sequelize.transaction(function(t){
+            return MonthlyActiveUser.create(payload, { transaction : t});
+        });
+    }catch(err){
+        this.throw(err.message, err.status || 500);
+    }
+
+    this.status = 201;
 }
 
