@@ -24,7 +24,7 @@ function *index(){
         });
 
         months.forEach(function(month){
-            data.month = yield getMonthlyUsers(month);
+            data.month =  getMonthlyUsers(month);
         });
 
         console.log(data);
@@ -34,13 +34,13 @@ function *index(){
     }
 }
 
-function *getMonthlyUsers(month){
+function getMonthlyUsers(month){
     try{
-        var activeUsers = yield this.models['MonthlyActiveUser'].count({
+        var activeUsers =  this.models['MonthlyActiveUser'].count({
             where : { month : month}
         });
 
-        var interactiveUsers = yield this.models['InteractiveUser'].count({
+        var interactiveUsers =  this.models['InteractiveUser'].count({
             where : { month : month}
         });
     }catch(err){
