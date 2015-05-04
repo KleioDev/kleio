@@ -278,19 +278,35 @@ function *activeUser(){
     var id = this.params.id;
 
     try{
+
         var MonthlyActiveUser = this.models['MonthlyActiveUser'];
 
         var payload = {};
 
-        payload.year = Date.getFullYear();
+        var date = new Date();
 
-        payload.month = Date.getMonth();
+        payload.year = date.getFullYear();
 
-        payload.activeUser = id;
+        payload.month = date.getMonth();
 
-        yield this.sequelize.transaction(function(t){
-            return MonthlyActiveUser.create(payload, { transaction : t});
+        payload.activeUser = id
+
+        //First check if the user exists:
+
+        var result = yield this.models['MonthlyActiveUser'].find({
+            where : {
+                activeUser : id,
+                month : payload.month,
+                year : payload.year
+            }
         });
+
+        if(!result){
+            yield this.sequelize.transaction(function(t){
+                return MonthlyActiveUser.create(payload, { transaction : t});
+            });
+        }
+
     }catch(err){
         this.throw(err.message, err.status || 500);
     }

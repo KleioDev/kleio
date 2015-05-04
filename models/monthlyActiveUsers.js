@@ -17,8 +17,7 @@ module.exports = function(sequelize, DataTypes) {
         },
         activeUser : {
             type : DataTypes.INTEGER,
-            references : 'Users',
-            referencesKey : 'id'
+            allowNull : false
         },
         createdAt : {
             type : DataTypes.DATE
@@ -28,14 +27,7 @@ module.exports = function(sequelize, DataTypes) {
         }
 
     }, {
-        timestamps: true,
-        classMethods : {
-            associate: function(models){
-
-                monthlyActiveUsers.belongsTo(models.User);
-
-            }
-        }
+        timestamps: true
     });
 
     return monthlyActiveUsers;

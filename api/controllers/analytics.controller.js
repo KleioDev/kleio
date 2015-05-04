@@ -10,24 +10,26 @@ module.exports = function(){
         adminAuth = middleware.adminAuth;
 
     var analyticsController = new Router()
-        .get('/analytics/user', loadModels, adminAuth, index);
+        .get('/analytics/active/user', loadModels, active);
 
     return analyticsController.routes();
 }
 
-function *index(){
+function *active(){
+    var monthlyActiveUser = this.models['MonthlyActiveUser'];
 
     var data = {};
     try{
-        var months = yield this.models['InteractiveUser'].findAll({
+        var months = yield monthlyActiveUser.findAll({
             attributes : ['month']
         });
 
         months.forEach(function(month){
-            data.month =  getMonthlyUsers(month);
+
+            data.month.active =  monthlyActiveUser.count({ where : { month : month.month}});
         });
 
-        console.log(data);
+
 
     } catch(err){
         this.throw(err.message, err.status || 500);

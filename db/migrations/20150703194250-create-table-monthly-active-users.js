@@ -2,7 +2,7 @@
 
 module.exports = {
   up: function(migration, DataTypes, done) {
-    migration.createTable('MothlyActiveUsers', {
+    migration.createTable('MonthlyActiveUsers', {
         id : {
             type : DataTypes.INTEGER,
             primaryKey : true,
@@ -18,9 +18,7 @@ module.exports = {
             allowNull : false
         },
         activeUser : {
-            type : DataTypes.INTEGER,
-            references : 'Users',
-            referencesKey : 'id'
+            type : DataTypes.INTEGER
         },
         createdAt : {
             type : DataTypes.DATE

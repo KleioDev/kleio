@@ -164,7 +164,7 @@ function *destroy() {
         result = yield this.sequelize.transaction(function (t) {
             return Phone.destroy({
                 where : {
-                    id : id
+                    token : id
                 }
             }, { transaction : t});
         });
