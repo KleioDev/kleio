@@ -10,49 +10,37 @@ module.exports = function(){
         adminAuth = middleware.adminAuth;
 
     var analyticsController = new Router()
-        .get('/analytics/active/user', loadModels, active);
+        .get('/active/user', loadModels, active)
+        .get('/interactive/user', loadModels, interactive);
 
     return analyticsController.routes();
 }
 
 function *active(){
+
     var monthlyActiveUser = this.models['MonthlyActiveUser'];
 
     var data = {};
     try{
         var months = yield monthlyActiveUser.findAll({
-            attributes : ['month']
+            attributes : ['month', 'year']
         });
 
-        months.forEach(function(month){
+        for(var i = 0; i < months.length; i = i + 1) {
 
-            data.month.active =  monthlyActiveUser.count({ where : { month : month.month}});
-        });
-
-
+            data['' + months[i].month + '-' + months[i].year] = {};
+            data['' + months[i].month + '-' + months[i].year].active = yield monthlyActiveUser.count();
+        }
 
     } catch(err){
         this.throw(err.message, err.status || 500);
     }
+
+    this.status = 200;
+
+    this.body = data;
 }
 
-function getMonthlyUsers(month){
-    try{
-        var activeUsers =  this.models['MonthlyActiveUser'].count({
-            where : { month : month}
-        });
+function *interactive(){
 
-        var interactiveUsers =  this.models['InteractiveUser'].count({
-            where : { month : month}
-        });
-    }catch(err){
-        this.throw(err.message, err.status || 500);
-    }
-
-    var result = {
-        activeUsers : activeUsers,
-        interactiveUsers : interactiveUsers
-    }
-
-    return result;
 }

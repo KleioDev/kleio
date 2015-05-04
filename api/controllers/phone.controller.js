@@ -21,7 +21,7 @@ module.exports = function(){
         .get('/phones/:id', loadModels, show)
         .post('/phones', koaBody, loadModels, create)
         .put('/phones/:id', koaBody, loadModels, adminAuth, edit)
-        .delete('/phones/:id', loadModels, adminAuth, destroy);
+        .delete('/phones/:id', loadModels, destroy);
 
 
     return phoneController.routes();
