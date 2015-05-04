@@ -86,7 +86,7 @@ function *create(){
         result,
         Artist = this.models['Artist'];
 
-    if(!payload || !payload.code) this.throw('Invalid Payload', 400);
+    if(!payload) this.throw('Invalid Payload', 400);
 
     try {
         result = yield this.sequelize.transaction(function(t) {
