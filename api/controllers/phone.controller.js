@@ -97,12 +97,17 @@ function *create(){
         result,
         Phone = this.models['Phone'];
 
-    if(!payload) this.throw('Invalid Payload', 400);
+    if(!payload || !payload.token) this.throw('Invalid Payload', 400);
 
     try {
-        result = this.sequelize.transaction(function(t) {
-            return Phone.create(payload, {transaction : t});
-        });
+
+        result = yield Phone.find({ where : { token : payload.token}});
+
+        if(!result){
+            result = this.sequelize.transaction(function(t) {
+                return Phone.create(payload, {transaction : t});
+            });
+        }
     } catch(err) {
         if(typeof err ==='ValidationError'){
             this.throw('Invalid Payload', 400);
