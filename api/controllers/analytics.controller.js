@@ -19,7 +19,7 @@ module.exports = function(){
 function *active(){
 
     var monthlyActiveUser = this.models['MonthlyActiveUser'];
-    //var interactiveUser = this.models['InteractiveUser'];
+    var interactiveUser = this.models['InteractiveUser'];
     var data = {};
     try{
         var months = yield monthlyActiveUser.findAll({
