@@ -28,7 +28,7 @@ module.exports = function(){
 /**
  * Get a list of all artifacts
  * The list will be limited to 10 at a time.
- * Query Parameters: page, per_page, title, exhibition_id, artist
+ * Query Parameters: page, per_page, title, exhibition_id, artist, top
  */
 function *index(){
     var artifacts,
@@ -47,6 +47,9 @@ function *index(){
     if(title) where.title = title;
 
     if(exhibition) where.ExhibitionId = exhibition;
+
+    var order = '"createdAt" DESC';
+    if(top) order = '"interactions" DESC';
 
 
     if(artist){
@@ -71,7 +74,7 @@ function *index(){
 
     try {
         artifacts = yield this.models['Artifact'].findAll({
-            order : '"createdAt" DESC',
+            order : order,
             limit : limit,
             offset : offset * limit,
             where : where,

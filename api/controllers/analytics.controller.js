@@ -34,15 +34,14 @@ function *active(){
 
             data['' + months[i].month + '-' + months[i].year] = {};
             data['' + months[i].month + '-' + months[i].year].active = yield monthlyActiveUser.count();
-            //data['' + months[i].month + '-' + months[i].year].period = '' + months[i].month + '-' + months[i].year;
+            data['' + months[i].month + '-' + months[i].year].period = '' + months[i].month + '-' + months[i].year;
 
         }
         //if its the same this should be easy
-        //for(var i = 0; i < months.length; i = i + 1) {
-        //
-        //    data['' + months[i].month + '-' + months[i].year] = {};
-        //    data['' + months[i].month + '-' + months[i].year].interactive = yield interactiveUser.count();
-        //}
+        for(var i = 0; i < months.length; i = i + 1) {
+
+            data['' + months[i].month + '-' + months[i].year].interactive = yield interactiveUser.count();
+        }
 
     } catch(err){
         this.throw(err.message, err.status || 500);
