@@ -36,6 +36,7 @@ function *index(){
         artist = this.query.artist,
         exhibition = this.query.exhibition_id,
         title = this.query.title,
+        top = this.query.top,
         where = {}, Artist = this.models['Artist'],
         Exhibition = this.models['Exhibition'];
 
