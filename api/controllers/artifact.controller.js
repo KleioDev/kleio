@@ -19,8 +19,7 @@ module.exports = function(){
         .get('/artifact/:id', loadModels, show)
         .post('/artifact', koaBody, loadModels, adminAuth, create)
         .put('/artifact/:id', koaBody, loadModels,  edit)
-        .delete('/artifact/:id', loadModels, adminAuth, destroy)
-        .get('/artifact/top', loadModels, adminAuth, top);
+        .delete('/artifact/:id', loadModels, adminAuth, destroy);
 
     return artifactController.routes();
 }
@@ -258,32 +257,3 @@ function *destroy(){
     this.status = 200;
 }
 
-
-/**
- * Get the top artifacts in the museum, based on user interaction (QRCode Scans)
- */
-function *top(){
-    var artifacts,
-        limit = this.query.per_page,
-        offset = this.query.page;
-
-    if(!offset) offset = 0;
-
-    if(!limit) limit = 25;
-
-    try {
-        artifacts = yield this.models['Artifact'].findAll({
-            order : '"interactions" DESC',
-            limit : limit,
-            offset : offset * limit
-        });
-    } catch(err){
-        this.throw(err.message, err.status || 500);
-    }
-
-    if(!artifacts || artifacts.length < 1) this.throw('Not Found', 404);
-
-    this.status = 200;
-
-    this.body = artifacts;
-}

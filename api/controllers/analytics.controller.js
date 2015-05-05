@@ -10,8 +10,7 @@ module.exports = function(){
         adminAuth = middleware.adminAuth;
 
     var analyticsController = new Router()
-        .get('/active/user', loadModels, active)
-        .get('/interactive/user', loadModels, interactive);
+        .get('/active/user', loadModels, active);
 
     return analyticsController.routes();
 }
@@ -50,8 +49,4 @@ function *active(){
     this.status = 200;
 
     this.body = data;
-}
-
-function *interactive(){
-
 }
