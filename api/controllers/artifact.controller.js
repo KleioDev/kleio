@@ -119,6 +119,8 @@ function *show(){
             include : [Video, Audible, Image, Text, Artist, Exhibition]
         });
 
+        if(!artifact) this.throw('Not Found', 404);
+
         if(scan){
             var interaction = parseInt(artifact.interactions);
 
@@ -142,9 +144,17 @@ function *show(){
 
             payload.interactiveUser = phone;
 
-            yield this.sequelize.transaction(function(t){
-                return InteractiveUser.create(payload, { transaction : t});
-            });
+            var currInteraction = yield this.models['InteractiveUser'].find({where : {
+                year : payload.year,
+                month : payload.month,
+                interactiveUser : payload.interactiveUser
+            }});
+
+            if(!currInteraction){
+                yield this.sequelize.transaction(function(t){
+                    return InteractiveUser.create(payload, { transaction : t});
+                });
+            }
         }
 
 
