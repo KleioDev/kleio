@@ -30,6 +30,9 @@ module.exports = function(sequelize, DataTypes) {
             type : DataTypes.BOOLEAN,
             defaultValue : true
         },
+        tmsID : {
+            type : DataTypes.INTEGER
+        },
         createdAt : {
             type : DataTypes.DATE
         },
