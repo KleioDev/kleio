@@ -19,17 +19,28 @@ module.exports = function(){
 function *active(){
 
     var monthlyActiveUser = this.models['MonthlyActiveUser'];
-
+    var interactiveUser = this.models['InteractiveUser'];
     var data = {};
     try{
         var months = yield monthlyActiveUser.findAll({
             attributes : ['month', 'year']
         });
+        //if its somehow different:
+        //var months = yield interactiveUser.findAll({
+        //    attributes : ['month', 'year']
+        //});
 
         for(var i = 0; i < months.length; i = i + 1) {
 
             data['' + months[i].month + '-' + months[i].year] = {};
             data['' + months[i].month + '-' + months[i].year].active = yield monthlyActiveUser.count();
+            data['' + months[i].month + '-' + months[i].year].period = '' + months[i].month + '-' + months[i].year;
+
+        }
+        //if its the same this should be easy
+        for(var i = 0; i < months.length; i = i + 1) {
+
+            data['' + months[i].month + '-' + months[i].year].interactive = yield interactiveUser.count();
         }
 
     } catch(err){
