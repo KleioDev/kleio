@@ -77,7 +77,11 @@ function *index(){
             order : order,
             limit : limit,
             offset : offset * limit,
-            where : ['"title" like ?', '%' + title.toUpperCase() + '%'],
+            where : {
+                title : {
+                    $like : '%' + title.toUpperCase()
+                }
+            },
             include : [Artist, Exhibition]
         });
     } catch(err){
