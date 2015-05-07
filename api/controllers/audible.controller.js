@@ -25,7 +25,13 @@ module.exports = function() {
                 hash : 'md5'
             }
         }), loadModels, adminAuth, create)
-        .put('/audible/:id', koaBody(), loadModels, adminAuth, edit)
+        .put('/audible/:id', koaBody({
+            multipart: true,
+            formidable: {
+                uploadDir: 'public/audibles/',
+                hash : 'md5'
+            }
+        }), loadModels, adminAuth, edit)
         .delete('/audible/:id', loadModels, adminAuth, destroy);
 
     return audibleController.routes();

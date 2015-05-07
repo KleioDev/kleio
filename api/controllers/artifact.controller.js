@@ -44,7 +44,14 @@ function *index(){
 
     if(!limit) limit = 25;
 
-    if(title) where.title = title;
+    if(title) {//Define search
+
+        where.title = {
+
+            $like : '%' + title.toUpperCase()
+
+        }
+    }
 
     if(exhibition) where.ExhibitionId = exhibition;
 
@@ -77,11 +84,7 @@ function *index(){
             order : order,
             limit : limit,
             offset : offset * limit,
-            where : {
-                title : {
-                    $like : '%' + title.toUpperCase()
-                }
-            },
+            where : where,
             include : [Artist, Exhibition]
         });
     } catch(err){

@@ -26,7 +26,13 @@ module.exports = function(){
                 hash : 'md5'
             }
         }), loadModels, adminAuth, create)
-        .put('/image/:id', koaBody(), loadModels, adminAuth, edit)
+        .put('/image/:id',koaBody({
+            multipart: true,
+            formidable: {
+                uploadDir: 'public/images/',
+                hash : 'md5'
+            }
+        }), loadModels, adminAuth, edit)
         .delete('/image/:id', loadModels, adminAuth, destroy);
 
     return imageController.routes();
