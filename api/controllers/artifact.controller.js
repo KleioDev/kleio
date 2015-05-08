@@ -48,7 +48,7 @@ function *index(){
 
         where.title = {
 
-            $like : '%' + title.toUpperCase()
+            $iLike : '%' + title + '%'
 
         }
     }
