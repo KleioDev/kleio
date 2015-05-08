@@ -152,18 +152,22 @@ function *edit(){
 
     if(!payload) this.throw('Invalid Payload', 400);
 
-    if(payload.files.file){
-        oldPath = payload.files.file.path;
+    console.log(this.request.body);
+    if(this.request.body.files){
+        oldPath = this.request.body.files.file.path;
 
         newPath = oldPath.replace('upload_', '');
 
         //Remove the upload_ from the filename
         fs.renameSync(oldPath, newPath);
 
-        link = newPath.replace('public/audibles/', '');
+        link = newPath.replace('public/images/', '');
 
-        payload.fields.link = process.env.BASEPATH + '/' + link;
+        payload.link = process.env.BASEPATH + '/' + link;
+        console.log(payload);
     }
+
+
 
     try {
         result = yield this.sequelize.transaction(function (t){

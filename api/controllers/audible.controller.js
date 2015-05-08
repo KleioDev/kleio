@@ -147,12 +147,14 @@ function *edit(){
     var payload = this.request.body.fields,
         id = this.params.id,
         result,
-        Audible = this.models['Audible'];
+        Audible = this.models['Audible'],
+        link, oldPath, newPath;
 
     if(!payload) this.throw('Invalid Payload', 400);
 
-    if(payload.files.file){
-        oldPath = payload.files.file.path;
+    console.log(this.request.body);
+    if(this.request.body.files){
+        oldPath = this.request.body.files.file.path;
 
         newPath = oldPath.replace('upload_', '');
 
@@ -161,7 +163,8 @@ function *edit(){
 
         link = newPath.replace('public/audibles/', '');
 
-        payload.fields.link = process.env.BASEPATH + '/' + link;
+        payload.link = process.env.BASEPATH + '/' + link;
+        console.log(payload);
     }
 
 
