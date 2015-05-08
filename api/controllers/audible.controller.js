@@ -151,6 +151,20 @@ function *edit(){
 
     if(!payload) this.throw('Invalid Payload', 400);
 
+    if(payload.files.file){
+        oldPath = payload.files.file.path;
+
+        newPath = oldPath.replace('upload_', '');
+
+        //Remove the upload_ from the filename
+        fs.renameSync(oldPath, newPath);
+
+        link = newPath.replace('public/audibles/', '');
+
+        payload.fields.link = process.env.BASEPATH + '/' + link;
+    }
+
+
     try {
         result = yield this.sequelize.transaction(function (t){
             return Audible.update(payload, {
