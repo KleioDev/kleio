@@ -1,4 +1,6 @@
-# MuSA API
+# Kleio API
+
+An API for the Museum of Art, at the University of Puerto Rico, Mayagüez Campus
 
 ### Overview
 
@@ -31,7 +33,7 @@
 
 ### Current Version <a id="version"></a>
 
-The purpose of this API is fascilitating information to the MuSA mobile applications. The Museum of the University of Puerto Rico, Mayagüez Campus (MuSA) will allow students to browse all the collections of the museum from the comfort of their smartphone. A few extras are provided for users that make use of the application while inside of the Museum. This API is currently in it's ***Beta*** version, bugs or complains are more than welcomed.
+The purpose of this API is fascilitating information to the Kleio mobile applications. The Museum of the University of Puerto Rico, Mayagüez Campus (Kleio) will allow students to browse all the collections of the museum from the comfort of their smartphone. A few extras are provided for users that make use of the application while inside of the Museum. This API is currently in it's ***Beta*** version, bugs or complains are more than welcomed.
 
 
 ### Schema <a id="schema"></a>
