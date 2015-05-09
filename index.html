@@ -2,7 +2,7 @@
 <html lang="en-us">
   <head>
     <meta charset="UTF-8">
-    <title>Musa by KleioDev</title>
+    <title>Kleio by KleioDev</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" type="text/css" href="stylesheets/normalize.css" media="screen">
     <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,700' rel='stylesheet' type='text/css'>
@@ -11,16 +11,18 @@
   </head>
   <body>
     <section class="page-header">
-      <h1 class="project-name">Musa</h1>
+      <h1 class="project-name">Kleio</h1>
       <h2 class="project-tagline">An API for the University or Puerto Rico, Mayagüez Campus Museum of Art</h2>
-      <a href="https://github.com/KleioDev/musa" class="btn">View on GitHub</a>
-      <a href="https://github.com/KleioDev/musa/zipball/master" class="btn">Download .zip</a>
-      <a href="https://github.com/KleioDev/musa/tarball/master" class="btn">Download .tar.gz</a>
+      <a href="https://github.com/KleioDev/kleio" class="btn">View on GitHub</a>
+      <a href="https://github.com/KleioDev/kleio/zipball/master" class="btn">Download .zip</a>
+      <a href="https://github.com/KleioDev/kleio/tarball/master" class="btn">Download .tar.gz</a>
     </section>
 
     <section class="main-content">
       <h1>
-<a id="musa-api" class="anchor" href="#musa-api" aria-hidden="true"><span class="octicon octicon-link"></span></a>MuSA API</h1>
+<a id="kleio-api" class="anchor" href="#kleio-api" aria-hidden="true"><span class="octicon octicon-link"></span></a>Kleio API</h1>
+
+<p>An API for the Museum of Art, at the University of Puerto Rico, Mayagüez Campus</p>
 
 <h3>
 <a id="overview" class="anchor" href="#overview" aria-hidden="true"><span class="octicon octicon-link"></span></a>Overview</h3>
@@ -54,13 +56,14 @@
 <li><a href="#beacon">iBeacons</a></li>
 <li><a href="#administrator">Administrator</a></li>
 <li><a href="#artist">Artist</a></li>
+<li><a href="#room">Room</a></li>
 </ul>
 
 <h3>
 <a id="current-version-" class="anchor" href="#current-version-" aria-hidden="true"><span class="octicon octicon-link"></span></a>Current Version <a id="version"></a>
 </h3>
 
-<p>The purpose of this API is fascilitating information to the MuSA mobile applications. The Museum of the University of Puerto Rico, Mayagüez Campus (MuSA) will allow students to browse all the collections of the museum from the comfort of their smartphone. A few extras are provided for users that make use of the application while inside of the Museum. This API is currently in it's <strong><em>Beta</em></strong> version, bugs or complains are more than welcomed.</p>
+<p>The purpose of this API is fascilitating information to the Kleio mobile applications. The Museum of the University of Puerto Rico, Mayagüez Campus (Kleio) will allow students to browse all the collections of the museum from the comfort of their smartphone. A few extras are provided for users that make use of the application while inside of the Museum. This API is currently in it's <strong><em>Beta</em></strong> version, bugs or complains are more than welcomed.</p>
 
 <h3>
 <a id="schema-" class="anchor" href="#schema-" aria-hidden="true"><span class="octicon octicon-link"></span></a>Schema <a id="schema"></a>
@@ -1768,8 +1771,124 @@ Optional: biography, and birthDay</p>
 
 <p>Status code of 200 if delete was successful.</p>
 
+<h3>
+<a id="room-" class="anchor" href="#room-" aria-hidden="true"><span class="octicon octicon-link"></span></a>Room <a id="room"></a>
+</h3>
+
+<p>Museum Rooms</p>
+
+<p><strong>Security</strong></p>
+
+<p>Rooms can only be created, edited or deleted by administrator users.</p>
+
+<p><strong>List Rooms</strong></p>
+
+<pre><code>GET /room
+</code></pre>
+
+<p><em>Parameters</em></p>
+
+<p>Available query parameters are: <em>page, per_page, and name</em></p>
+
+<p><em>Response</em></p>
+
+<pre><code>{
+    "rooms": [
+        {
+            "id": 1,
+            "name": "Agustin Stahl",
+            "description": "In commemoration to the famous cientist, Agustin Stahl",
+            "createdAt": "2015-03-31T18:58:08.049Z",
+            "updatedAt": "2015-03-31T18:58:08.049Z",
+            "Beacons": [
+                {
+                    "id": 3,
+                    "code": "B9407F30-F5F8-466E-AFF9-25556B57FE6D12",
+                    "RoomId": 1,
+                    "createdAt": "2015-04-20T14:14:24.098Z",
+                    "updatedAt": "2015-04-20T14:14:24.098Z"
+                }
+            ]
+        },
+        {
+            "id": 2,
+            "name": "The Room",
+            "description": "The Room with all the stuff",
+            "createdAt": "2015-04-16T16:14:46.761Z",
+            "updatedAt": "2015-04-16T16:14:46.761Z",
+            "Beacons": [
+                {
+                    "id": 1,
+                    "code": "B558CBDA-4472-4211-A350-FF1196FFE8C8",
+                    "RoomId": 2,
+                    "createdAt": "2015-04-01T03:23:59.569Z",
+                    "updatedAt": "2015-04-01T03:23:59.569Z"
+                }
+            ]
+        }
+    ]
+}
+</code></pre>
+
+<p><strong>Single Room</strong></p>
+
+<pre><code>GET /room/:id
+</code></pre>
+
+<p><em>Response</em></p>
+
+<pre><code>{
+    "id": 2,
+    "name": "The Room",
+    "description": "The Room with all the stuff",
+    "createdAt": "2015-04-16T16:14:46.761Z",
+    "updatedAt": "2015-04-16T16:14:46.761Z",
+    "Beacons": [
+        {
+            "id": 1,
+            "code": "B558CBDA-4472-4211-A350-FF1196FFE8C8",
+            "RoomId": 2,
+            "createdAt": "2015-04-01T03:23:59.569Z",
+            "updatedAt": "2015-04-01T03:23:59.569Z"
+        }
+    ]
+}
+</code></pre>
+
+<p><strong>Creating Room</strong></p>
+
+<pre><code>POST /room
+</code></pre>
+
+<p><em>Payload</em></p>
+
+<p>Required: name, description
+Optional: n/a</p>
+
+<p><em>Response</em></p>
+
+<p>Status code of 201 if Room created successfully.</p>
+
+<p><strong>Edit Room</strong></p>
+
+<pre><code>PUT /room/:id
+</code></pre>
+
+<p><em>Response</em></p>
+
+<p>Status code of 200 if update was successful.</p>
+
+<p><strong>Delete Room</strong></p>
+
+<pre><code>DELETE /room/:id
+</code></pre>
+
+<p><em>Response</em></p>
+
+<p>Status code of 200 if delete was successful.</p>
+
       <footer class="site-footer">
-        <span class="site-footer-owner"><a href="https://github.com/KleioDev/musa">Musa</a> is maintained by <a href="https://github.com/KleioDev">KleioDev</a>.</span>
+        <span class="site-footer-owner"><a href="https://github.com/KleioDev/kleio">Kleio</a> is maintained by <a href="https://github.com/KleioDev">KleioDev</a>.</span>
 
         <span class="site-footer-credits">This page was generated by <a href="https://pages.github.com">GitHub Pages</a> using the <a href="https://github.com/jasonlong/cayman-theme">Cayman theme</a> by <a href="https://twitter.com/jasonlong">Jason Long</a>.</span>
       </footer>
