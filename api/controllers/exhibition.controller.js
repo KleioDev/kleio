@@ -40,7 +40,14 @@ function *index() {
 
     if(!offset) offset = 0;
 
-    if(title) where.title = title;
+    if(title) {//Define search
+
+        where.title = {
+
+            $iLike : '%' + title + '%'
+
+        }
+    }
 
     if(!limit) limit = 25;
 
